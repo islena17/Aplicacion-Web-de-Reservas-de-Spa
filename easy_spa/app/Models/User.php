@@ -20,7 +20,7 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
-        'name',
+        'role_id',
         'email',
         'password',
     ];
@@ -49,5 +49,29 @@ class User extends Authenticatable
             'password' => 'hashed',
             'two_factor_confirmed_at' => 'datetime',
         ];
+    }
+
+
+    //pongo relacion con rol
+
+    public function role()
+    {
+        return $this->belongsTo(Role::class);
+    }
+
+    public function ownedSpa()
+    {
+        return $this->hasMany(Spa::class, 'user_id');
+    }
+
+    //pongo aqui las relaciones 1:1 
+    public function employee()
+    {
+        return $this->hasOne(Employee::class, 'user_id');
+    }
+
+    public function client()
+    {
+        return $this->hasOne(Client::class, 'user_id');
     }
 }
