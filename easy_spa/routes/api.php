@@ -4,10 +4,14 @@ use App\Http\Controllers\Api\Admin\EmployeeBlockController as AdminEmployeeBlock
 use App\Http\Controllers\Api\Admin\EmployeeController as AdminEmployeeController;
 use App\Http\Controllers\Api\Admin\EmployeeScheduleController as AdminEmployeeScheduleController;
 use App\Http\Controllers\Api\Admin\ReservationController as AdminReservationController;
+use App\Http\Controllers\Api\Admin\ServiceCategoryController as AdminServiceCategoryController;
 use App\Http\Controllers\Api\Admin\ServiceController as AdminServiceController;
 use App\Http\Controllers\Api\Admin\SpaProfileController;
 use App\Http\Controllers\Api\Admin\SpaScheduleController as AdminSpaScheduleController;
 use App\Http\Controllers\Api\Auth\AuthController;
+use App\Http\Controllers\Api\Employee\ClientController as EmployeeClientController;
+use App\Http\Controllers\Api\Employee\EmployeeBlockController as EmployeeEmployeeBlockController;
+use App\Http\Controllers\Api\Employee\ReservationController as EmployeeReservationController;
 use App\Http\Controllers\Api\WebMaster\ClientController;
 use App\Http\Controllers\Api\WebMaster\EmployeeBlockController;
 use App\Http\Controllers\Api\WebMaster\EmployeeController;
@@ -55,6 +59,16 @@ Route::middleware(['auth:sanctum', 'role:Admin'])
         Route::apiResource('spa-schedules', AdminSpaScheduleController::class);
         Route::apiResource('employee-schedules', AdminEmployeeScheduleController::class);
         Route::apiResource('employee-blocks', AdminEmployeeBlockController::class);
+        Route::apiResource('service-categories', AdminServiceCategoryController::class);
+
 
     });
 
+Route::middleware(['auth:sanctum', 'role:employee'])
+    ->prefix('employee')
+    ->group(function () {
+        Route::apiResource('reservations', EmployeeReservationController::class);
+        Route::apiResource('clients', EmployeeClientController::class)->except(['destroy']);
+        Route::apiResource('employee-blocks', EmployeeEmployeeBlockController::class);
+
+    });
