@@ -1,5 +1,12 @@
 <?php
 
+use App\Http\Controllers\Api\Admin\EmployeeBlockController as AdminEmployeeBlockController;
+use App\Http\Controllers\Api\Admin\EmployeeController as AdminEmployeeController;
+use App\Http\Controllers\Api\Admin\EmployeeScheduleController as AdminEmployeeScheduleController;
+use App\Http\Controllers\Api\Admin\ReservationController as AdminReservationController;
+use App\Http\Controllers\Api\Admin\ServiceController as AdminServiceController;
+use App\Http\Controllers\Api\Admin\SpaProfileController;
+use App\Http\Controllers\Api\Admin\SpaScheduleController as AdminSpaScheduleController;
 use App\Http\Controllers\Api\Auth\AuthController;
 use App\Http\Controllers\Api\WebMaster\ClientController;
 use App\Http\Controllers\Api\WebMaster\EmployeeBlockController;
@@ -41,6 +48,13 @@ Route::middleware(['auth:sanctum', 'role:WebMaster'])
 Route::middleware(['auth:sanctum', 'role:Admin'])
     ->prefix('admin')
     ->group(function () {
-        
+        Route::apiResource('spa-profile', SpaProfileController::class);
+        Route::apiResource('reservations', AdminReservationController::class);
+        Route::apiResource('services', AdminServiceController::class);
+        Route::apiResource('employees', AdminEmployeeController::class);
+        Route::apiResource('spa-schedules', AdminSpaScheduleController::class);
+        Route::apiResource('employee-schedules', AdminEmployeeScheduleController::class);
+        Route::apiResource('employee-blocks', AdminEmployeeBlockController::class);
+
     });
 
