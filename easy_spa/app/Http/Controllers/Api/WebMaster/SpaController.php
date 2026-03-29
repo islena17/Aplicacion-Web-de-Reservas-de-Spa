@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\SpaRequest;
 use App\Models\Spa;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Auth;
 
 class SpaController extends Controller
 {
@@ -26,7 +27,7 @@ class SpaController extends Controller
     {
         $data = $request->validated();
 
-        $data['user_id'] = auth()->id();
+        $data['user_id'] = Auth::id();
 
         if (empty($data['slug'])) {
             $data['slug'] = Str::slug($data['name']);

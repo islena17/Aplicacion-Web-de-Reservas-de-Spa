@@ -1,10 +1,15 @@
 <?php
 
 use App\Http\Controllers\Api\Auth\AuthController;
+use App\Http\Controllers\Api\WebMaster\ClientController;
+use App\Http\Controllers\Api\WebMaster\EmployeeBlockController;
 use App\Http\Controllers\Api\WebMaster\EmployeeController;
+use App\Http\Controllers\Api\WebMaster\EmployeeScheduleController;
+use App\Http\Controllers\Api\WebMaster\ReservationController;
 use App\Http\Controllers\Api\WebMaster\ServiceCategoryController;
 use App\Http\Controllers\Api\WebMaster\ServiceController;
 use App\Http\Controllers\Api\WebMaster\SpaController;
+use App\Http\Controllers\Api\WebMaster\SpaScheduleController;
 use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Features;
 
@@ -24,7 +29,18 @@ Route::middleware(['auth:sanctum', 'role:WebMaster'])
     ->group(function () {
         Route::apiResource('spas', SpaController::class);
         Route::apiResource('employees', EmployeeController::class);
+        Route::apiResource('employee-schedules', EmployeeScheduleController::class);
+        Route::apiResource('employee-blocks', EmployeeBlockController::class);
         Route::apiResource('services', ServiceController::class);
         Route::apiResource('serviceCategory', ServiceCategoryController::class);
+        Route::apiResource('clients', ClientController::class);
+        Route::apiResource('spa-schedules', SpaScheduleController::class);
+        Route::apiResource('reservations', ReservationController::class);
+    });
+
+Route::middleware(['auth:sanctum', 'role:Admin'])
+    ->prefix('admin')
+    ->group(function () {
+        
     });
 
