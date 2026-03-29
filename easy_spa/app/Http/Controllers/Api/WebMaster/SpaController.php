@@ -3,8 +3,9 @@
 namespace App\Http\Controllers\Api\WebMaster;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\SpaRequest;
 use App\Models\Spa;
-use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class SpaController extends Controller
 {
@@ -13,38 +14,49 @@ class SpaController extends Controller
      */
     public function index()
     {
-        $spa = Spa::paginate(10);
-        return response()->json($spa);
+        $spas = Spa::paginate(10);
+
+        return response()->json($spas);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(SpaRequest $request)
     {
-        $spa = Spa::create($request->input());
-        return response()->json($spa , 201);
+        $data = $request->validated();
+
+        $data['user_id'] = auth()->id();
+
+        if (empty($data['slug'])) {
+            $data['slug'] = Str::slug($data['name']);
+        }
+
+        $spa = Spa::create($data);
+
+        return response()->json($spa, 201);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Spa $spa)
     {
-        $spa = Spa::findOrFail($id);
-
         return response()->json($spa);
     }
-
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(SpaRequest $request, Spa $spa)
     {
-        $spa = Spa::findOrFail($id);
+        $data = $request->validated();
 
-        $spa->update($request->input());
+        if (empty($data['slug']) && isset($data['name'])) {
+            $data['slug'] = Str::slug($data['name']);
+        }
+
+        $spa->update($data);
 
         return response()->json($spa);
     }
@@ -52,10 +64,8 @@ class SpaController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Spa $spa)
     {
-        $spa = Spa::findOrFail($id);
-
         $spa->delete();
 
         return response()->json(null, 204);

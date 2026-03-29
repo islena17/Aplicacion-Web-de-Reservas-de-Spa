@@ -1,6 +1,9 @@
 <?php
 
 use App\Http\Controllers\Api\Auth\AuthController;
+use App\Http\Controllers\Api\WebMaster\EmployeeController;
+use App\Http\Controllers\Api\WebMaster\ServiceCategoryController;
+use App\Http\Controllers\Api\WebMaster\ServiceController;
 use App\Http\Controllers\Api\WebMaster\SpaController;
 use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Features;
@@ -20,5 +23,8 @@ Route::middleware(['auth:sanctum', 'role:WebMaster'])
     ->prefix('webmaster')
     ->group(function () {
         Route::apiResource('spas', SpaController::class);
+        Route::apiResource('employees', EmployeeController::class);
+        Route::apiResource('services', ServiceController::class);
+        Route::apiResource('serviceCategory', ServiceCategoryController::class);
     });
 

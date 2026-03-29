@@ -28,9 +28,9 @@ class Spa extends Model
     }
 
     public function owner()
-{
-    return $this->belongsTo(User::class, 'user_id');
-}
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
 
     public function services()
     {
@@ -49,5 +49,10 @@ class Spa extends Model
     public function reservations()
     {
         return $this->hasMany(Reservation::class, 'spa_id');
+    }
+
+    public function getRouteKeyName()
+    {
+        return 'slug';
     }
 }

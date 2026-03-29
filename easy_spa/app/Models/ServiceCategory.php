@@ -15,12 +15,18 @@ class ServiceCategory extends Model
         'order'
     ];
 
-        public function services()
+    public function services()
     {
         return $this->hasMany(Service::class);
     }
 
-    public function spa(){
+    public function spa()
+    {
         return $this->belongsTo(Spa::class, 'spa_id');
+    }
+
+    public function getRouteKeyName()
+    {
+        return 'slug';
     }
 }

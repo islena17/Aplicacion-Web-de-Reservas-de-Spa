@@ -40,4 +40,9 @@ class Service extends Model
     {
         return $this->hasMany(Reservation::class, 'service_id');
     }
+
+        public function getRouteKeyName()
+    {
+        return 'slug';
+    }
 }
