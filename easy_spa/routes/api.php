@@ -9,6 +9,8 @@ use App\Http\Controllers\Api\Admin\ServiceController as AdminServiceController;
 use App\Http\Controllers\Api\Admin\SpaProfileController;
 use App\Http\Controllers\Api\Admin\SpaScheduleController as AdminSpaScheduleController;
 use App\Http\Controllers\Api\Auth\AuthController;
+use App\Http\Controllers\Api\Client\ProfileController;
+use App\Http\Controllers\Api\Client\SpaController as ClientSpaController;
 use App\Http\Controllers\Api\Employee\ClientController as EmployeeClientController;
 use App\Http\Controllers\Api\Employee\EmployeeBlockController as EmployeeEmployeeBlockController;
 use App\Http\Controllers\Api\Employee\ReservationController as EmployeeReservationController;
@@ -25,14 +27,14 @@ use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Features;
 
 
-Route::middleware('auth:sanctum')->prefix('auth')->group(function() {
-Route::get('/user', [AuthController::class, 'user']);
-Route::post('/logout', [AuthController::class, 'logout']);
-Route::post('/logout-all', [AuthController::class, 'logoutAll']);
+Route::middleware('auth:sanctum')->prefix('auth')->group(function () {
+    Route::get('/user', [AuthController::class, 'user']);
+    Route::post('/logout', [AuthController::class, 'logout']);
+    Route::post('/logout-all', [AuthController::class, 'logoutAll']);
 });
 Route::prefix('auth')->group(function () {
-Route::post('/register', [AuthController::class, 'register']);
-Route::post('/login', [AuthController::class, 'login']);
+    Route::post('/register', [AuthController::class, 'register']);
+    Route::post('/login', [AuthController::class, 'login']);
 });
 
 Route::middleware(['auth:sanctum', 'role:WebMaster'])
@@ -60,8 +62,6 @@ Route::middleware(['auth:sanctum', 'role:Admin'])
         Route::apiResource('employee-schedules', AdminEmployeeScheduleController::class);
         Route::apiResource('employee-blocks', AdminEmployeeBlockController::class);
         Route::apiResource('service-categories', AdminServiceCategoryController::class);
-
-
     });
 
 Route::middleware(['auth:sanctum', 'role:employee'])
@@ -70,5 +70,19 @@ Route::middleware(['auth:sanctum', 'role:employee'])
         Route::apiResource('reservations', EmployeeReservationController::class);
         Route::apiResource('clients', EmployeeClientController::class)->except(['destroy']);
         Route::apiResource('employee-blocks', EmployeeEmployeeBlockController::class);
+    });
 
+Route::middleware(['auth:sanctum', 'role:client'])
+    ->prefix('client')
+    ->group(function () {
+        Route::get('profile', [ProfileController::class, 'show']);
+        Route::put('profile', [ProfileController::class, 'update']);
+
+        Route::get('spas', [ClientSpaController::class, 'index']);
+        Route::get('spas/{spa}', [ClientSpaController::class, 'show']);
+
+        Route::get('services', [ServiceController::class, 'index']);
+        Route::get('services/{service}', [ServiceController::class, 'show']);
+        
+        Route::apiResource('reservations', ReservationController::class);
     });
