@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\Admin\AvailabilityController as AdminAvailabilityController;
 use App\Http\Controllers\Api\Admin\EmployeeBlockController as AdminEmployeeBlockController;
 use App\Http\Controllers\Api\Admin\EmployeeController as AdminEmployeeController;
 use App\Http\Controllers\Api\Admin\EmployeeScheduleController as AdminEmployeeScheduleController;
@@ -8,12 +9,20 @@ use App\Http\Controllers\Api\Admin\ServiceCategoryController as AdminServiceCate
 use App\Http\Controllers\Api\Admin\ServiceController as AdminServiceController;
 use App\Http\Controllers\Api\Admin\SpaProfileController;
 use App\Http\Controllers\Api\Admin\SpaScheduleController as AdminSpaScheduleController;
+
 use App\Http\Controllers\Api\Auth\AuthController;
+
 use App\Http\Controllers\Api\Client\ProfileController;
 use App\Http\Controllers\Api\Client\SpaController as ClientSpaController;
+
 use App\Http\Controllers\Api\Employee\ClientController as EmployeeClientController;
 use App\Http\Controllers\Api\Employee\EmployeeBlockController as EmployeeEmployeeBlockController;
 use App\Http\Controllers\Api\Employee\ReservationController as EmployeeReservationController;
+use App\Http\Controllers\Api\Employee\AvailabilityController as EmployeeAvailabilityController;
+
+use App\Http\Controllers\Api\Public\AvailabilityController as PublicAvailabilityController;
+
+use App\Http\Controllers\Api\WebMaster\AvailabilityController;
 use App\Http\Controllers\Api\WebMaster\ClientController;
 use App\Http\Controllers\Api\WebMaster\EmployeeBlockController;
 use App\Http\Controllers\Api\WebMaster\EmployeeController;
@@ -23,6 +32,9 @@ use App\Http\Controllers\Api\WebMaster\ServiceCategoryController;
 use App\Http\Controllers\Api\WebMaster\ServiceController;
 use App\Http\Controllers\Api\WebMaster\SpaController;
 use App\Http\Controllers\Api\WebMaster\SpaScheduleController;
+
+use App\Http\Controllers\Api\Client\AvailabilityController as ClientAvailabilityController;
+use App\Http\Controllers\Api\Public\SpaController as PublicSpaController;
 use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Features;
 
@@ -49,6 +61,8 @@ Route::middleware(['auth:sanctum', 'role:WebMaster'])
         Route::apiResource('clients', ClientController::class);
         Route::apiResource('spa-schedules', SpaScheduleController::class);
         Route::apiResource('reservations', ReservationController::class);
+
+         Route::get('availability', [AvailabilityController::class, 'index']);
     });
 
 Route::middleware(['auth:sanctum', 'role:Admin'])
@@ -62,6 +76,7 @@ Route::middleware(['auth:sanctum', 'role:Admin'])
         Route::apiResource('employee-schedules', AdminEmployeeScheduleController::class);
         Route::apiResource('employee-blocks', AdminEmployeeBlockController::class);
         Route::apiResource('service-categories', AdminServiceCategoryController::class);
+        Route::get('availability', [AdminAvailabilityController::class, 'index']);
     });
 
 Route::middleware(['auth:sanctum', 'role:employee'])
@@ -70,6 +85,7 @@ Route::middleware(['auth:sanctum', 'role:employee'])
         Route::apiResource('reservations', EmployeeReservationController::class);
         Route::apiResource('clients', EmployeeClientController::class)->except(['destroy']);
         Route::apiResource('employee-blocks', EmployeeEmployeeBlockController::class);
+        Route::get('availability', [EmployeeAvailabilityController::class, 'index']);
     });
 
 Route::middleware(['auth:sanctum', 'role:client'])
@@ -85,4 +101,15 @@ Route::middleware(['auth:sanctum', 'role:client'])
         Route::get('services/{service}', [ServiceController::class, 'show']);
         
         Route::apiResource('reservations', ReservationController::class);
+
+        Route::get('availability', [ClientAvailabilityController::class, 'index']);
+
     });
+
+
+    /*aqui pongo las publicas*/ 
+Route::prefix('public')->group(function () {
+    Route::get('availability', [PublicAvailabilityController::class, 'index']);
+    Route::get('spas', [PublicSpaController::class, 'index']);
+    Route::get('spas/{spa}', [PublicSpaController::class, 'show']);
+});
