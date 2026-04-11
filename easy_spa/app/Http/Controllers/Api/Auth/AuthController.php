@@ -29,27 +29,25 @@ class AuthController extends Controller
         ], 201);
     }
 
+
     public function login(LoginRequest $request)
     {
         $credenciales = [
             'email' => $request->email,
-            'password' => $request->password
+            'password' => $request->password,
         ];
 
-        if (!Auth::attempt($credenciales)) {
+        if (!Auth::attempt($credenciales, $request->boolean('remember'))) {
             return response()->json([
                 'message' => 'Credenciales incorrectas'
             ], 401);
         }
 
-        $user = Auth::user();
-
-        $token = $user->createToken('api-token')->plainTextToken;
+        $request->session()->regenerate();
 
         return response()->json([
             'message' => 'Login correcto',
-            'token' => $token,
-            'user' => $user,
+            'user' => Auth::user(),
         ]);
     }
 

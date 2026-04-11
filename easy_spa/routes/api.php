@@ -35,6 +35,7 @@ use App\Http\Controllers\Api\WebMaster\SpaScheduleController;
 
 use App\Http\Controllers\Api\Client\AvailabilityController as ClientAvailabilityController;
 use App\Http\Controllers\Api\Public\SpaController as PublicSpaController;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Features;
 
@@ -112,4 +113,8 @@ Route::prefix('public')->group(function () {
     Route::get('availability', [PublicAvailabilityController::class, 'index']);
     Route::get('spas', [PublicSpaController::class, 'index']);
     Route::get('spas/{spa}', [PublicSpaController::class, 'show']);
+});
+
+Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+    return $request->user()->load('role');
 });

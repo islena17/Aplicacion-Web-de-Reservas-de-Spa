@@ -1,19 +1,16 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+import Login from './pages/Auth/Login';
+import DashboardHome from './pages/WebMaster/DashboardHome';
 
-function Login() {
-    return <h1>Login</h1>;
-}
-
-function Dashboard() {
-    return <h1>Dashboard</h1>;
-}
 
 export default function MainApp() {
     return (
         <BrowserRouter>
             <Routes>
                 <Route path="/" element={<Login />} />
-                <Route path="/dashboard" element={<Dashboard />} />
+                <Route path="/dashboard" element={<DashboardHome/>} />
             </Routes>
         </BrowserRouter>
     );
