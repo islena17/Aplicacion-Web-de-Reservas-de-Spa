@@ -41,8 +41,17 @@ class SpaController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Spa $spa)
+    public function show(string $slug)
     {
+        $spa = Spa::where('slug', $slug)
+            ->with([
+                'services.category',
+                'reservations.client',
+                'reservations.service',
+                'reservations.employee',
+            ])
+            ->firstOrFail();
+
         return response()->json($spa);
     }
 
