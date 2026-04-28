@@ -328,7 +328,6 @@ export default function CreateReservation() {
                   >
                     Cancelar
                   </button>
-
                   <button
                     type="submit"
                     className="btn"

@@ -42,23 +42,35 @@ const initialForm: ReservationForm = {
     final_price: '',
     observations: '',
 };
+type Service = {
+    id: number;
+    name: string;
+    spa_id?: number;
+    length_minutes: number;
+    price: string;
+};
 
 const getList = (response: any) => {
     return response.data.data?.data ?? response.data.data ?? response.data ?? [];
 };
 
-export function useReservationForm(spaSlug?: string) {
-    const navigate = useNavigate();
 
+
+export function useReservationForm(spaSlug?: string) {
+
+    //constantes del formulario de reserva de spa
+
+    const navigate = useNavigate();
     const [spaId, setSpaId] = useState<number | null>(null);
     const [form, setForm] = useState<ReservationForm>(initialForm);
     const [clients, setClients] = useState<Option[]>([]);
-    const [services, setServices] = useState<Option[]>([]);
+    const [services, setServices] = useState<Service[]>([]);
     const [employees, setEmployees] = useState<Option[]>([]);
     const [errors, setErrors] = useState<ReservationErrors>({});
     const [loading, setLoading] = useState(false);
     const [loadingOptions, setLoadingOptions] = useState(true);
     const [showClientForm, setShowClientForm] = useState(false);
+
 
     const [clientForm, setClientForm] = useState<ClientForm>({
         name: '',
@@ -66,6 +78,19 @@ export function useReservationForm(spaSlug?: string) {
         email: '',
         telephone: '',
     });
+
+    //esta constante es para calcular la hora fin de los servicios 
+    const calculateEndTime = (startTime: string, minutes: number) => {
+        if (!startTime || !minutes) return '';
+
+        const [hours, mins] = startTime.split(':').map(Number);
+
+        const date = new Date();
+        date.setHours(hours);
+        date.setMinutes(mins + minutes);
+
+        return date.toTimeString().slice(0, 5);
+    };
 
     useEffect(() => {
         if (!spaSlug) {
@@ -92,11 +117,15 @@ export function useReservationForm(spaSlug?: string) {
                 setClients(getList(clientsRes));
 
                 setServices(
-                    getList(servicesRes).map((s: any) => ({
-                        id: s.id,
-                        name: s.name,
-                        spa_id: s.spa_id,
-                    }))
+                    getList(servicesRes)
+                        .filter((service: any) => service.spa_id === currentSpaId)
+                        .map((s: any) => ({
+                            id: s.id,
+                            name: s.name,
+                            spa_id: s.spa_id,
+                            length_minutes: Number(s.length_minutes),
+                            price: String(s.price),
+                        }))
                 );
 
                 setEmployees(
@@ -124,18 +153,56 @@ export function useReservationForm(spaSlug?: string) {
     const handleChange = (
         e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
     ) => {
-        const { name, value } = e.currentTarget;
+        const { name, value } = e.target;
 
-        setForm((prev) => ({
-            ...prev,
-            [name]: value,
-        }));
+        setForm((prev) => {
+            let updatedForm = {
+                ...prev,
+                [name]: value,
+            };
+
+            // Cuando selecciona servicio
+            if (name === 'service_id') {
+                const selectedService = services.find(
+                    (service) => service.id === Number(value)
+                );
+
+                if (selectedService) {
+                    updatedForm.final_price = selectedService.price;
+
+                    if (prev.start_time) {
+                        updatedForm.end_time = calculateEndTime(
+                            prev.start_time,
+                            selectedService.length_minutes
+                        );
+                    }
+                }
+            }
+
+            // Cuando cambia la hora de inicio
+            if (name === 'start_time') {
+                const selectedService = services.find(
+                    (service) => service.id === Number(prev.service_id)
+                );
+
+                if (selectedService) {
+                    updatedForm.end_time = calculateEndTime(
+                        value,
+                        selectedService.length_minutes
+                    );
+
+                    updatedForm.final_price = selectedService.price;
+                }
+            }
+
+            return updatedForm;
+        });
     };
 
     const handleClientChange = (
         e: React.ChangeEvent<HTMLInputElement>
     ) => {
-        const { name, value } = e.currentTarget;
+        const { name, value } = e.target;
 
         setClientForm((prev) => ({
             ...prev,
@@ -156,8 +223,22 @@ export function useReservationForm(spaSlug?: string) {
         setErrors({});
 
         try {
+            let clientId = form.client_id;
+
+            if (showClientForm) {
+                const clientRes = await api.post('/api/webmaster/clients', {
+                    name: clientForm.name,
+                    surname: clientForm.surname,
+                    email: clientForm.email || null,
+                    telephone: clientForm.telephone || null,
+                });
+
+                const newClient = clientRes.data.data ?? clientRes.data;
+                clientId = String(newClient.id);
+            }
+
             await api.post('/api/webmaster/reservations', {
-                client_id: form.client_id,
+                client_id: clientId,
                 spa_id: spaId,
                 service_id: form.service_id,
                 employee_id: form.employee_id || null,
@@ -171,10 +252,13 @@ export function useReservationForm(spaSlug?: string) {
 
             navigate(`/dashboard/spas/${spaSlug}`);
         } catch (error: any) {
-            console.error(error);
+            console.log('STATUS:', error.response?.status);
+            console.log('ERRORES:', error.response?.data);
 
             if (error.response?.status === 422) {
-                setErrors(error.response.data.errors || {});
+                setErrors(error.response.data.errors || {
+                    general: error.response.data.message,
+                });
             } else {
                 setErrors({
                     general: 'Ha ocurrido un error al crear la reserva.',
