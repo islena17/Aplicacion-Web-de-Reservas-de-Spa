@@ -32,6 +32,14 @@ class ReservationRequest extends FormRequest
 
             'final_price' => 'required|numeric|min:0|max:999999.99',
             'observations' => 'nullable|string',
+
+            'client_id' => ['nullable', 'exists:clients,id'],
+
+            'client' => ['nullable', 'array'],
+            'client.name' => ['required_without:client_id', 'string', 'max:255'],
+            'client.surname' => ['required_without:client_id', 'string', 'max:255'],
+            'client.email' => ['nullable', 'email', 'max:255'],
+            'client.telephone' => ['nullable', 'string', 'max:255'],
         ];
     }
 

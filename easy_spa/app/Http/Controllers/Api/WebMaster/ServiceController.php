@@ -13,7 +13,7 @@ class ServiceController extends Controller
      */
     public function index()
     {
-        $services = Service::with(['spa', 'serviceCategory'])
+        $services = Service::with(['spa', 'category'])
             ->latest()
             ->paginate(10);
 

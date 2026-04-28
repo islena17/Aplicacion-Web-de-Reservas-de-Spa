@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Api\WebMaster;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ReservationRequest;
+use App\Models\Client;
 use App\Models\Reservation;
+use Illuminate\Support\Facades\DB;
 
 class ReservationController extends Controller
 {
@@ -19,8 +21,8 @@ class ReservationController extends Controller
             'service',
             'employee'
         ])
-        ->latest()
-        ->paginate(10);
+            ->latest()
+            ->paginate(10);
 
         return response()->json($reservations);
     }
@@ -30,7 +32,24 @@ class ReservationController extends Controller
      */
     public function store(ReservationRequest $request)
     {
-        $reservation = Reservation::create($request->validated());
+        $reservation = DB::transaction(function () use ($request) {
+            $data = $request->validated();
+
+            if (empty($data['client_id']) && isset($data['client'])) {
+                $client = Client::create([
+                    'name' => $data['client']['name'],
+                    'surname' => $data['client']['surname'],
+                    'email' => $data['client']['email'] ?? null,
+                    'telephone' => $data['client']['telephone'] ?? null,
+                ]);
+
+                $data['client_id'] = $client->id;
+            }
+
+            unset($data['client']);
+
+            return Reservation::create($data);
+        });
 
         return response()->json([
             'message' => 'Reserva creada correctamente',
@@ -38,11 +57,10 @@ class ReservationController extends Controller
                 'client',
                 'spa',
                 'service',
-                'employee'
-            ])
+                'employee',
+            ]),
         ], 201);
     }
-
     /**
      * Display the specified resource.
      */

@@ -2,8 +2,10 @@
 
 namespace Database\Seeders;
 
+use App\Models\ServiceCategory;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Str;
 
 class ServiceCategorySeeder extends Seeder
 {
@@ -12,6 +14,13 @@ class ServiceCategorySeeder extends Seeder
      */
     public function run(): void
     {
-        //
+         ServiceCategory::create([
+            'spa_id' => 1, // debe existir
+            'name' => 'Masajes',
+            'slug' => Str::slug('Masajes'),
+            'description' => 'Servicios de masajes relajantes y terapéuticos',
+            'is_active' => true,
+            'order' => 1,
+        ]);
     }
 }

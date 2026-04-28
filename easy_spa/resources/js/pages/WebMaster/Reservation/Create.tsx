@@ -17,6 +17,10 @@ export default function CreateReservation() {
     handleChange,
     createReservation,
     fieldError,
+    showClientForm,
+    setShowClientForm,
+    clientForm,
+    handleClientChange,
   } = useReservationForm(slug);
 
   if (loadingOptions) {
@@ -83,28 +87,107 @@ export default function CreateReservation() {
 
               <form onSubmit={createReservation}>
                 <div className="row g-4">
-                  <div className="col-12 col-md-6">
-                    <label className="form-label fw-semibold">Cliente *</label>
-                    <select
-                      name="client_id"
-                      className={`form-select ${errors.client_id ? 'is-invalid' : ''}`}
-                      value={form.client_id}
-                      onChange={handleChange}
-                    >
-                      <option value="">Selecciona un cliente</option>
-                      {clients.map((client) => (
-                        <option key={client.id} value={client.id}>
-                          {client.name}
-                        </option>
-                      ))}
-                    </select>
-                    {errors.client_id && (
-                      <div className="invalid-feedback">
-                        {fieldError(errors.client_id)}
+                  {/* CLIENTE */}
+                  <div className="col-12">
+                    <div className="d-flex justify-content-between align-items-center mb-2">
+                      <label className="form-label fw-semibold mb-0">Cliente *</label>
+
+                      <button
+                        type="button"
+                        className="btn btn-sm"
+                        onClick={() => setShowClientForm(!showClientForm)}
+                        style={{
+                          backgroundColor: '#F2E6D0',
+                          color: '#7a6440',
+                          borderRadius: '10px',
+                          fontWeight: 600,
+                        }}
+                      >
+                        {showClientForm ? 'Elegir cliente existente' : 'Crear nuevo cliente'}
+                      </button>
+                    </div>
+
+                    {!showClientForm ? (
+                      <>
+                        <select
+                          name="client_id"
+                          className={`form-select ${errors.client_id ? 'is-invalid' : ''}`}
+                          value={form.client_id}
+                          onChange={handleChange}
+                        >
+                          <option value="">Selecciona un cliente</option>
+                          {clients.map((client) => (
+                            <option key={client.id} value={client.id}>
+                              {client.name}
+                            </option>
+                          ))}
+                        </select>
+
+                        {errors.client_id && (
+                          <div className="invalid-feedback d-block">
+                            {fieldError(errors.client_id)}
+                          </div>
+                        )}
+                      </>
+                    ) : (
+                      <div
+                        className="p-3"
+                        style={{
+                          backgroundColor: '#F7F7F7',
+                          borderRadius: '12px',
+                          border: '1px solid #eee',
+                        }}
+                      >
+                        <div className="row g-3">
+                          <div className="col-12 col-md-6">
+                            <label className="form-label fw-semibold">Nombre *</label>
+                            <input
+                              type="text"
+                              name="name"
+                              className="form-control"
+                              value={clientForm.name}
+                              onChange={handleClientChange}
+                            />
+                          </div>
+
+                          <div className="col-12 col-md-6">
+                            <label className="form-label fw-semibold">Apellido *</label>
+                            <input
+                              type="text"
+                              name="surname"
+                              className="form-control"
+                              value={clientForm.surname}
+                              onChange={handleClientChange}
+                            />
+                          </div>
+
+                          <div className="col-12 col-md-6">
+                            <label className="form-label fw-semibold">Email</label>
+                            <input
+                              type="email"
+                              name="email"
+                              className="form-control"
+                              value={clientForm.email}
+                              onChange={handleClientChange}
+                            />
+                          </div>
+
+                          <div className="col-12 col-md-6">
+                            <label className="form-label fw-semibold">Teléfono</label>
+                            <input
+                              type="text"
+                              name="telephone"
+                              className="form-control"
+                              value={clientForm.telephone}
+                              onChange={handleClientChange}
+                            />
+                          </div>
+                        </div>
                       </div>
                     )}
                   </div>
 
+                  {/* SERVICIO */}
                   <div className="col-12 col-md-6">
                     <label className="form-label fw-semibold">Servicio *</label>
                     <select
@@ -127,6 +210,7 @@ export default function CreateReservation() {
                     )}
                   </div>
 
+                  {/* EMPLEADO */}
                   <div className="col-12 col-md-6">
                     <label className="form-label fw-semibold">Empleado</label>
                     <select
@@ -149,6 +233,7 @@ export default function CreateReservation() {
                     )}
                   </div>
 
+                  {/* ESTADO */}
                   <div className="col-12 col-md-6">
                     <label className="form-label fw-semibold">Estado</label>
                     <select
@@ -163,13 +248,9 @@ export default function CreateReservation() {
                       <option value="completed">Completada</option>
                       <option value="no_show">No presentado</option>
                     </select>
-                    {errors.status && (
-                      <div className="invalid-feedback">
-                        {fieldError(errors.status)}
-                      </div>
-                    )}
                   </div>
 
+                  {/* FECHA */}
                   <div className="col-12 col-md-4">
                     <label className="form-label fw-semibold">Fecha *</label>
                     <input
@@ -179,13 +260,9 @@ export default function CreateReservation() {
                       value={form.reservation_date}
                       onChange={handleChange}
                     />
-                    {errors.reservation_date && (
-                      <div className="invalid-feedback">
-                        {fieldError(errors.reservation_date)}
-                      </div>
-                    )}
                   </div>
 
+                  {/* HORA INICIO */}
                   <div className="col-12 col-md-4">
                     <label className="form-label fw-semibold">Hora inicio *</label>
                     <input
@@ -195,13 +272,9 @@ export default function CreateReservation() {
                       value={form.start_time}
                       onChange={handleChange}
                     />
-                    {errors.start_time && (
-                      <div className="invalid-feedback">
-                        {fieldError(errors.start_time)}
-                      </div>
-                    )}
                   </div>
 
+                  {/* HORA FIN */}
                   <div className="col-12 col-md-4">
                     <label className="form-label fw-semibold">Hora fin *</label>
                     <input
@@ -211,13 +284,9 @@ export default function CreateReservation() {
                       value={form.end_time}
                       onChange={handleChange}
                     />
-                    {errors.end_time && (
-                      <div className="invalid-feedback">
-                        {fieldError(errors.end_time)}
-                      </div>
-                    )}
                   </div>
 
+                  {/* PRECIO */}
                   <div className="col-12 col-md-6">
                     <label className="form-label fw-semibold">Precio final</label>
                     <input
@@ -229,13 +298,9 @@ export default function CreateReservation() {
                       onChange={handleChange}
                       placeholder="Ej: 49.99"
                     />
-                    {errors.final_price && (
-                      <div className="invalid-feedback">
-                        {fieldError(errors.final_price)}
-                      </div>
-                    )}
                   </div>
 
+                  {/* OBSERVACIONES */}
                   <div className="col-12">
                     <label className="form-label fw-semibold">Observaciones</label>
                     <textarea
@@ -245,11 +310,6 @@ export default function CreateReservation() {
                       value={form.observations}
                       onChange={handleChange}
                     />
-                    {errors.observations && (
-                      <div className="invalid-feedback">
-                        {fieldError(errors.observations)}
-                      </div>
-                    )}
                   </div>
                 </div>
 
@@ -289,7 +349,7 @@ export default function CreateReservation() {
             </div>
           </div>
         </div>
-      </div>
-    </DashboardLayout>
+      </div >
+    </DashboardLayout >
   );
 }
