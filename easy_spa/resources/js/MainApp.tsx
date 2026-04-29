@@ -9,6 +9,7 @@ import EditSpa from './pages/WebMaster/spa/edit';
 import ShowSpa from './pages/WebMaster/spa/show';
 import CreateReservation from './pages/WebMaster/Reservation/Create';
 import EditReservation from './pages/WebMaster/Reservation/edit';
+import CreateService from './pages/WebMaster/Services/create';
 
 
 export default function MainApp() {
@@ -29,7 +30,11 @@ export default function MainApp() {
         />
 
         <Route path="/dashboard/spas/:slug" element={<ShowSpa />} />
-         <Route path="/dashboard/spas/:slug/reservations/:reservationId/edit" element={<EditReservation />} />
+        <Route path="/dashboard/spas/:slug/reservations/:reservationId/edit" element={<EditReservation />} />
+        <Route
+          path="/dashboard/spas/:slug/services/create"
+          element={<CreateService />}
+        />
       </Routes>
     </BrowserRouter>
   );
