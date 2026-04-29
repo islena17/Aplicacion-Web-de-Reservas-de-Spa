@@ -12,6 +12,7 @@ export default function ShowSpa() {
     setActiveTab,
     loading,
     error,
+     deleteReservation,
   } = useSpaShow(slug);
 
   if (loading) {
@@ -283,8 +284,7 @@ export default function ShowSpa() {
                               <button
                                 type="button"
                                 className="btn btn-sm btn-outline-danger"
-                                onClick={() =>
-                                  navigate(`/dashboard/reservations/${reservation.id}/delete`)
+                                onClick={() =>deleteReservation(reservation.id)
                                 }
                               >
                                 Eliminar

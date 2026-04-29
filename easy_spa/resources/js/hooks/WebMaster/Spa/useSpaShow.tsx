@@ -62,6 +62,7 @@ export function useSpaShow(slug?: string) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
+  //constante para cargar datos del spa
   const fetchSpa = async () => {
     if (!slug) return;
 
@@ -78,6 +79,33 @@ export function useSpaShow(slug?: string) {
     }
   };
 
+  //constantes para eliminar datos:
+  //reservas
+  const deleteReservation = async (reservationId: number) => {
+    const confirmDelete = window.confirm(
+      '¿Seguro que quieres eliminar esta reserva?'
+    );
+
+    if (!confirmDelete) return;
+
+    try {
+      await api.delete(`/api/webmaster/reservations/${reservationId}`);
+
+      setSpa((prev) => {
+        if (!prev) return prev;
+
+        return {
+          ...prev,
+          reservations: prev.reservations.filter(
+            (reservation) => reservation.id !== reservationId
+          ),
+        };
+      });
+    } catch {
+      setError('No se ha podido eliminar la reserva.');
+    }
+  };
+
   useEffect(() => {
     fetchSpa();
   }, [slug]);
@@ -89,5 +117,6 @@ export function useSpaShow(slug?: string) {
     loading,
     error,
     refetch: fetchSpa,
+    deleteReservation,
   };
 }

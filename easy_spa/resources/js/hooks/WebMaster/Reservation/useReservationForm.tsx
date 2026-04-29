@@ -71,6 +71,7 @@ export function useReservationForm(spaSlug?: string, reservationId?: string) {
     const [loading, setLoading] = useState(false);
     const [loadingOptions, setLoadingOptions] = useState(true);
     const [showClientForm, setShowClientForm] = useState(false);
+  
 
 
     const [clientForm, setClientForm] = useState<ClientForm>({
@@ -236,6 +237,9 @@ export function useReservationForm(spaSlug?: string, reservationId?: string) {
             [name]: value,
         }));
     };
+
+    //constantes de las acciones del formulario 
+    //constante para crear la reserva
     const createReservation = async (e: FormEvent) => {
         e.preventDefault();
 
@@ -296,6 +300,7 @@ export function useReservationForm(spaSlug?: string, reservationId?: string) {
         }
     };
 
+    //constante para actualizar los datos de la reserva
     const updateReservation = async (e: FormEvent) => {
         e.preventDefault();
 
@@ -364,6 +369,8 @@ export function useReservationForm(spaSlug?: string, reservationId?: string) {
             setLoading(false);
         }
     };
+
+
     const fieldError = (field?: string[]) => field?.[0];
 
     return {
