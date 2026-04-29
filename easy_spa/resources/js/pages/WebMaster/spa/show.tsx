@@ -268,7 +268,7 @@ export default function ShowSpa() {
                                 type="button"
                                 className="btn btn-sm me-2"
                                 onClick={() =>
-                                  navigate(`/dashboard/reservations/${reservation.id}/edit`)
+                                  navigate(`/dashboard/spas/${spa.slug}/reservations/${reservation.id}/edit`)
                                 }
                                 style={{
                                   backgroundColor: '#F2E6D0',
@@ -374,9 +374,8 @@ export default function ShowSpa() {
 
                             <td className="px-4 py-3">
                               <span
-                                className={`badge ${
-                                  service.is_active ? 'bg-success' : 'bg-secondary'
-                                }`}
+                                className={`badge ${service.is_active ? 'bg-success' : 'bg-secondary'
+                                  }`}
                               >
                                 {service.is_active ? 'Activo' : 'Inactivo'}
                               </span>

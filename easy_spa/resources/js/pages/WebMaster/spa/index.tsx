@@ -120,6 +120,22 @@ export default function Index() {
                             >
                               Editar
                             </button>
+                           <button
+                              type="button"
+                              className="btn btn-sm ms-2"
+                              onClick={() =>
+                                navigate(`/dashboard/spas/${spa.slug}`)
+                              }
+                              style={{
+                                backgroundColor: '#F2E6D0',
+                                color: '#7a6440',
+                                borderRadius: '10px',
+                                padding: '8px 14px',
+                                fontWeight: 600,
+                              }}
+                            >
+                              Ver
+                            </button>
                           </td>
                         </tr>
                       ))}

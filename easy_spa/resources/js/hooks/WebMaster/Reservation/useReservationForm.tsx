@@ -6,6 +6,7 @@ type Option = {
     id: number;
     name: string;
     spa_id?: number;
+    reservation_id?: number;
 };
 
 type ReservationForm = {
@@ -56,7 +57,7 @@ const getList = (response: any) => {
 
 
 
-export function useReservationForm(spaSlug?: string) {
+export function useReservationForm(spaSlug?: string, reservationId?: string) {
 
     //constantes del formulario de reserva de spa
 
@@ -102,12 +103,13 @@ export function useReservationForm(spaSlug?: string) {
             try {
                 setLoadingOptions(true);
 
-                const [spaRes, clientsRes, servicesRes, employeesRes] = await Promise.all([
-                    api.get(`/api/webmaster/spas/${spaSlug}`),
-                    api.get('/api/webmaster/clients'),
-                    api.get('/api/webmaster/services'),
-                    api.get('/api/webmaster/employees'),
-                ]);
+                const [spaRes, clientsRes, servicesRes, employeesRes] =
+                    await Promise.all([
+                        api.get(`/api/webmaster/spas/${spaSlug}`),
+                        api.get('/api/webmaster/clients'),
+                        api.get('/api/webmaster/services'),
+                        api.get('/api/webmaster/employees'),
+                    ]);
 
                 const spa = spaRes.data.data ?? spaRes.data;
                 const currentSpaId = spa.id;
@@ -137,6 +139,32 @@ export function useReservationForm(spaSlug?: string) {
                             spa_id: employee.spa_id,
                         }))
                 );
+
+                // 👉 Cargar reserva SOLO si estamos en edit
+                if (reservationId) {
+                    const reservationRes = await api.get(
+                        `/api/webmaster/reservations/${reservationId}`
+                    );
+
+                    const reservation =
+                        reservationRes.data.data ?? reservationRes.data;
+
+                    setForm({
+                        client_id: String(reservation.client_id ?? ''),
+                        service_id: String(reservation.service_id ?? ''),
+                        employee_id: reservation.employee_id
+                            ? String(reservation.employee_id)
+                            : '',
+                        reservation_date: reservation.reservation_date ?? '',
+                        start_time: reservation.start_time?.slice(0, 5) ?? '',
+                        end_time: reservation.end_time?.slice(0, 5) ?? '',
+                        status: reservation.status ?? 'pending',
+                        final_price: reservation.final_price
+                            ? String(reservation.final_price)
+                            : '',
+                        observations: reservation.observations ?? '',
+                    });
+                }
             } catch (error) {
                 console.error(error);
                 setErrors({
@@ -146,7 +174,6 @@ export function useReservationForm(spaSlug?: string) {
                 setLoadingOptions(false);
             }
         };
-
         fetchOptions();
     }, [spaSlug]);
 
@@ -269,6 +296,74 @@ export function useReservationForm(spaSlug?: string) {
         }
     };
 
+    const updateReservation = async (e: FormEvent) => {
+        e.preventDefault();
+
+        if (!spaId) {
+            setErrors({
+                general: 'No se ha podido identificar el spa.',
+            });
+            return;
+        }
+
+        if (!reservationId) {
+            setErrors({
+                general: 'No se ha podido identificar la reserva.',
+            });
+            return;
+        }
+
+        setLoading(true);
+        setErrors({});
+
+        try {
+            let clientId = form.client_id;
+
+            if (showClientForm) {
+                const clientRes = await api.post('/api/webmaster/clients', {
+                    name: clientForm.name,
+                    surname: clientForm.surname,
+                    email: clientForm.email || null,
+                    telephone: clientForm.telephone || null,
+                });
+
+                const newClient = clientRes.data.data ?? clientRes.data;
+                clientId = String(newClient.id);
+            }
+
+            await api.put(`/api/webmaster/reservations/${reservationId}`, {
+                client_id: clientId,
+                spa_id: spaId,
+                service_id: form.service_id,
+                employee_id: form.employee_id || null,
+                reservation_date: form.reservation_date,
+                start_time: form.start_time,
+                end_time: form.end_time,
+                status: form.status,
+                final_price: form.final_price || null,
+                observations: form.observations,
+            });
+
+            navigate(`/dashboard/spas/${spaSlug}`);
+        } catch (error: any) {
+            console.log('STATUS:', error.response?.status);
+            console.log('ERRORES:', error.response?.data);
+
+            if (error.response?.status === 422) {
+                setErrors(
+                    error.response.data.errors || {
+                        general: error.response.data.message,
+                    }
+                );
+            } else {
+                setErrors({
+                    general: 'Ha ocurrido un error al actualizar la reserva.',
+                });
+            }
+        } finally {
+            setLoading(false);
+        }
+    };
     const fieldError = (field?: string[]) => field?.[0];
 
     return {
@@ -281,6 +376,7 @@ export function useReservationForm(spaSlug?: string) {
         loadingOptions,
         handleChange,
         createReservation,
+        updateReservation,
         fieldError,
         showClientForm,
         setShowClientForm,
