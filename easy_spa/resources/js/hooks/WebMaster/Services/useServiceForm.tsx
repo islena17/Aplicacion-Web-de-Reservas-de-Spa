@@ -176,7 +176,7 @@ export function useServiceForm(spaSlug?: string, serviceSlug?: string) {
         is_active: form.is_active,
       });
 
-      navigate(`/dashboard/spas/${spaSlug}`);
+      navigate(`/dashboard/spas/${spaSlug}?tab=servicios`);
     } catch (error: any) {
       console.log('STATUS:', error.response?.status);
       console.log('ERRORES:', error.response?.data);
@@ -239,7 +239,7 @@ export function useServiceForm(spaSlug?: string, serviceSlug?: string) {
         is_active: form.is_active,
       });
 
-      navigate(`/dashboard/spas/${spaSlug}`);
+      navigate(`/dashboard/spas/${spaSlug}?tab=servicios`);
     } catch (error: any) {
       console.log('STATUS:', error.response?.status);
       console.log('ERRORES:', error.response?.data);

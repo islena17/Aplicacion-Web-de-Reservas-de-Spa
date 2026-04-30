@@ -41,72 +41,58 @@ export function useEmployeeForm(spaSlug?: string, employeeId?: string) {
 
   const [spaId, setSpaId] = useState<number | null>(null);
   const [form, setForm] = useState<EmployeeForm>(initialForm);
-  const [categories, setCategories] = useState<Option[]>([]);
   const [errors, setErrors] = useState<EmployeeErrors>({});
   const [loading, setLoading] = useState(false);
   const [loadingOptions, setLoadingOptions] = useState(true);
 
-  useEffect(() => {
-    if (!spaSlug) {
-      setLoadingOptions(false);
-      return;
-    }
+useEffect(() => {
+  if (!spaSlug) {
+    setLoadingOptions(false);
+    return;
+  }
 
-    const fetchOptions = async () => {
-      try {
-        setLoadingOptions(true);
+  const fetchOptions = async () => {
+    try {
+      setLoadingOptions(true);
 
-        const [spaRes, categoriesRes] = await Promise.all([
-          api.get(`/api/webmaster/spas/${spaSlug}`),
-          api.get('/api/webmaster/employees'),
-        ]);
+      const spaRes = await api.get(`/api/webmaster/spas/${spaSlug}`);
 
-        const spa = spaRes.data.data ?? spaRes.data;
-        const currentSpaId = spa.id;
+      const spa = spaRes.data.data ?? spaRes.data;
+      const currentSpaId = spa.id;
 
-        setSpaId(currentSpaId);
+      setSpaId(currentSpaId);
 
-        setForm((prev) => ({
-          ...prev,
-          spa_id: String(currentSpaId),
-        }));
+      setForm((prev) => ({
+        ...prev,
+        spa_id: String(currentSpaId),
+      }));
 
-        setCategories(
-          getList(categoriesRes)
-            .filter((category: any) => Number(category.spa_id) === Number(currentSpaId))
-            .map((category: any) => ({
-              id: category.id,
-              name: category.name,
-              spa_id: category.spa_id,
-            }))
-        );
+      if (employeeId) {
+        const employeeRes = await api.get(`/api/webmaster/employees/${employeeId}`);
+        const employee = employeeRes.data.data ?? employeeRes.data;
 
-        if (employeeId) {
-          const employeeRes = await api.get(`/api/webmaster/employees/${employeeId}`);
-          const employee = employeeRes.data.data ?? employeeRes.data;
-
-          setForm({
-            spa_id: String(employee.spa_id ?? currentSpaId),
-            name: employee.name ?? '',
-            surname: employee.surname ?? '',
-            gender: employee.gender ?? '',
-            email: employee.email ?? '',
-            telephone: employee.telephone ?? '',
-            is_active: Boolean(employee.is_active),
-          });
-        }
-      } catch (error) {
-        console.error(error);
-        setErrors({
-          general: 'No se han podido cargar los datos necesarios.',
+        setForm({
+          spa_id: String(employee.spa_id ?? currentSpaId),
+          name: employee.name ?? '',
+          surname: employee.surname ?? '',
+          gender: employee.gender ?? '',
+          email: employee.email ?? '',
+          telephone: employee.telephone ?? '',
+          is_active: Boolean(employee.is_active),
         });
-      } finally {
-        setLoadingOptions(false);
       }
-    };
+    } catch (error) {
+      console.error(error);
+      setErrors({
+        general: 'No se han podido cargar los datos necesarios.',
+      });
+    } finally {
+      setLoadingOptions(false);
+    }
+  };
 
-    fetchOptions();
-  },[spaSlug]);
+  fetchOptions();
+}, [spaSlug, employeeId]);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
@@ -145,7 +131,7 @@ export function useEmployeeForm(spaSlug?: string, employeeId?: string) {
     setErrors({});
 
     try {
-      await api.post('/api/webmaster/employees', {
+      await api.post('/api/webmaster/employees',  {
         spa_id: spaId,
         name: form.name,
         surname: form.surname,
@@ -155,7 +141,7 @@ export function useEmployeeForm(spaSlug?: string, employeeId?: string) {
         is_active: form.is_active,
       });
 
-      navigate(`/dashboard/spas/${spaSlug}`);
+      navigate(`/dashboard/spas/${spaSlug}?tab=empleados`);
     } catch (error: any) {
       console.log('STATUS:', error.response?.status);
       console.log('ERRORES:', error.response?.data);
@@ -201,7 +187,7 @@ export function useEmployeeForm(spaSlug?: string, employeeId?: string) {
         is_active: form.is_active,
       });
 
-      navigate(`/dashboard/spas/${spaSlug}`);
+      navigate(`/dashboard/spas/${spaSlug}?tab=empleados`);
     } catch (error: any) {
       console.log('STATUS:', error.response?.status);
       console.log('ERRORES:', error.response?.data);
