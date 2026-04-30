@@ -16,7 +16,7 @@ class ServiceRequest extends FormRequest
     {
         return [
          
-
+            'spa_id' => ['required', 'exists:spas,id'],
             'service_category_id' => 'required|exists:service_categories,id',
 
             'name' => 'required|string|max:255',

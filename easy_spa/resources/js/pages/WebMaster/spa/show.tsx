@@ -145,6 +145,20 @@ export default function ShowSpa() {
                 >
                   Servicios
                 </button>
+
+                  <button
+                  type="button"
+                  className="btn"
+                  onClick={() => setActiveTab('empleados')}
+                  style={{
+                    backgroundColor: activeTab === 'empleados' ? '#E0C38D' : '#F2E6D0',
+                    color: activeTab === 'empleados' ? '#fff' : '#7a6440',
+                    borderRadius: '12px',
+                    fontWeight: 700,
+                  }}
+                >
+                  Empleados
+                </button>
               </div>
             </div>
           </div>
@@ -403,6 +417,124 @@ export default function ShowSpa() {
                                 className="btn btn-sm btn-outline-danger"
                                 onClick={() =>
                                   navigate(`/dashboard/services/${service.slug}/delete`)
+                                }
+                              >
+                                Eliminar
+                              </button>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+
+          {activeTab === 'empleados' && (
+            <div
+              className="card border-0 shadow-sm"
+              style={{ borderRadius: '20px', overflow: 'hidden' }}
+            >
+              <div className="card-header border-0 py-3 px-4 bg-white d-flex justify-content-between align-items-center">
+                <h5 className="mb-0 fw-bold">Empleados</h5>
+
+                <button
+                  type="button"
+                  className="btn"
+                  onClick={() => navigate(`/dashboard/spas/${spa.slug}/employees/create`)}
+                  style={{
+                    backgroundColor: '#E0C38D',
+                    color: '#fff',
+                    borderRadius: '12px',
+                    fontWeight: 700,
+                    border: 'none',
+                  }}
+                >
+                  Crear Empleado
+                </button>
+              </div>
+
+              <div className="card-body p-0 bg-white">
+                {spa.employees.length === 0 ? (
+                  <div className="p-4 text-muted">
+                    No hay servicios registrados.
+                  </div>
+                ) : (
+                  <div className="table-responsive">
+                    <table className="table align-middle mb-0">
+                      <thead style={{ backgroundColor: '#F7F7F7' }}>
+                        <tr>
+                          <th className="px-4 py-3">Nombre</th>
+                          <th className="px-4 py-3">Apellido</th>
+                          <th className="px-4 py-3">Usuario</th>
+                          <th className="px-4 py-3">Email</th>
+                          <th className="px-4 py-3">Teléfono</th>
+                          <th className="px-4 py-3">Estado</th>
+                          <th className="px-4 py-3 text-end">Acciones</th>
+                        </tr>
+                      </thead>
+
+                      <tbody>
+                        {spa.employees.map((employee) => (
+                          <tr key={employee.id}>
+                            <td className="px-4 py-3 fw-semibold">
+                              {employee.name}
+                              {employee.id && (
+                                <div className="text-muted small">
+                                  {employee.id}
+                                </div>
+                              )}
+                            </td>
+
+                            <td className="px-4 py-3">
+                              {employee.surname}
+                            </td>
+
+                            <td className="px-4 py-3">
+                              {employee.user?.id || '-'}
+                            </td>
+
+                            <td className="px-4 py-3">
+                              {employee.email || '-'}
+                            </td>
+
+                            <td className="px-4 py-3">
+                              {employee.telephone || '-'}
+                            </td>
+
+                            <td className="px-4 py-3">
+                              <span
+                                className={`badge ${employee.is_active ? 'bg-success' : 'bg-secondary'
+                                  }`}
+                              >
+                                {employee.is_active ? 'Activo' : 'Inactivo'}
+                              </span>
+                            </td>
+
+                            <td className="px-4 py-3 text-end">
+                              <button
+                                type="button"
+                                className="btn btn-sm me-2"
+                                onClick={() =>
+                                  navigate(`/dashboard/spas/${slug}/employees/${employee.id}/edit`)
+                                }
+                                style={{
+                                  backgroundColor: '#F2E6D0',
+                                  color: '#7a6440',
+                                  borderRadius: '10px',
+                                  fontWeight: 600,
+                                }}
+                              >
+                                Editar
+                              </button>
+
+                              <button
+                                type="button"
+                                className="btn btn-sm btn-outline-danger"
+                                onClick={() =>
+                                  navigate(`/dashboard/employees/${employee.id}/delete`)
                                 }
                               >
                                 Eliminar

@@ -49,6 +49,7 @@ class SpaController extends Controller
                 'reservations.client',
                 'reservations.service',
                 'reservations.employee',
+                'employees.user',
             ])
             ->firstOrFail();
 

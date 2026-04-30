@@ -29,7 +29,7 @@ class ServiceController extends Controller
 
         return response()->json([
             'message' => 'Servicio creado correctamente',
-            'data' => $service->load(['spa', 'serviceCategory']),
+            'data' => $service->load(['spa', 'category']),
         ], 201);
     }
 
@@ -51,7 +51,7 @@ class ServiceController extends Controller
 
         return response()->json([
             'message' => 'Servicio actualizado correctamente',
-            'data' => $service->load(['spa', 'serviceCategory']),
+            'data' => $service->load(['spa', 'category']),
         ]);
     }
 

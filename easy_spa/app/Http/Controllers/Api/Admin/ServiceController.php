@@ -24,7 +24,7 @@ class ServiceController extends Controller
     {
         $spaId = $this->getAdminSpaId();
 
-        $services = Service::with(['serviceCategory'])
+        $services = Service::with(['category'])
             ->where('spa_id', $spaId)
             ->orderBy('order')
             ->get();
@@ -46,7 +46,7 @@ class ServiceController extends Controller
 
         return response()->json([
             'message' => 'Servicio creado correctamente',
-            'data' => $service->load(['serviceCategory'])
+            'data' => $service->load(['category'])
         ], 201);
     }
 
@@ -62,7 +62,7 @@ class ServiceController extends Controller
         }
 
         return response()->json([
-            'data' => $service->load(['serviceCategory'])
+            'data' => $service->load(['category'])
         ]);
     }
 
