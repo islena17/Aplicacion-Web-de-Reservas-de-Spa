@@ -13,6 +13,7 @@ import CreateService from './pages/WebMaster/Services/create';
 import EditService from './pages/WebMaster/Services/edit';
 import CreateEmployee from './pages/WebMaster/Employees/create';
 import EditEmployee from './pages/WebMaster/Employees/edit';
+import EditClient from './pages/WebMaster/Clients/edit';
 
 
 export default function MainApp() {
@@ -33,11 +34,14 @@ export default function MainApp() {
 
         <Route path="/dashboard/spas/:slug" element={<ShowSpa />} />
         <Route path="/dashboard/spas/:slug/reservations/:reservationId/edit" element={<EditReservation />} />
-        <Route path="/dashboard/spas/:slug/services/create" element={<CreateService />}/>
+        <Route path="/dashboard/spas/:slug/services/create" element={<CreateService />} />
         <Route path="/dashboard/spas/:slug/services/:serviceSlug/edit" element={<EditService />} />
 
-        <Route path="/dashboard/spas/:slug/employees/create" element={<CreateEmployee />}/>
-        <Route path="/dashboard/spas/:slug/employees/:employeeId/edit" element={<EditEmployee />}/>
+        <Route path="/dashboard/spas/:slug/employees/create" element={<CreateEmployee />} />
+        <Route path="/dashboard/spas/:slug/employees/:employeeId/edit" element={<EditEmployee />} />
+
+        <Route path="/dashboard/spas/:slug/clients/:clientId/edit" element={<EditClient />}
+        />
       </Routes>
     </BrowserRouter>
   );

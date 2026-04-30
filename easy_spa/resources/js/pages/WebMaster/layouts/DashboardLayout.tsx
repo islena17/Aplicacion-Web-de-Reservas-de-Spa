@@ -61,7 +61,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
           </a>
           <a href="#" className="sidebar-link">
             <i className="bi bi-person-badge"></i>
-            <span>Empleados</span>
+            <span>Usuarios</span>
           </a>
           <a href="#" className="sidebar-link">
             <i className="bi bi-bar-chart"></i>

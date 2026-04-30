@@ -53,7 +53,34 @@ class SpaController extends Controller
             ])
             ->firstOrFail();
 
-        return response()->json($spa);
+        $clients = $spa->reservations
+            ->filter(fn($r) => $r->client) // evitar nulls
+            ->groupBy('client_id')
+            ->map(function ($reservations) {
+                $client = $reservations->first()->client;
+
+                // coger la última reserva por fecha
+                $lastReservation = $reservations
+                    ->sortByDesc('reservation_date')
+                    ->first();
+
+                return [
+                    'id' => $client->id,
+                    'name' => $client->name,
+                    'surname' => $client->surname,
+                    'email' => $client->email,
+                    'telephone' => $client->telephone,
+                    'last_reservation_date' => $lastReservation->reservation_date,
+                ];
+            })
+            ->values();
+            
+        $data = $spa->toArray();
+        $data['clients'] = $clients;
+
+        return response()->json([
+            'data' => $data,
+        ]);
     }
 
     /**
