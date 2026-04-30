@@ -39,10 +39,9 @@ class ServiceController extends Controller
     public function show(Service $service)
     {
         return response()->json([
-            'data' => $service->load(['spa', 'serviceCategory']),
+            'data' => $service->load(['spa', 'category']),
         ]);
     }
-
     /**
      * Update the specified resource in storage.
      */

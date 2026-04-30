@@ -42,7 +42,7 @@ const getList = (response: any) => {
   return response.data.data?.data ?? response.data.data ?? response.data ?? [];
 };
 
-export function useServiceForm(spaSlug?: string) {
+export function useServiceForm(spaSlug?: string, serviceSlug?: string) {
   const navigate = useNavigate();
 
   const [spaId, setSpaId] = useState<number | null>(null);
@@ -64,8 +64,7 @@ export function useServiceForm(spaSlug?: string) {
 
         const [spaRes, categoriesRes] = await Promise.all([
           api.get(`/api/webmaster/spas/${spaSlug}`),
-          api.get('/api/webmaster/serviceCategory
-            '),
+          api.get('/api/webmaster/serviceCategory'),
         ]);
 
         const spa = spaRes.data.data ?? spaRes.data;
@@ -80,13 +79,32 @@ export function useServiceForm(spaSlug?: string) {
 
         setCategories(
           getList(categoriesRes)
-            .filter((category: any) => category.spa_id === currentSpaId)
+            .filter((category: any) => Number(category.spa_id) === Number(currentSpaId))
             .map((category: any) => ({
               id: category.id,
               name: category.name,
               spa_id: category.spa_id,
             }))
         );
+
+        console.log('SPA SLUG:', spaSlug);
+        if (serviceSlug) {
+          const serviceRes = await api.get(`/api/webmaster/services/${serviceSlug}`);
+          const service = serviceRes.data.data ?? serviceRes.data;
+
+          setForm({
+            service_category_id: String(service.service_category_id ?? ''),
+            spa_id: String(service.spa_id ?? currentSpaId),
+            name: service.name ?? '',
+            slug: service.slug ?? '',
+            description: service.description ?? '',
+            image: service.image ?? '',
+            length_minutes: String(service.length_minutes ?? ''),
+            price: String(service.price ?? ''),
+            requires_employee: Boolean(service.requires_employee),
+            is_active: Boolean(service.is_active),
+          });
+        }
       } catch (error) {
         console.error(error);
         setErrors({
@@ -98,7 +116,7 @@ export function useServiceForm(spaSlug?: string) {
     };
 
     fetchOptions();
-  }, [spaSlug]);
+  },[spaSlug, serviceSlug]);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
@@ -122,6 +140,8 @@ export function useServiceForm(spaSlug?: string) {
     }));
   };
 
+  //constantes del formulario
+  //crear servicio
   const createService = async (e: FormEvent) => {
     e.preventDefault();
 
@@ -177,6 +197,69 @@ export function useServiceForm(spaSlug?: string) {
     }
   };
 
+  //actualizar servicio
+  const updateService = async (e: FormEvent) => {
+    e.preventDefault();
+
+    if (!spaId) {
+      setErrors({
+        general: 'No se ha podido identificar el spa.',
+      });
+      return;
+    }
+
+    if (!serviceSlug) {
+      setErrors({
+        general: 'No se ha podido identificar el servicio.',
+      });
+      return;
+    }
+
+    if (!form.service_category_id) {
+      setErrors({
+        service_category_id: ['La categoría es obligatoria.'],
+      });
+      return;
+    }
+
+    setLoading(true);
+    setErrors({});
+
+    try {
+      await api.put(`/api/webmaster/services/${serviceSlug}`, {
+        service_category_id: Number(form.service_category_id),
+        spa_id: spaId,
+        name: form.name,
+        slug: form.slug || null,
+        description: form.description || null,
+        image: form.image || null,
+        length_minutes: Number(form.length_minutes),
+        price: Number(form.price),
+        requires_employee: form.requires_employee,
+        is_active: form.is_active,
+      });
+
+      navigate(`/dashboard/spas/${spaSlug}`);
+    } catch (error: any) {
+      console.log('STATUS:', error.response?.status);
+      console.log('ERRORES:', error.response?.data);
+
+      if (error.response?.status === 422) {
+        setErrors(
+          error.response.data.errors || {
+            general: error.response.data.message,
+          }
+        );
+      } else {
+        setErrors({
+          general: 'Ha ocurrido un error al actualizar el servicio.',
+        });
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const fieldError = (field?: string[]) => field?.[0];
 
   return {
@@ -187,6 +270,7 @@ export function useServiceForm(spaSlug?: string) {
     loadingOptions,
     handleChange,
     createService,
+    updateService,
     fieldError,
   };
 }
