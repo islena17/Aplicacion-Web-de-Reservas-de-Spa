@@ -35,6 +35,7 @@ use App\Http\Controllers\Api\WebMaster\SpaScheduleController;
 
 use App\Http\Controllers\Api\Client\AvailabilityController as ClientAvailabilityController;
 use App\Http\Controllers\Api\Public\SpaController as PublicSpaController;
+use App\Http\Controllers\Api\WebMaster\RoleController;
 use App\Http\Controllers\Api\WebMaster\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -67,6 +68,7 @@ Route::middleware(['auth:sanctum', 'role:WebMaster'])
         Route::apiResource('reservations', ReservationController::class);
         Route::apiResource('users', UserController::class);
         Route::get('availability', [AvailabilityController::class, 'index']);
+        Route::get('roles', [RoleController::class, 'index']);
     });
 
 Route::middleware(['auth:sanctum', 'role:Admin'])
