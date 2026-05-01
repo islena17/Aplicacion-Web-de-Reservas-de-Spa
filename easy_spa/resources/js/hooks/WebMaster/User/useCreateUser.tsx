@@ -15,25 +15,30 @@ type UserForm = {
     client: {
         name: string;
         surname: string;
-        phone: string;
+        telephone: string;
     };
 
     employee: {
         name: string;
         surname: string;
-        phone: string;
+        telephone: string;
         spa_id: string;
     };
+
+    admin: {
+        spa_id: string,
+    },
 };
 
 type UserErrors = Partial<Record<keyof UserForm, string[]>> & {
     'client.name'?: string[];
     'client.surname'?: string[];
-    'client.phone'?: string[];
+    'client.telephone'?: string[];
     'employee.name'?: string[];
     'employee.surname'?: string[];
-    'employee.phone'?: string[];
+    'employee.telephone'?: string[];
     'employee.spa_id'?: string[];
+    'admin.spa_id'?: string[];
     general?: string;
 };
 
@@ -45,13 +50,17 @@ const initialForm: UserForm = {
     client: {
         name: '',
         surname: '',
-        phone: '',
+        telephone: '',
     },
 
     employee: {
         name: '',
         surname: '',
-        phone: '',
+        telephone: '',
+        spa_id: '',
+    },
+
+    admin: {
         spa_id: '',
     },
 };
@@ -163,7 +172,7 @@ export function useCreateUser() {
             payload.client = {
                 name: form.client.name,
                 surname: form.client.surname,
-                phone: form.client.phone,
+                telephone: form.client.telephone,
             };
         }
 
@@ -171,8 +180,14 @@ export function useCreateUser() {
             payload.employee = {
                 name: form.employee.name,
                 surname: form.employee.surname,
-                phone: form.employee.phone,
+                telephone: form.employee.telephone,
                 spa_id: Number(form.employee.spa_id),
+            };
+        }
+
+        if (isAdmin) {
+            payload.admin = {
+                spa_id: Number(form.admin.spa_id),
             };
         }
 

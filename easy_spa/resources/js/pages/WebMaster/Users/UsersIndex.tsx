@@ -78,6 +78,20 @@ export default function UsersIndex() {
                                                 <td className="px-4 py-3 text-end">
                                                     <button
                                                         className="btn btn-sm me-2"
+                                                        onClick={() => navigate(`/dashboard/users/${user.id}`)}
+                                                        style={{
+                                                            backgroundColor: '#fcfbfb',
+                                                            color: '#7a6440',
+                                                            border: '1px solid #F2E6D0',
+                                                            borderRadius: '10px',
+                
+                                                            fontWeight: 600,
+                                                        }}
+                                                    >
+                                                        Ver
+                                                    </button>
+                                                    <button
+                                                        className="btn btn-sm me-2"
                                                         onClick={() => navigate(`/dashboard/users/${user.id}/edit`)}
                                                         style={{
                                                             backgroundColor: '#F2E6D0',

@@ -25,8 +25,17 @@ interface Client {
   id: number;
   name: string;
   surname: string;
-  phone: string;
+  telephone: string;
   reservations?: Reservation[];
+}
+
+interface Employee {
+  id: number;
+  name: string;
+  surname: string;
+  telephone: string;
+  reservations?: Reservation[];
+  spa?: Spa
 }
 
 export interface User {
@@ -34,6 +43,11 @@ export interface User {
   email: string;
   role?: Role;
   client?: Client | null;
+  employee?: Employee | null;
+}
+
+interface ApiUserResponse {
+  data: User;
 }
 
 export function useUser(id?: string) {
@@ -41,18 +55,25 @@ export function useUser(id?: string) {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
+
   const getUser = async () => {
-    if (!id) return;
+    if (!id) {
+      setLoading(false);
+      return;
+    }
 
     try {
       setLoading(true);
 
-      const res = await api.get<User>(`/api/webmaster/users/${id}`);
+      const res = await api.get<ApiUserResponse>(`/api/webmaster/users/${id}`);
+      console.log('USER SHOW:', res.data);
 
-      setUser(res.data);
+      setUser(res.data.data);
       setError(null);
-    } catch {
+    } catch (error) {
+      console.error(error);
       setError('Error al cargar el usuario');
+      setUser(null);
     } finally {
       setLoading(false);
     }

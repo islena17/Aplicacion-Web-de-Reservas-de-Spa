@@ -19,6 +19,7 @@ import CreateServiceCategory from './pages/WebMaster/Services/createServiceCateg
 import EditServiceCategory from './pages/WebMaster/Services/editServiceCategory';
 import UsersIndex from './pages/WebMaster/Users/UsersIndex';
 import CreateUser from './pages/WebMaster/Users/createUser';
+import ShowUser from './pages/WebMaster/Users/showUser';
 
 
 export default function MainApp() {
@@ -52,6 +53,7 @@ export default function MainApp() {
         <Route path='dashboard/spas/:slug/categories/:categorySlug/edit' element= {<EditServiceCategory />} />
         <Route path='dashboard/users' element={<UsersIndex />} />
         <Route path='dashboard/users/create' element={<CreateUser />}/>
+        <Route path='dashboard/users/:id' element={<ShowUser />} />
         
       </Routes>
     </BrowserRouter>
