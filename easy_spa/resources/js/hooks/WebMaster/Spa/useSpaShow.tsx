@@ -19,6 +19,7 @@ export type SpaShow = {
   services: Service[];
   employees: Employee[];
   clients: Client[];
+  categories: ServiceCategory[];
 };
 
 export type Reservation = {
@@ -85,9 +86,18 @@ export type Client ={
 
 }
 
+export type ServiceCategory ={
+  id: number;
+  name: string;
+  slug: string,
+  description?: string | null;
+  is_active: boolean;
+  order: number;
+}
+
 export function useSpaShow(slug?: string) {
   const [spa, setSpa] = useState<SpaShow | null>(null);
-  const [activeTab, setActiveTab] = useState<'datos' | 'reservas' | 'servicios' | 'empleados' | 'clientes' >('datos');
+  const [activeTab, setActiveTab] = useState<'datos' | 'reservas' | 'categorias' | 'servicios' | 'empleados' | 'clientes' >('datos');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 

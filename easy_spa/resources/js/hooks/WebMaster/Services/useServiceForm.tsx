@@ -38,9 +38,6 @@ const initialForm: ServiceForm = {
   is_active: true,
 };
 
-const getList = (response: any) => {
-  return response.data.data?.data ?? response.data.data ?? response.data ?? [];
-};
 
 export function useServiceForm(spaSlug?: string, serviceSlug?: string) {
   const navigate = useNavigate();
@@ -52,6 +49,8 @@ export function useServiceForm(spaSlug?: string, serviceSlug?: string) {
   const [loading, setLoading] = useState(false);
   const [loadingOptions, setLoadingOptions] = useState(true);
 
+
+  //CARGAR CATEGORIAS DE LOS SERVICioS
   useEffect(() => {
     if (!spaSlug) {
       setLoadingOptions(false);
@@ -62,10 +61,7 @@ export function useServiceForm(spaSlug?: string, serviceSlug?: string) {
       try {
         setLoadingOptions(true);
 
-        const [spaRes, categoriesRes] = await Promise.all([
-          api.get(`/api/webmaster/spas/${spaSlug}`),
-          api.get('/api/webmaster/serviceCategory'),
-        ]);
+        const spaRes = await api.get(`/api/webmaster/spas/${spaSlug}`);
 
         const spa = spaRes.data.data ?? spaRes.data;
         const currentSpaId = spa.id;
@@ -77,17 +73,16 @@ export function useServiceForm(spaSlug?: string, serviceSlug?: string) {
           spa_id: String(currentSpaId),
         }));
 
+        const categoriesData = spa.categories ?? spa.service_categories ?? [];
+
         setCategories(
-          getList(categoriesRes)
-            .filter((category: any) => Number(category.spa_id) === Number(currentSpaId))
-            .map((category: any) => ({
-              id: category.id,
-              name: category.name,
-              spa_id: category.spa_id,
-            }))
+          categoriesData.map((category: any) => ({
+            id: category.id,
+            name: category.name,
+            spa_id: category.spa_id,
+          }))
         );
 
-        console.log('SPA SLUG:', spaSlug);
         if (serviceSlug) {
           const serviceRes = await api.get(`/api/webmaster/services/${serviceSlug}`);
           const service = serviceRes.data.data ?? serviceRes.data;
@@ -116,7 +111,7 @@ export function useServiceForm(spaSlug?: string, serviceSlug?: string) {
     };
 
     fetchOptions();
-  },[spaSlug, serviceSlug]);
+  }, [spaSlug, serviceSlug]);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>

@@ -5,15 +5,16 @@ namespace App\Http\Controllers\Api\WebMaster;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ServiceCategoryRequest;
 use App\Models\ServiceCategory;
+use App\Models\Spa;
 
 class ServiceCategoryController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Spa $spa)
     {
-        $categories = ServiceCategory::latest()->get();
+        $categories = ServiceCategory::where('spa_id', $spa->id)->get();
 
         return response()->json($categories);
     }
@@ -21,9 +22,13 @@ class ServiceCategoryController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(ServiceCategoryRequest $request)
+    public function store(ServiceCategoryRequest $request,  Spa $spa)
     {
-        $category = ServiceCategory::create($request->validated());
+        $data = $request->validated();
+
+        $data['spa_id'] = $spa->id;
+
+        $category = ServiceCategory::create($data);
 
         return response()->json([
             'message' => 'Categoría creada correctamente',

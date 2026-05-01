@@ -58,12 +58,14 @@ Route::middleware(['auth:sanctum', 'role:WebMaster'])
         Route::apiResource('employee-schedules', EmployeeScheduleController::class);
         Route::apiResource('employee-blocks', EmployeeBlockController::class);
         Route::apiResource('services', ServiceController::class);
-        Route::apiResource('serviceCategory', ServiceCategoryController::class);
+        Route::post('/spas/{spa:slug}/categories', [ServiceCategoryController::class, 'store']);
+        Route::get('/spas/{spa:slug}/categories/{category:slug}', [ServiceCategoryController::class, 'show']);
+        Route::put('/spas/{spa:slug}/categories/{category:slug}', [ServiceCategoryController::class, 'update']);
         Route::apiResource('clients', ClientController::class);
         Route::apiResource('spa-schedules', SpaScheduleController::class);
         Route::apiResource('reservations', ReservationController::class);
 
-         Route::get('availability', [AvailabilityController::class, 'index']);
+        Route::get('availability', [AvailabilityController::class, 'index']);
     });
 
 Route::middleware(['auth:sanctum', 'role:Admin'])
@@ -76,7 +78,7 @@ Route::middleware(['auth:sanctum', 'role:Admin'])
         Route::apiResource('spa-schedules', AdminSpaScheduleController::class);
         Route::apiResource('employee-schedules', AdminEmployeeScheduleController::class);
         Route::apiResource('employee-blocks', AdminEmployeeBlockController::class);
-        Route::apiResource('service-categories', AdminServiceCategoryController::class);
+        Route::apiResource('categories', AdminServiceCategoryController::class);
         Route::get('availability', [AdminAvailabilityController::class, 'index']);
     });
 
@@ -100,15 +102,14 @@ Route::middleware(['auth:sanctum', 'role:client'])
 
         Route::get('services', [ServiceController::class, 'index']);
         Route::get('services/{service}', [ServiceController::class, 'show']);
-        
+
         Route::apiResource('reservations', ReservationController::class);
 
         Route::get('availability', [ClientAvailabilityController::class, 'index']);
-
     });
 
 
-    /*aqui pongo las publicas*/ 
+/*aqui pongo las publicas*/
 Route::prefix('public')->group(function () {
     Route::get('availability', [PublicAvailabilityController::class, 'index']);
     Route::get('spas', [PublicSpaController::class, 'index']);

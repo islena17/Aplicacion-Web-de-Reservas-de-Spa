@@ -1,6 +1,7 @@
 import { useNavigate, useParams } from 'react-router-dom';
 import DashboardLayout from '../layouts/DashboardLayout';
 import { useSpaShow } from '@/hooks/WebMaster/Spa/useSpaShow';
+import reservations from '@/routes/reservations';
 
 export default function ShowSpa() {
   const navigate = useNavigate();
@@ -130,6 +131,20 @@ export default function ShowSpa() {
                   }}
                 >
                   Reservas
+                </button>
+
+                <button
+                  type="button"
+                  className="btn"
+                  onClick={() => setActiveTab('categorias')}
+                  style={{
+                    backgroundColor: activeTab === 'categorias' ? '#E0C38D' : '#F2E6D0',
+                    color: activeTab === 'categorias' ? '#fff' : '#7a6440',
+                    borderRadius: '12px',
+                    fontWeight: 700,
+                  }}
+                >
+                  Categorias
                 </button>
 
                 <button
@@ -328,6 +343,98 @@ export default function ShowSpa() {
             </div>
           )}
 
+          {activeTab === 'categorias' && (
+            <div
+              className="card border-0 shadow-sm"
+              style={{ borderRadius: '20px', overflow: 'hidden' }}
+            >
+              <div className="card-header border-0 py-3 px-4 bg-white d-flex justify-content-between align-items-center">
+                <h5 className="mb-0 fw-bold">Categorías</h5>
+
+                <button
+                  type="button"
+                  className="btn"
+                  onClick={() => navigate(`/dashboard/spas/${spa.slug}/categories/create`)}
+                  style={{
+                    backgroundColor: '#E0C38D',
+                    color: '#fff',
+                    borderRadius: '12px',
+                    fontWeight: 700,
+                    border: 'none',
+                  }}
+                >
+                  Crear categoría
+                </button>
+              </div>
+
+              <div className="card-body p-0 bg-white">
+                {(spa.categories ?? []).length === 0 ? (
+                  <div className="p-4 text-muted">
+                    No hay categorías registradas.
+                  </div>
+                ) : (
+                  <div className="table-responsive">
+                    <table className="table align-middle mb-0">
+                      <thead style={{ backgroundColor: '#F7F7F7' }}>
+                        <tr>
+                          <th className="px-4 py-3">Nombre</th>
+                          <th className="px-4 py-3">Slug</th>
+                          <th className="px-4 py-3">Descripción</th>
+                          <th className="px-4 py-3">Orden</th>
+                          <th className="px-4 py-3">Estado</th>
+                          <th className="px-4 py-3 text-end">Acciones</th>
+                        </tr>
+                      </thead>
+
+                      <tbody>
+                        {(spa.categories ?? []).map((cat) => (
+                          <tr key={cat.id}>
+                            <td className="px-4 py-3 fw-semibold">{cat.name}</td>
+
+                            <td className="px-4 py-3">
+                              <span className="text-muted small">{cat.slug || '-'}</span>
+                            </td>
+
+                            <td className="px-4 py-3">
+                              {cat.description || '-'}
+                            </td>
+
+                            <td className="px-4 py-3">
+                              {cat.order ?? 0}
+                            </td>
+
+                            <td className="px-4 py-3">
+                              <span className={`badge ${cat.is_active ? 'bg-success' : 'bg-secondary'}`}>
+                                {cat.is_active ? 'Activa' : 'Inactiva'}
+                              </span>
+                            </td>
+
+                            <td className="px-4 py-3 text-end">
+                              <button
+                                type="button"
+                                className="btn btn-sm me-2"
+                                onClick={() =>
+                                  navigate(`/dashboard/spas/${spa.slug}/categories/${cat.slug}/edit`)
+                                }
+                                style={{
+                                  backgroundColor: '#F2E6D0',
+                                  color: '#7a6440',
+                                  borderRadius: '10px',
+                                  fontWeight: 600,
+                                }}
+                              >
+                                Editar
+                              </button>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
           {activeTab === 'servicios' && (
             <div
               className="card border-0 shadow-sm"

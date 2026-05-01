@@ -14,6 +14,10 @@ class ServiceCategoryRequest extends FormRequest
 
     public function rules(): array
     {
+
+        $spa = $this->route('spa');
+        $category = $this->route('category');
+
         return [
 
             'name' => 'required|string|max:255',
@@ -22,7 +26,9 @@ class ServiceCategoryRequest extends FormRequest
                 'nullable',
                 'string',
                 'max:255',
-                Rule::unique('service_categories', 'slug')->ignore($this->route('service_category')),
+                Rule::unique('service_categories', 'slug')   //cambio a que el "unique" ya no sea global si no que se pueda repetir en diferentes spa pero no en el mismo
+                    ->where('spa_id', $spa->id)
+                    ->ignore($category?->id),
             ],
 
             'description' => 'nullable|string',

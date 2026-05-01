@@ -92,6 +92,24 @@ export default function CreateServiceCategory() {
                     )}
                   </div>
 
+                  {/*SLUG D E LA CATEGORIA*/ }
+
+                  <div className="col-12 col-md-6">
+                    <label className="form-label fw-semibold">Slug</label>
+                    <input
+                      type="text"
+                      name="slug"
+                      className={`form-control ${errors.slug ? 'is-invalid' : ''}`}
+                      value={form.slug}
+                      onChange={handleChange}
+                      placeholder="Ej: masajes-relajantes"
+                    />
+                    {errors.slug && (
+                      <div className="invalid-feedback">
+                        {fieldError(errors.slug)}
+                      </div>
+                    )}
+                  </div>
                   {/* ORDEN */}
                   <div className="col-12 col-md-6">
                     <label className="form-label fw-semibold">Orden</label>

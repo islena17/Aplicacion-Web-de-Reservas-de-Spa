@@ -16,6 +16,7 @@ import EditEmployee from './pages/WebMaster/Employees/edit';
 import EditClient from './pages/WebMaster/Clients/edit';
 import GlobalReservations from './pages/WebMaster/Reservation/GlobalReservation';
 import CreateServiceCategory from './pages/WebMaster/Services/createServiceCategory';
+import EditServiceCategory from './pages/WebMaster/Services/editServiceCategory';
 
 
 export default function MainApp() {
@@ -44,7 +45,9 @@ export default function MainApp() {
 
         <Route path="/dashboard/spas/:slug/clients/:clientId/edit" element={<EditClient />}/>
         <Route path="dashboard/reservations" element={<GlobalReservations/>}/>
+
         <Route path="dashboard/spas/:slug/categories/create" element={<CreateServiceCategory/>}/>
+        <Route path='dashboard/spas/:slug/categories/:categorySlug/edit' element= {<EditServiceCategory />} />
         
       </Routes>
     </BrowserRouter>

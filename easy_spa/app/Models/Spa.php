@@ -22,7 +22,7 @@ class Spa extends Model
         'slug',
     ];
 
-    public function serviceCategories()
+    public function categories()
     {
         return $this->hasMany(ServiceCategory::class, 'spa_id');
     }
