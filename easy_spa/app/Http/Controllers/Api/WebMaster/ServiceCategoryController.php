@@ -39,9 +39,15 @@ class ServiceCategoryController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(ServiceCategory $serviceCategory)
+    public function show(Spa $spa, ServiceCategory $category)
     {
-        return response()->json($serviceCategory);
+        if ($category->spa_id !== $spa->id) {
+            abort(404);
+        }
+
+        return response()->json([
+            'data' => $category
+        ]);
     }
 
     /**
