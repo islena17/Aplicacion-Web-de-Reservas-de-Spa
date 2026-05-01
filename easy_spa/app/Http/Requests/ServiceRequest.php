@@ -14,9 +14,14 @@ class ServiceRequest extends FormRequest
 
     public function rules(): array
     {
+        $service = $this->route('service');
+        $serviceId = is_object($service) ? $service->id : null;
+
+        $spaId = $this->input('spa_id');
+
         return [
-         
-            'spa_id' => ['required', 'exists:spas,id'],
+            'spa_id' => 'required|exists:spas,id',
+
             'service_category_id' => 'required|exists:service_categories,id',
 
             'name' => 'required|string|max:255',
@@ -25,23 +30,18 @@ class ServiceRequest extends FormRequest
                 'nullable',
                 'string',
                 'max:255',
-                Rule::unique('services', 'slug')->ignore($this->route('service')),
+                Rule::unique('services', 'slug')
+                    ->where(fn($query) => $query->where('spa_id', $spaId))
+                    ->ignore($serviceId),
             ],
 
             'description' => 'nullable|string',
-
-            'image' => 'nullable|string|max:255',
-
-            'length_minutes' => 'required|integer|min:1|max:1440',
-
-            'price' => 'required|numeric|min:0|max:999999.99',
-
-            'capacity' => 'sometimes|integer|min:1|max:100',
-
+            'image' => 'nullable|string',
+            'length_minutes' => 'required|integer|min:1',
+            'price' => 'required|numeric|min:0',
+            'capacity' => 'sometimes|integer|min:1',
             'requires_employee' => 'sometimes|boolean',
-
             'is_active' => 'sometimes|boolean',
-
             'order' => 'sometimes|integer|min:0',
         ];
     }
