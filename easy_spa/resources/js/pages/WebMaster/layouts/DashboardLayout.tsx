@@ -41,7 +41,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
             <i className="bi bi-grid"></i>
             <span>Dashboard</span>
           </a>
-          <a href="#" className="sidebar-link">
+          <a href="/dashboard/reservations" className="sidebar-link">
             <i className="bi bi-calendar-check"></i>
             <span>Reservas</span>
           </a>

@@ -7,13 +7,15 @@ import CreateSpa from './pages/WebMaster/spa/create';
 import Index from './pages/WebMaster/spa';
 import EditSpa from './pages/WebMaster/spa/edit';
 import ShowSpa from './pages/WebMaster/spa/show';
-import CreateReservation from './pages/WebMaster/Reservation/Create';
-import EditReservation from './pages/WebMaster/Reservation/edit';
+import CreateReservation from './pages/WebMaster/Reservation/CreateReservation';
+import EditReservation from './pages/WebMaster/Reservation/editReservation';
 import CreateService from './pages/WebMaster/Services/create';
 import EditService from './pages/WebMaster/Services/edit';
 import CreateEmployee from './pages/WebMaster/Employees/create';
 import EditEmployee from './pages/WebMaster/Employees/edit';
 import EditClient from './pages/WebMaster/Clients/edit';
+import GlobalReservations from './pages/WebMaster/Reservation/GlobalReservation';
+import CreateServiceCategory from './pages/WebMaster/Services/createServiceCategory';
 
 
 export default function MainApp() {
@@ -40,8 +42,10 @@ export default function MainApp() {
         <Route path="/dashboard/spas/:slug/employees/create" element={<CreateEmployee />} />
         <Route path="/dashboard/spas/:slug/employees/:employeeId/edit" element={<EditEmployee />} />
 
-        <Route path="/dashboard/spas/:slug/clients/:clientId/edit" element={<EditClient />}
-        />
+        <Route path="/dashboard/spas/:slug/clients/:clientId/edit" element={<EditClient />}/>
+        <Route path="dashboard/reservations" element={<GlobalReservations/>}/>
+        <Route path="dashboard/spas/:slug/categories/create" element={<CreateServiceCategory/>}/>
+        
       </Routes>
     </BrowserRouter>
   );

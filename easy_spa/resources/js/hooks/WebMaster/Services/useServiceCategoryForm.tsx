@@ -1,0 +1,70 @@
+import { useEffect, useState } from 'react';
+import axios from '@/lib/axios';
+import { useNavigate } from 'react-router-dom';
+
+export function useServiceCategoryForm(slug?: string) {
+  const navigate = useNavigate();
+
+  const [form, setForm] = useState({
+    name: '',
+    description: '',
+    is_active: true,
+    order: 0,
+  });
+
+  const [errors, setErrors] = useState<any>({});
+  const [loading, setLoading] = useState(false);
+  const [loadingOptions, setLoadingOptions] = useState(false);
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value, type } = e.target;
+
+    setForm((prev) => ({
+      ...prev,
+      [name]:
+        type === 'checkbox'
+          ? (e.target as HTMLInputElement).checked
+          : value,
+    }));
+  };
+
+  const createCategory = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    try {
+      setLoading(true);
+      setErrors({});
+
+      await axios.post(`/api/webmaster/spas/${slug}/categories`, form);
+
+      navigate(-1);
+    } catch (error: any) {
+      if (error.response?.status === 422) {
+        setErrors(error.response.data.errors);
+      } else {
+        setErrors({
+          general: 'Error al crear la categoría.',
+        });
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fieldError = (error: any) => {
+    if (Array.isArray(error)) return error[0];
+    return error;
+  };
+
+  return {
+    form,
+    errors,
+    loading,
+    loadingOptions,
+    handleChange,
+    createCategory,
+    fieldError,
+  };
+}

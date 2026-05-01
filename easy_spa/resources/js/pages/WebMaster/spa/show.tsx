@@ -12,7 +12,7 @@ export default function ShowSpa() {
     setActiveTab,
     loading,
     error,
-     deleteReservation,
+    deleteReservation,
   } = useSpaShow(slug);
 
   if (loading) {
@@ -146,7 +146,7 @@ export default function ShowSpa() {
                   Servicios
                 </button>
 
-                  <button
+                <button
                   type="button"
                   className="btn"
                   onClick={() => setActiveTab('empleados')}
@@ -160,7 +160,7 @@ export default function ShowSpa() {
                   Empleados
                 </button>
 
-                 <button
+                <button
                   type="button"
                   className="btn"
                   onClick={() => setActiveTab('clientes')}
@@ -312,7 +312,7 @@ export default function ShowSpa() {
                               <button
                                 type="button"
                                 className="btn btn-sm btn-outline-danger"
-                                onClick={() =>deleteReservation(reservation.id)
+                                onClick={() => deleteReservation(reservation.id)
                                 }
                               >
                                 Eliminar
@@ -336,20 +336,40 @@ export default function ShowSpa() {
               <div className="card-header border-0 py-3 px-4 bg-white d-flex justify-content-between align-items-center">
                 <h5 className="mb-0 fw-bold">Servicios</h5>
 
-                <button
-                  type="button"
-                  className="btn"
-                  onClick={() => navigate(`/dashboard/spas/${spa.slug}/services/create`)}
-                  style={{
-                    backgroundColor: '#E0C38D',
-                    color: '#fff',
-                    borderRadius: '12px',
-                    fontWeight: 700,
-                    border: 'none',
-                  }}
-                >
-                  Crear servicio
-                </button>
+                <div className="d-flex gap-2">
+
+                  {/* CREAR SERVICIO */}
+                  <button
+                    className="btn btn-sm"
+                    onClick={() =>
+                      navigate(`/dashboard/spas/${slug}/services/create`)
+                    }
+                    style={{
+                      backgroundColor: '#E0C38D',
+                      color: '#fff',
+                      borderRadius: '10px',
+                      fontWeight: 600,
+                    }}
+                  >
+                    + Servicio
+                  </button>
+
+                  {/* CREAR CATEGORÍA */}
+                  <button
+                    className="btn btn-sm"
+                    onClick={() =>
+                      navigate(`/dashboard/spas/${slug}/categories/create`)
+                    }
+                    style={{
+                      backgroundColor: '#F2E6D0',
+                      color: '#7a6440',
+                      borderRadius: '10px',
+                      fontWeight: 600,
+                    }}
+                  >
+                    + Categoría
+                  </button>
+                </div>
               </div>
 
               <div className="card-body p-0 bg-white">
@@ -564,7 +584,7 @@ export default function ShowSpa() {
             </div>
           )}
 
-                   {activeTab === 'clientes' && (
+          {activeTab === 'clientes' && (
             <div
               className="card border-0 shadow-sm"
               style={{ borderRadius: '20px', overflow: 'hidden' }}
@@ -613,7 +633,7 @@ export default function ShowSpa() {
                               {client.email || '-'}
                             </td>
 
-                            
+
                             <td className="px-4 py-3">
                               {client.user?.id || '-'}
                             </td>
