@@ -67,26 +67,26 @@ export type Employee = {
   email: string | null;
   telephone: string | null;
   is_active: boolean;
-  user?:{
+  user?: {
     id: number;
-    
+
   } | null;
 
 }
-export type Client ={
-  id:number;
+export type Client = {
+  id: number;
   name: string;
   surname: string;
   email?: string | null;
   telephone?: string | null;
-  user?:{
+  user?: {
     id: number;
   } | null;
   last_reservation_date: string | null;
 
 }
 
-export type ServiceCategory ={
+export type ServiceCategory = {
   id: number;
   name: string;
   slug: string,
@@ -97,7 +97,7 @@ export type ServiceCategory ={
 
 export function useSpaShow(slug?: string) {
   const [spa, setSpa] = useState<SpaShow | null>(null);
-  const [activeTab, setActiveTab] = useState<'datos' | 'reservas' | 'categorias' | 'servicios' | 'empleados' | 'clientes' >('datos');
+  const [activeTab, setActiveTab] = useState<'datos' | 'reservas' | 'categorias' | 'servicios' | 'empleados' | 'clientes'>('datos');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
@@ -145,6 +145,17 @@ export function useSpaShow(slug?: string) {
     }
   };
 
+  //filtro de servicios por categorias
+
+  const [selectedCategory, setSelectedCategory] = useState('');
+
+  const filteredServices = selectedCategory
+    ? spa?.services?.filter(
+      (service) => service.category?.id === Number(selectedCategory)
+    ) ?? []
+    : spa?.services ?? [];
+
+  const categories = spa?.categories ?? [];
   useEffect(() => {
     fetchSpa();
   }, [slug]);
@@ -157,5 +168,9 @@ export function useSpaShow(slug?: string) {
     error,
     refetch: fetchSpa,
     deleteReservation,
+    selectedCategory,
+    setSelectedCategory,
+    filteredServices,
+    categories,
   };
 }

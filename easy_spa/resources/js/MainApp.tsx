@@ -23,6 +23,7 @@ import ShowUser from './pages/WebMaster/Users/showUser';
 import ShowReservation from './pages/WebMaster/Reservation/showReservation';
 import ShowCategory from './pages/WebMaster/Services/showCategory';
 import ShowClient from './pages/WebMaster/Clients/showClient';
+import EditUser from './pages/WebMaster/Users/editUser';
 
 
 export default function MainApp() {
@@ -105,12 +106,11 @@ export default function MainApp() {
           element={<ShowClient />}
         />
 
-        
-
         {/* USUARIOS */}
         <Route path="dashboard/users" element={<UsersIndex />} />
         <Route path="dashboard/users/create" element={<CreateUser />} />
         <Route path="dashboard/users/:id" element={<ShowUser />} />
+        <Route path="dashboard/users/:id/edit" element={<EditUser />} />
       </Routes>
     </BrowserRouter>
   );

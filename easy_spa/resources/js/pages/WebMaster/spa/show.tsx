@@ -14,6 +14,10 @@ export default function ShowSpa() {
     loading,
     error,
     deleteReservation,
+    selectedCategory,
+    setSelectedCategory,
+    filteredServices,
+    categories,
   } = useSpaShow(slug);
 
   if (loading) {
@@ -88,7 +92,7 @@ export default function ShowSpa() {
                   border: 'none',
                 }}
               >
-              <i className="bi bi-arrow-left"></i> Volver
+                <i className="bi bi-arrow-left"></i> Volver
               </button>
             </div>
           </div>
@@ -337,7 +341,7 @@ export default function ShowSpa() {
                                   fontWeight: 600,
                                 }}
                               >
-                               <i className="bi bi-eye"></i>
+                                <i className="bi bi-eye"></i>
                               </button>
 
                               <button
@@ -397,7 +401,7 @@ export default function ShowSpa() {
                           <th className="px-4 py-3">Slug</th>
                           <th className="px-4 py-3">Descripción</th>
                           <th className="px-4 py-3">Estado</th>
-                          <th className="px-4 py-3 text-end"   style={{ minWidth: '200px' }}>Acciones</th>
+                          <th className="px-4 py-3 text-end" style={{ minWidth: '200px' }}>Acciones</th>
                         </tr>
                       </thead>
 
@@ -505,7 +509,27 @@ export default function ShowSpa() {
               </div>
 
               <div className="card-body p-0 bg-white">
-                {spa.services.length === 0 ? (
+                <div className="p-4 border-bottom">
+                  <div className="row g-3 align-items-end">
+                    <div className="col-12 col-md-4">
+                      <label className="form-label fw-semibold">Filtrar por categoría</label>
+                      <select
+                        className="form-select"
+                        value={selectedCategory}
+                        onChange={(e) => setSelectedCategory(e.target.value)}
+                      >
+                        <option value="">Todas las categorías</option>
+
+                        {categories.map((category) => (
+                          <option key={category.id} value={category.id}>
+                            {category.name}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                {filteredServices.length === 0 ? (
                   <div className="p-4 text-muted">
                     No hay servicios registrados.
                   </div>
@@ -525,7 +549,7 @@ export default function ShowSpa() {
                       </thead>
 
                       <tbody>
-                        {spa.services.map((service) => (
+                        {filteredServices.map((service) => (
                           <tr key={service.id}>
                             <td className="px-4 py-3 fw-semibold">
                               {service.name}
@@ -796,7 +820,7 @@ export default function ShowSpa() {
                                 <i className="bi bi-pencil-square"></i>
                               </button>
 
-                                                            <button
+                              <button
                                 type="button"
                                 className="btn btn-sm me-2"
                                 onClick={() =>

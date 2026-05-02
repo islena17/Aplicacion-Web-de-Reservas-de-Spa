@@ -40,7 +40,7 @@ export function useClientForm(spaSlug?: string, clientId?: string) {
       try {
         setLoadingOptions(true);
 
-        const response = await api.get(`/api/webmaster/clients/${clientId}`);
+        const response = await api.get(`/api/webmaster/spas/${spaSlug}/clients/${clientId}`);
         const client = response.data.data ?? response.data;
 
         setForm({

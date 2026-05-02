@@ -113,10 +113,48 @@ public function store(Request $request)
             'client.reservations.service.spa',
             'employee.spa',
             'employee.user',
+            'ownedSpa'
         ]);
 
         return response()->json([
             'data' => $user,
         ]);
     }
+
+      public function update(Request $request, User $user)
+    {
+        $data = $request->validate([
+            'role_id' => ['required', 'exists:roles,id'],
+            'email' => [
+                'required',
+                'email',
+                'max:255',
+                Rule::unique('users', 'email')->ignore($user->id),
+            ],
+            'password' => ['nullable', 'string', 'min:8'],
+        ]);
+
+        if (!empty($data['password'])) {
+            $data['password'] = Hash::make($data['password']);
+        } else {
+            unset($data['password']);
+        }
+
+        $user->update($data);
+
+        return response()->json([
+            'message' => 'Usuario actualizado correctamente',
+            'data' => $user->load('role'),
+        ]);
+    }
+
+    public function destroy(User $user)
+    {
+        $user->delete();
+
+        return response()->json([
+            'message' => 'Usuario eliminado correctamente',
+        ]);
+    }
+
 }
