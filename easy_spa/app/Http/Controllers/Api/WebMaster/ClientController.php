@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\WebMaster;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ClientRequest;
 use App\Models\Client;
+use App\Models\Spa;
 
 class ClientController extends Controller
 {
@@ -36,10 +37,21 @@ class ClientController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Client $client)
+
+    public function show(Spa $spa, Client $client)
     {
+        $client->load([
+            'user',
+            'reservations' => function ($query) use ($spa) {
+                $query->where('spa_id', $spa->id)
+                    ->latest('reservation_date');
+            },
+            'reservations.service',
+            'reservations.employee.user',
+        ]);
+
         return response()->json([
-            'data' => $client->load('user')
+            'data' => $client,
         ]);
     }
 

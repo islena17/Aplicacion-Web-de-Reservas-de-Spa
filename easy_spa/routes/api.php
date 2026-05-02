@@ -63,7 +63,10 @@ Route::middleware(['auth:sanctum', 'role:WebMaster'])
         Route::post('/spas/{spa:slug}/categories', [ServiceCategoryController::class, 'store']);
         Route::get('/spas/{spa:slug}/categories/{category:slug}', [ServiceCategoryController::class, 'show']);
         Route::put('/spas/{spa:slug}/categories/{category:slug}', [ServiceCategoryController::class, 'update']);
-        Route::apiResource('clients', ClientController::class);
+        Route::get('/spas/{spa:slug}/clients/{client}', [ClientController::class, 'show']);
+
+        Route::apiResource('clients', ClientController::class)
+            ->except(['show']);
         Route::apiResource('spa-schedules', SpaScheduleController::class);
         Route::apiResource('reservations', ReservationController::class);
         Route::apiResource('users', UserController::class);

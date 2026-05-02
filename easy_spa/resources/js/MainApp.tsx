@@ -22,6 +22,7 @@ import CreateUser from './pages/WebMaster/Users/createUser';
 import ShowUser from './pages/WebMaster/Users/showUser';
 import ShowReservation from './pages/WebMaster/Reservation/showReservation';
 import ShowCategory from './pages/WebMaster/Services/showCategory';
+import ShowClient from './pages/WebMaster/Clients/showClient';
 
 
 export default function MainApp() {
@@ -99,6 +100,12 @@ export default function MainApp() {
           path="dashboard/spas/:slug/clients/:clientId/edit"
           element={<EditClient />}
         />
+        <Route
+          path="dashboard/spas/:slug/clients/:clientId"
+          element={<ShowClient />}
+        />
+
+        
 
         {/* USUARIOS */}
         <Route path="dashboard/users" element={<UsersIndex />} />

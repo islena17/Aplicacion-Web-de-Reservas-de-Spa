@@ -795,6 +795,21 @@ export default function ShowSpa() {
                               >
                                 <i className="bi bi-pencil-square"></i>
                               </button>
+
+                                                            <button
+                                type="button"
+                                className="btn btn-sm me-2"
+                                onClick={() =>
+                                  navigate(`/dashboard/spas/${spa.slug}/clients/${client.id}`)
+                                }
+                                style={{
+                                  backgroundColor: '#F2E6D0',
+                                  color: '#7a6440',
+                                  borderRadius: '10px',
+                                  fontWeight: 600,
+                                }}
+                              ><i className="bi bi-eye"></i>
+                              </button>
                             </td>
                           </tr>
                         ))}

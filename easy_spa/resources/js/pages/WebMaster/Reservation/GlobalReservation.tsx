@@ -181,7 +181,6 @@ export default function GlobalReservations() {
                         <th className="px-4 py-3">Spa</th>
                         <th className="px-4 py-3">Cliente</th>
                         <th className="px-4 py-3">Servicio</th>
-                        <th className="px-4 py-3">Empleado</th>
                         <th className="px-4 py-3">Fecha</th>
                         <th className="px-4 py-3">Hora</th>
                         <th className="px-4 py-3">Estado</th>
@@ -209,12 +208,6 @@ export default function GlobalReservations() {
 
                           <td className="px-4 py-3">
                             {reservation.service?.name ?? 'Sin servicio'}
-                          </td>
-
-                          <td className="px-4 py-3">
-                            {reservation.employee?.user?.name ??
-                              reservation.employee?.name ??
-                              'Sin asignar'}
                           </td>
 
                           <td className="px-4 py-3">
@@ -249,7 +242,7 @@ export default function GlobalReservations() {
                                   className="btn btn-sm"
                                   onClick={() =>
                                     navigate(
-                                      `/webmaster/spas/${reservation.spa?.slug}`
+                                      `/dashboard/spas/${reservation.spa?.slug}/reservations/${reservation.id}`
                                     )
                                   }
                                   style={{
@@ -259,7 +252,7 @@ export default function GlobalReservations() {
                                     fontWeight: 600,
                                   }}
                                 >
-                                  Ver spa
+                                  Ver
                                 </button>
                               )}
 
