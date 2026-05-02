@@ -3,8 +3,22 @@ import DashboardLayout from '../layouts/DashboardLayout';
 import { useUsers } from '@/hooks/WebMaster/User/useUsers';
 
 export default function UsersIndex() {
+
+    const {
+        users,
+        filteredUsers,
+        roles,
+        spas,
+        selectedRole,
+        setSelectedRole,
+        selectedSpa,
+        setSelectedSpa,
+        loading,
+        error,
+        deleteUser,
+    } = useUsers();
+
     const navigate = useNavigate();
-    const { users, loading, error, deleteUser } = useUsers();
 
     if (loading) {
         return (
@@ -44,10 +58,72 @@ export default function UsersIndex() {
 
                     {error && <div className="alert alert-danger">{error}</div>}
 
+                    <div
+                        className="card border-0 shadow-sm mb-4"
+                        style={{ borderRadius: '20px', overflow: 'hidden' }}
+                    >
+                        <div className="card-body p-4 bg-white">
+                            <div className="row g-3 align-items-end">
+                                <div className="col-12 col-md-4">
+                                    <label className="form-label fw-semibold">Filtrar por rol</label>
+                                    <select
+                                        className="form-select"
+                                        value={selectedRole}
+                                        onChange={(e) => setSelectedRole(e.target.value)}
+                                    >
+                                        <option value="">Todos los roles</option>
+
+                                        {roles.map((role) => (
+                                            <option key={role.id} value={role.id}>
+                                                {role.name}
+                                            </option>
+                                        ))}
+                                    </select>
+                                </div>
+
+                                <div className="col-12 col-md-4">
+                                    <label className="form-label fw-semibold">Filtrar por spa</label>
+                                    <select
+                                        className="form-select"
+                                        value={selectedSpa}
+                                        onChange={(e) => setSelectedSpa(e.target.value)}
+                                    >
+                                        <option value="">Todos los spas</option>
+
+                                        {spas.map((spa) => (
+                                            <option key={spa.id} value={spa.id}>
+                                                {spa.name}
+                                            </option>
+                                        ))}
+                                    </select>
+                                </div>
+
+                                <div className="col-12 col-md-4">
+                                    <button
+                                        type="button"
+                                        className="btn w-100"
+                                        onClick={() => {
+                                            setSelectedRole('');
+                                            setSelectedSpa('');
+                                        }}
+                                        style={{
+                                            backgroundColor: '#F2E6D0',
+                                            color: '#7a6440',
+                                            borderRadius: '12px',
+                                            fontWeight: 700,
+                                        }}
+                                    >
+                                        Limpiar filtros
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     {/* TABLA */}
-                    <div className="card border-0 shadow-sm"  style={{ borderRadius: '20px', overflow: 'hidden' }}>
+                    <div className="card border-0 shadow-sm" style={{ borderRadius: '20px', overflow: 'hidden' }}>
                         <div className="card-body p-0">
-                            {users.length === 0 ? (
+                            {filteredUsers.length === 0 ? (
                                 <div className="p-4 text-muted">
                                     No hay usuarios registrados.
                                 </div>
@@ -63,7 +139,7 @@ export default function UsersIndex() {
                                     </thead>
 
                                     <tbody>
-                                        {users.map((user) => (
+                                        {filteredUsers.map((user) => (
                                             <tr key={user.id}>
                                                 <td className="px-4 py-3">{user.id}</td>
 
@@ -84,7 +160,7 @@ export default function UsersIndex() {
                                                             color: '#7a6440',
                                                             border: '1px solid #F2E6D0',
                                                             borderRadius: '10px',
-                
+
                                                             fontWeight: 600,
                                                         }}
                                                     >
