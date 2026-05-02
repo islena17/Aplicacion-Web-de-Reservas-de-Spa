@@ -1,6 +1,6 @@
-import { ReactNode } from "react";
+import { ReactNode, useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import "../../../../css/dashboard.css";
-import { useEffect, useState } from "react";
 import api from "@/lib/axios";
 
 type DashboardLayoutProps = {
@@ -16,17 +16,25 @@ type User = {
 
 export default function DashboardLayout({ children }: DashboardLayoutProps) {
   const [user, setUser] = useState<User | null>(null);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   useEffect(() => {
-    api.get("/api/user")
+    api
+      .get("/api/user")
       .then((res) => setUser(res.data))
-      .catch(() => {
-        console.log("No autenticado");
-      });
+      .catch(() => console.log("No autenticado"));
   }, []);
+
   return (
     <div className="dashboard-shell">
-      <aside className="sidebar-custom">
+      {sidebarOpen && (
+        <div
+          className="sidebar-overlay"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
+
+      <aside className={`sidebar-custom ${sidebarOpen ? "open" : ""}`}>
         <div className="sidebar-brand">
           <div className="brand-icon">S</div>
           <div>
@@ -37,79 +45,60 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
 
         <nav className="mt-4">
           <p className="sidebar-section">Principal</p>
-          <a href="/dashboard" className="sidebar-link active">
+
+          <Link to="/dashboard" className="sidebar-link" onClick={() => setSidebarOpen(false)}>
             <i className="bi bi-grid"></i>
             <span>Dashboard</span>
-          </a>
-          <a href="/dashboard/reservations" className="sidebar-link">
+          </Link>
+
+          <Link to="/dashboard/reservations" className="sidebar-link" onClick={() => setSidebarOpen(false)}>
             <i className="bi bi-calendar-check"></i>
             <span>Reservas</span>
-          </a>
-          <a href="#" className="sidebar-link">
-            <i className="bi bi-people"></i>
-            <span>Clientes</span>
-          </a>
-          <a href="#" className="sidebar-link">
-            <i className="bi bi-bag"></i>
-            <span>Servicios</span>
-          </a>
+          </Link>
 
           <p className="sidebar-section mt-4">Gestión</p>
-          <a href="/dashboard/spas" className="sidebar-link">
+
+          <Link to="/dashboard/spas" className="sidebar-link" onClick={() => setSidebarOpen(false)}>
             <i className="bi bi-shop"></i>
             <span>Spas</span>
-          </a>
-          <a href="#" className="sidebar-link">
+          </Link>
+
+          <Link to="/dashboard/users" className="sidebar-link" onClick={() => setSidebarOpen(false)}>
             <i className="bi bi-person-badge"></i>
             <span>Usuarios</span>
-          </a>
-          <a href="#" className="sidebar-link">
-            <i className="bi bi-bar-chart"></i>
-            <span>Informes</span>
-          </a>
-          <a href="#" className="sidebar-link">
-            <i className="bi bi-gear"></i>
-            <span>Ajustes</span>
-          </a>
+          </Link>
         </nav>
       </aside>
 
       <main className="main-custom">
         <header className="topbar-custom">
-          <div className="topbar-search">
-            <input
-              type="text"
-              className="form-control search-input"
-              placeholder="Buscar..."
-            />
-            <button className="btn btn-search">
-              <i className="bi bi-search"></i>
-            </button>
-          </div>
+          <button
+            className="menu-btn d-lg-none"
+            onClick={() => setSidebarOpen(true)}
+          >
+            <i className="bi bi-list"></i>
+          </button>
 
           <div className="topbar-actions">
             <button className="icon-btn">
               <i className="bi bi-bell"></i>
             </button>
+
             <button className="icon-btn">
               <i className="bi bi-envelope"></i>
             </button>
 
             <div className="user-box">
               <div className="user-info text-end">
-                <div className="fw-semibold">
-                  {user?.email || "Usuario"}
-                </div>
-                <small>
-                  {user?.role?.name || "Sin rol"}
-                </small>
+                <div className="fw-semibold">{user?.email || "Usuario"}</div>
+                <small>{user?.role?.name || "Sin rol"}</small>
               </div>
 
               <div className="avatar">
                 {user?.email?.charAt(0).toUpperCase() || "U"}
               </div>
             </div>
-            </div>
+          </div>
         </header>
 
         <section className="content-custom">{children}</section>
