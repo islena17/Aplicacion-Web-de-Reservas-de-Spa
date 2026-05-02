@@ -46,7 +46,7 @@ class SpaController extends Controller
         $spa = Spa::where('slug', $slug)
             ->with([
                 'services.category',
-                'reservations.client',
+                'reservations.client.user',
                 'reservations.service',
                 'reservations.employee',
                 'employees.user',
@@ -68,6 +68,11 @@ class SpaController extends Controller
                 return [
                     'id' => $client->id,
                     'name' => $client->name,
+                    'user_id' => $client->user_id,
+                    'user' => $client->user ? [
+                        'id' => $client->user->id,
+                        'email' => $client->user->email,
+                    ] : null,
                     'surname' => $client->surname,
                     'email' => $client->email,
                     'telephone' => $client->telephone,
@@ -75,7 +80,7 @@ class SpaController extends Controller
                 ];
             })
             ->values();
-            
+
         $data = $spa->toArray();
         $data['clients'] = $clients;
 
