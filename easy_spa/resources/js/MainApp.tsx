@@ -20,41 +20,90 @@ import EditServiceCategory from './pages/WebMaster/Services/editServiceCategory'
 import UsersIndex from './pages/WebMaster/Users/UsersIndex';
 import CreateUser from './pages/WebMaster/Users/createUser';
 import ShowUser from './pages/WebMaster/Users/showUser';
+import ShowReservation from './pages/WebMaster/Reservation/showReservation';
+import ShowCategory from './pages/WebMaster/Services/showCategory';
 
 
 export default function MainApp() {
   return (
     <BrowserRouter>
       <Routes>
+        {/* AUTH */}
         <Route path="/" element={<Login />} />
 
-        <Route path="/dashboard" element={<DashboardHome />} />
-        <Route path="/dashboard/spas" element={<Index />} />
-        <Route path="/dashboard/spas/create" element={<CreateSpa />} />
+        {/* DASHBOARD */}
+        <Route path="dashboard" element={<DashboardHome />} />
 
-        <Route path="/dashboard/spas/:slug/edit" element={<EditSpa />} />
+        {/* SPAS */}
+        <Route path="dashboard/spas" element={<Index />} />
+        <Route path="dashboard/spas/create" element={<CreateSpa />} />
+        <Route path="dashboard/spas/:slug" element={<ShowSpa />} />
+        <Route path="dashboard/spas/:slug/edit" element={<EditSpa />} />
+
+        {/* RESERVAS DE UN SPA */}
         <Route
-          path="/dashboard/spas/:slug/reservations/create"
+          path="dashboard/spas/:slug/reservations/create"
           element={<CreateReservation />}
         />
+        <Route
+          path="dashboard/spas/:slug/reservations/:reservationId"
+          element={<ShowReservation />}
+        />
+        <Route
+          path="dashboard/spas/:slug/reservations/:reservationId/edit"
+          element={<EditReservation />}
+        />
 
-        <Route path="/dashboard/spas/:slug" element={<ShowSpa />} />
-        <Route path="/dashboard/spas/:slug/reservations/:reservationId/edit" element={<EditReservation />} />
-        <Route path="/dashboard/spas/:slug/services/create" element={<CreateService />} />
-        <Route path="/dashboard/spas/:slug/services/:serviceSlug/edit" element={<EditService />} />
+        {/* RESERVAS GLOBALES */}
+        <Route
+          path="dashboard/reservations"
+          element={<GlobalReservations />}
+        />
 
-        <Route path="/dashboard/spas/:slug/employees/create" element={<CreateEmployee />} />
-        <Route path="/dashboard/spas/:slug/employees/:employeeId/edit" element={<EditEmployee />} />
+        {/* SERVICIOS */}
+        <Route
+          path="dashboard/spas/:slug/services/create"
+          element={<CreateService />}
+        />
+        <Route
+          path="dashboard/spas/:slug/services/:serviceSlug/edit"
+          element={<EditService />}
+        />
 
-        <Route path="/dashboard/spas/:slug/clients/:clientId/edit" element={<EditClient />}/>
-        <Route path="dashboard/reservations" element={<GlobalReservations/>}/>
+        {/* CATEGORÍAS */}
+        <Route
+          path="dashboard/spas/:slug/categories/create"
+          element={<CreateServiceCategory />}
+        />
+        <Route
+          path="dashboard/spas/:slug/categories/:categorySlug"
+          element={<ShowCategory />}
+        />
+        <Route
+          path="dashboard/spas/:slug/categories/:categorySlug/edit"
+          element={<EditServiceCategory />}
+        />
 
-        <Route path="dashboard/spas/:slug/categories/create" element={<CreateServiceCategory/>}/>
-        <Route path='dashboard/spas/:slug/categories/:categorySlug/edit' element= {<EditServiceCategory />} />
-        <Route path='dashboard/users' element={<UsersIndex />} />
-        <Route path='dashboard/users/create' element={<CreateUser />}/>
-        <Route path='dashboard/users/:id' element={<ShowUser />} />
-        
+        {/* EMPLEADOS */}
+        <Route
+          path="dashboard/spas/:slug/employees/create"
+          element={<CreateEmployee />}
+        />
+        <Route
+          path="dashboard/spas/:slug/employees/:employeeId/edit"
+          element={<EditEmployee />}
+        />
+
+        {/* CLIENTES */}
+        <Route
+          path="dashboard/spas/:slug/clients/:clientId/edit"
+          element={<EditClient />}
+        />
+
+        {/* USUARIOS */}
+        <Route path="dashboard/users" element={<UsersIndex />} />
+        <Route path="dashboard/users/create" element={<CreateUser />} />
+        <Route path="dashboard/users/:id" element={<ShowUser />} />
       </Routes>
     </BrowserRouter>
   );

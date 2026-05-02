@@ -68,10 +68,10 @@ class ReservationController extends Controller
     {
         return response()->json([
             'data' => $reservation->load([
-                'client',
-                'spa',
-                'service',
-                'employee'
+                'client.user',
+                'service.spa',
+                'service.category',
+                'employee.user'
             ])
         ]);
     }

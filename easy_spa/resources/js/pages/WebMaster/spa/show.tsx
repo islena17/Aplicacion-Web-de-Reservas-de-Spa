@@ -72,7 +72,7 @@ export default function ShowSpa() {
                   fontWeight: 600,
                 }}
               >
-                Editar spa
+                <i className="bi bi-pencil-square"></i> spa
               </button>
 
               <button
@@ -88,7 +88,7 @@ export default function ShowSpa() {
                   border: 'none',
                 }}
               >
-                Volver
+              <i className="bi bi-arrow-left"></i> Volver
               </button>
             </div>
           </div>
@@ -321,7 +321,23 @@ export default function ShowSpa() {
                                   fontWeight: 600,
                                 }}
                               >
-                                Editar
+                                <i className="bi bi-pencil-square"></i>
+                              </button>
+
+                              <button
+                                type="button"
+                                className="btn btn-sm me-2"
+                                onClick={() =>
+                                  navigate(`/dashboard/spas/${spa.slug}/reservations/${reservation.id}`)
+                                }
+                                style={{
+                                  backgroundColor: '#F2E6D0',
+                                  color: '#7a6440',
+                                  borderRadius: '10px',
+                                  fontWeight: 600,
+                                }}
+                              >
+                               <i className="bi bi-eye"></i>
                               </button>
 
                               <button
@@ -330,7 +346,7 @@ export default function ShowSpa() {
                                 onClick={() => deleteReservation(reservation.id)
                                 }
                               >
-                                Eliminar
+                                <i className="bi bi-x-square"></i>
                               </button>
                             </td>
                           </tr>
@@ -380,9 +396,8 @@ export default function ShowSpa() {
                           <th className="px-4 py-3">Nombre</th>
                           <th className="px-4 py-3">Slug</th>
                           <th className="px-4 py-3">Descripción</th>
-                          <th className="px-4 py-3">Orden</th>
                           <th className="px-4 py-3">Estado</th>
-                          <th className="px-4 py-3 text-end">Acciones</th>
+                          <th className="px-4 py-3 text-end"   style={{ minWidth: '200px' }}>Acciones</th>
                         </tr>
                       </thead>
 
@@ -397,10 +412,6 @@ export default function ShowSpa() {
 
                             <td className="px-4 py-3">
                               {cat.description || '-'}
-                            </td>
-
-                            <td className="px-4 py-3">
-                              {cat.order ?? 0}
                             </td>
 
                             <td className="px-4 py-3">
@@ -423,7 +434,21 @@ export default function ShowSpa() {
                                   fontWeight: 600,
                                 }}
                               >
-                                Editar
+                                <i className="bi bi-pencil-square"></i>
+                              </button>
+                              <button
+                                type="button"
+                                className="btn btn-sm me-2"
+                                onClick={() =>
+                                  navigate(`/dashboard/spas/${spa.slug}/categories/${cat.slug}`)
+                                }
+                                style={{
+                                  backgroundColor: '#F2E6D0',
+                                  color: '#7a6440',
+                                  borderRadius: '10px',
+                                  fontWeight: 600,
+                                }}
+                              ><i className="bi bi-eye"></i>
                               </button>
                             </td>
                           </tr>
@@ -550,7 +575,7 @@ export default function ShowSpa() {
                                   fontWeight: 600,
                                 }}
                               >
-                                Editar
+                                <i className="bi bi-pencil-square"></i>
                               </button>
 
                               <button
@@ -560,7 +585,7 @@ export default function ShowSpa() {
                                   navigate(`/dashboard/services/${service.slug}/delete`)
                                 }
                               >
-                                Eliminar
+                                <i className="bi bi-x-square"></i>
                               </button>
                             </td>
                           </tr>
@@ -668,7 +693,7 @@ export default function ShowSpa() {
                                   fontWeight: 600,
                                 }}
                               >
-                                Editar
+                                <i className="bi bi-pencil-square"></i>
                               </button>
 
                               <button
@@ -678,7 +703,7 @@ export default function ShowSpa() {
                                   navigate(`/dashboard/employees/${employee.id}/delete`)
                                 }
                               >
-                                Eliminar
+                                <i className="bi bi-x-square"></i>
                               </button>
                             </td>
                           </tr>
@@ -768,7 +793,7 @@ export default function ShowSpa() {
                                   fontWeight: 600,
                                 }}
                               >
-                                Editar
+                                <i className="bi bi-pencil-square"></i>
                               </button>
                             </td>
                           </tr>

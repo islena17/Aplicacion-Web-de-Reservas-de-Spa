@@ -62,7 +62,7 @@ export default function EditEmployee() {
                 fontWeight: 600,
               }}
             >
-              Volver
+              <i className="bi bi-arrow-left"></i>  Volver
             </button>
           </div>
 

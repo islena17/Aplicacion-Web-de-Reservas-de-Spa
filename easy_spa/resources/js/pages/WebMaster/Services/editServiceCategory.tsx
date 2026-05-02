@@ -61,7 +61,7 @@ export default function EditServiceCategory() {
                                 fontWeight: 600,
                             }}
                         >
-                            Volver
+                            <i className="bi bi-arrow-left"></i>  Volver
                         </button>
                     </div>
 
@@ -113,7 +113,7 @@ export default function EditServiceCategory() {
                                         )}
                                     </div>
 
-                                    <div className="col-12 col-md-4">
+                                    <div className="col-12 col-md-6">
                                         <label className="form-label fw-semibold">Descripción *</label>
                                         <textarea
                                             name="description"
@@ -130,7 +130,8 @@ export default function EditServiceCategory() {
                                         )}
                                     </div>
 
-                                    <div className="col-12 col-md-6">
+                                    <div className="col-12 col-md-4">
+                                        <label className="form-label fw-semibold">Servicio activo: </label>
                                         <div className="form-check p-3" style={{ backgroundColor: '#F7F7F7', borderRadius: '12px' }}>
                                             <input
                                                 type="checkbox"

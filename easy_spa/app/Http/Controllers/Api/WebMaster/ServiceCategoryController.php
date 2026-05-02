@@ -46,7 +46,10 @@ class ServiceCategoryController extends Controller
         }
 
         return response()->json([
-            'data' => $category
+            'data' => $category->load([
+                'spa',
+                'services',
+            ])
         ]);
     }
 
