@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests;
 
+use App\Models\ServiceCategory;
+use App\Models\Spa;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -14,31 +16,30 @@ class ServiceCategoryRequest extends FormRequest
 
     public function rules(): array
     {
-
-        $spa = $this->route('spa');
+        $spaParam = $this->route('spa');
         $category = $this->route('category');
 
-        return [
+        $spa = is_object($spaParam)
+            ? $spaParam
+            : Spa::where('slug', $spaParam)->firstOrFail();
 
+        return [
             'name' => 'required|string|max:255',
 
             'slug' => [
                 'nullable',
                 'string',
                 'max:255',
-                Rule::unique('service_categories', 'slug')   //cambio a que el "unique" ya no sea global si no que se pueda repetir en diferentes spa pero no en el mismo
+                Rule::unique('service_categories', 'slug')
                     ->where('spa_id', $spa->id)
-                    ->ignore($category?->id),
+                    ->ignore($category, 'slug'),
             ],
 
             'description' => 'nullable|string',
-
             'is_active' => 'sometimes|boolean',
-
             'order' => 'sometimes|integer|min:0',
         ];
     }
-
     public function messages(): array
     {
         return [

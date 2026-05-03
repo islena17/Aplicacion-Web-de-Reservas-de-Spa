@@ -1,11 +1,15 @@
 import { useNavigate, useParams } from 'react-router-dom';
 import DashboardLayout from '../layouts/DashboardLayout';
-import { useServiceCategoryForm } from '@/hooks/WebMaster/Services/useServiceCategoryForm';
-import ServiceCategoryForm from '@/components/forms/ServiceCategoryForm';
+import { useEmployeeForm } from '@/hooks/WebMaster/Employee/useEmployeeForm';
+import EmployeeForm from '@/components/forms/EmployeeForm';
 
-export default function CreateServiceCategory() {
+export default function EditEmployee() {
   const navigate = useNavigate();
-  const { slug } = useParams<{ slug: string }>();
+
+  const { slug, employeeId } = useParams<{
+    slug: string;
+    employeeId: string;
+  }>();
 
   const {
     form,
@@ -13,17 +17,20 @@ export default function CreateServiceCategory() {
     loading,
     loadingOptions,
     handleChange,
-    createCategory,
+    updateEmployee,
     fieldError,
-  } = useServiceCategoryForm(slug);
+  } = useEmployeeForm(slug, employeeId);
 
   if (loadingOptions) {
     return (
       <DashboardLayout>
-        <div className="d-flex align-items-center justify-content-center" style={{ minHeight: '100vh', backgroundColor: '#F7F7F7' }}>
+        <div
+          className="d-flex align-items-center justify-content-center"
+          style={{ minHeight: '100vh', backgroundColor: '#F7F7F7' }}
+        >
           <div className="text-center">
             <div className="spinner-border mb-3" style={{ color: '#E0C38D' }} />
-            <p className="mb-0 text-muted">Cargando...</p>
+            <p className="mb-0 text-muted">Cargando datos...</p>
           </div>
         </div>
       </DashboardLayout>
@@ -37,14 +44,15 @@ export default function CreateServiceCategory() {
           <div className="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
             <div>
               <h1 className="fw-bold mb-1" style={{ color: '#2f2f2f' }}>
-                Crear categoría
+                Modificar Empleado/a
               </h1>
               <p className="text-muted mb-0">
-                Añade una nueva categoría de servicios.
+                Modifica los datos del empleado/a
               </p>
             </div>
 
             <button
+              type="button"
               className="btn"
               onClick={() => navigate(-1)}
               style={{
@@ -59,14 +67,14 @@ export default function CreateServiceCategory() {
             </button>
           </div>
 
-          <ServiceCategoryForm
+          <EmployeeForm
             form={form}
             errors={errors}
             loading={loading}
-            submitText="Crear categoría"
-            loadingText="Guardando..."
+            submitText="Guardar cambios"
+            loadingText="Actualizando..."
             onChange={handleChange}
-            onSubmit={createCategory}
+            onSubmit={updateEmployee}
             onCancel={() => navigate(-1)}
             fieldError={fieldError}
           />

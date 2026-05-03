@@ -56,15 +56,15 @@ class ServiceCategoryController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(ServiceCategoryRequest $request, ServiceCategory $serviceCategory)
-    {
-        $serviceCategory->update($request->validated());
+public function update(ServiceCategoryRequest $request, Spa $spa, ServiceCategory $category)
+{
+    $category->update($request->validated());
 
-        return response()->json([
-            'message' => 'Categoría actualizada correctamente',
-            'data' => $serviceCategory
-        ]);
-    }
+    return response()->json([
+        'message' => 'Categoría actualizada correctamente',
+        'data' => $category,
+    ]);
+}
 
     /**
      * Remove the specified resource from storage.
