@@ -39,7 +39,7 @@ export default function AdminLayout({ children }: DashboardLayoutProps) {
           <div className="brand-icon">S</div>
           <div>
             <h5 className="mb-0 fw-bold">Easy Spa</h5>
-            <small>Admin Panel?</small>
+            <small>Admin Panel</small>
           </div>
         </div>
 
@@ -51,22 +51,34 @@ export default function AdminLayout({ children }: DashboardLayoutProps) {
             <span>Dashboard</span>
           </Link>
 
-          <Link to="/dashboard/reservations" className="sidebar-link" onClick={() => setSidebarOpen(false)}>
+          <Link to="admin/services" className="sidebar-link" onClick={() => setSidebarOpen(false)}>
+            <i className="bi bi-calendar-check"></i>
+            <span>Servicios</span>
+          </Link>
+          <Link to="admin/reservations" className="sidebar-link" onClick={() => setSidebarOpen(false)}>
             <i className="bi bi-calendar-check"></i>
             <span>Reservas</span>
+          </Link>
+          <Link to="admin/employees" className="sidebar-link" onClick={() => setSidebarOpen(false)}>
+            <i className="bi bi-calendar-check"></i>
+            <span>Empleados</span>
+          </Link>
+          <Link to="admin/clients" className="sidebar-link" onClick={() => setSidebarOpen(false)}>
+            <i className="bi bi-calendar-check"></i>
+            <span>Clientes</span>
           </Link>
 
           <p className="sidebar-section mt-4">Gestión</p>
 
-          <Link to="/dashboard/spas" className="sidebar-link" onClick={() => setSidebarOpen(false)}>
+          <Link to="/admin/spa" className="sidebar-link" onClick={() => setSidebarOpen(false)}>
             <i className="bi bi-shop"></i>
             <span>Spas</span>
           </Link>
-
-          <Link to="/dashboard/users" className="sidebar-link" onClick={() => setSidebarOpen(false)}>
-            <i className="bi bi-person-badge"></i>
-            <span>Usuarios</span>
+            <Link to="/admin/report" className="sidebar-link" onClick={() => setSidebarOpen(false)}>
+            <i className="bi bi-shop"></i>
+            <span>Informes</span>
           </Link>
+
         </nav>
       </aside>
 

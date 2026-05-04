@@ -1,6 +1,6 @@
 import { ReactNode, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import "../../../../css/dashboard.css";
+import "../../../../css/admin.css";
 import api from "@/lib/axios";
 
 type DashboardLayoutProps = {

@@ -85,7 +85,9 @@ Route::middleware(['auth:sanctum', 'role:WebMaster'])
 Route::middleware(['auth:sanctum', 'role:Admin'])
     ->prefix('admin')
     ->group(function () {
-        Route::apiResource('spa-profile', SpaProfileController::class);
+        Route::get('spa-profile', [SpaProfileController::class, 'show']);
+        Route::put('spa-profile', [SpaProfileController::class, 'update']);
+
         Route::apiResource('reservations', AdminReservationController::class);
         Route::apiResource('services', AdminServiceController::class);
         Route::apiResource('employees', AdminEmployeeController::class);

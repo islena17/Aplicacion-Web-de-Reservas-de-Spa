@@ -25,7 +25,9 @@ import ShowCategory from './pages/WebMaster/Services/showCategory';
 import ShowClient from './pages/WebMaster/Clients/showClient';
 import EditUser from './pages/WebMaster/Users/editUser';
 import ProtectedRoute from './components/ProtectedRoute';
-import AdminHome from './pages/Admin/DashboardHome';
+import AdminHome from './pages/Admin/AdminHome';
+import AdminEditSpa from './pages/Admin/Spa/editSpa';
+import AdminShowSpa from './pages/Admin/Spa/showSpa';
 
 
 export default function MainApp() {
@@ -76,17 +78,20 @@ export default function MainApp() {
   }
 />
 
-     <Route
-  path="/admin/"
+ <Route
+  path="/admin/*"
   element={
     <ProtectedRoute role="Admin">
       <Routes>
         <Route path="" element={<AdminHome />} />
+        <Route path="spa" element={<AdminShowSpa />} />
+        <Route path="spa/edit" element={<AdminEditSpa />} />
       </Routes>
     </ProtectedRoute>
-    
   }
-  />
+/>
+    
+
 </Routes>
     </BrowserRouter>
   );
