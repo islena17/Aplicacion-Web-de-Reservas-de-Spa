@@ -50,6 +50,10 @@ export default function AdminLayout({ children }: DashboardLayoutProps) {
             <i className="bi bi-grid"></i>
             <span>Dashboard</span>
           </Link>
+            <Link to="/admin/categories" className="sidebar-link" onClick={() => setSidebarOpen(false)}>
+            <i className="bi bi-calendar-check"></i>
+            <span>Categorias de Servicios</span>
+          </Link>
 
           <Link to="/admin/services" className="sidebar-link" onClick={() => setSidebarOpen(false)}>
             <i className="bi bi-calendar-check"></i>

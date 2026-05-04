@@ -2,10 +2,10 @@
 
 namespace App\Http\Requests;
 
-use App\Models\Service;
 use App\Models\ServiceCategory;
 use App\Models\Spa;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 
 class ServiceCategoryRequest extends FormRequest
@@ -20,13 +20,25 @@ class ServiceCategoryRequest extends FormRequest
         $spaParam = $this->route('spa');
         $categorySlug = $this->route('category');
 
-        $spa = is_object($spaParam)
-            ? $spaParam
-            : Spa::where('slug', $spaParam)->first();
+        if ($spaParam) {
+            $spa = is_object($spaParam)
+                ? $spaParam
+                : Spa::where('slug', $spaParam)->first();
+        } else {
+            $spa = Spa::where('user_id', Auth::id())->first();
+        }
 
-        $category = ServiceCategory::where('slug', $categorySlug)
-            ->where('spa_id', $spa->id)
-            ->first();
+        if (!$spa) {
+            abort(404, 'Spa no encontrado.');
+        }
+
+        $category = null;
+
+        if ($categorySlug) {
+            $category = ServiceCategory::where('slug', $categorySlug)
+                ->where('spa_id', $spa->id)
+                ->first();
+        }
 
         return [
             'name' => 'required|string|max:255',
@@ -45,22 +57,18 @@ class ServiceCategoryRequest extends FormRequest
             'order' => 'sometimes|integer|min:0',
         ];
     }
+
     public function messages(): array
     {
         return [
-
             'name.required' => 'El nombre de la categoría es obligatorio.',
             'name.string' => 'El nombre debe ser una cadena de texto.',
             'name.max' => 'El nombre no puede superar los 255 caracteres.',
-
             'slug.string' => 'El slug debe ser una cadena de texto.',
             'slug.max' => 'El slug no puede superar los 255 caracteres.',
             'slug.unique' => 'El slug ya está en uso.',
-
             'description.string' => 'La descripción debe ser texto.',
-
             'is_active.boolean' => 'El campo is_active debe ser verdadero o falso.',
-
             'order.integer' => 'El orden debe ser un número entero.',
             'order.min' => 'El orden no puede ser negativo.',
         ];

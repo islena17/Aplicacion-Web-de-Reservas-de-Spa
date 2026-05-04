@@ -31,6 +31,9 @@ import AdminShowSpa from './pages/Admin/Spa/showSpa';
 import AdminShowService from './pages/Admin/Services/showService';
 import AdminServicesIndex from './pages/Admin/Services';
 import AdminCreateService from './pages/Admin/Services/createService';
+import AdminShowCategory from './pages/Admin/Category/showCategory';
+import AdminCategoriesIndex from './pages/Admin/Category';
+import AdminCreateCategory from './pages/Admin/Category/createCategory';
 
 
 export default function MainApp() {
@@ -93,6 +96,10 @@ export default function MainApp() {
                 <Route path="services/:serviceSlug" element={<AdminShowService />} />
                 <Route path="services" element={<AdminServicesIndex />} />
                 <Route path="services/create" element={<AdminCreateService />} />
+
+                <Route path="categories/:categorySlug" element={<AdminShowCategory />} />
+                <Route path="categories" element={<AdminCategoriesIndex />} />
+                <Route path="categories/create" element={<AdminCreateCategory />} />
 
               </Routes>
             </ProtectedRoute>

@@ -56,16 +56,17 @@ class ServiceCategoryController extends Controller
     /**
      * Mostrar categoría
      */
-    public function show(ServiceCategory $serviceCategory)
+    public function show(ServiceCategory $category)
     {
         $spaId = $this->getAdminSpaId();
 
-        if ($serviceCategory->spa_id !== $spaId) {
+        if ($category->spa_id !== $spaId) {
             abort(404);
         }
 
+
         return response()->json([
-            'data' => $serviceCategory
+            'data' => $category->load('services')
         ]);
     }
 

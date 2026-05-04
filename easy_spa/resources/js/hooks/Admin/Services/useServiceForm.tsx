@@ -106,6 +106,7 @@ export function useServiceForm(serviceSlug?: string) {
 
   const createService = async (e: FormEvent) => {
     e.preventDefault();
+    console.log("CLICK FUNCIONA");
 
     if (!form.service_category_id) {
       setErrors({

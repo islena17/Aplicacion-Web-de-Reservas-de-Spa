@@ -17,7 +17,7 @@ interface ServiceCategoryFormProps {
   onChange: (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
   onSubmit: (e: FormEvent<HTMLFormElement>) => void;
   onCancel: () => void;
-  fieldError: (error: any) => string;
+  fieldError: (error: any) => string | undefined;
 }
 
 export default function ServiceCategoryForm({

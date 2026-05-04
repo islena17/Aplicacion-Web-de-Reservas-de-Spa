@@ -3,7 +3,9 @@
 namespace App\Http\Requests;
 
 use App\Models\Service;
+use App\Models\Spa;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 
 class ServiceRequest extends FormRequest
@@ -18,6 +20,14 @@ class ServiceRequest extends FormRequest
         $service = $this->route('service');
         $spaId = $this->input('spa_id');
 
+        if (!$spaId) {
+            $spaId = Spa::where('user_id', Auth::id())->value('id');
+        }
+
+        if (!$spaId) {
+            abort(404, 'Este admin no tiene un spa asignado.');
+        }
+
         if (! $service instanceof Service) {
             $service = Service::where('slug', $service)
                 ->where('spa_id', $spaId)
@@ -25,7 +35,7 @@ class ServiceRequest extends FormRequest
         }
 
         return [
-            'spa_id' => 'required|exists:spas,id',
+            'spa_id' => 'sometimes|exists:spas,id',
             'service_category_id' => 'required|exists:service_categories,id',
             'name' => 'required|string|max:255',
 
