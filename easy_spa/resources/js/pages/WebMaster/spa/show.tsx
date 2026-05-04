@@ -18,6 +18,8 @@ export default function ShowSpa() {
     setSelectedCategory,
     filteredServices,
     categories,
+    deleteCategory,
+    deleteService
   } = useSpaShow(slug);
 
   if (loading) {
@@ -454,6 +456,16 @@ export default function ShowSpa() {
                                 }}
                               ><i className="bi bi-eye"></i>
                               </button>
+
+                               <button
+                                type="button"
+                                className="btn btn-sm btn-outline-danger"
+                                onClick={() =>
+                                  deleteCategory(cat.slug)
+                                }
+                              >
+                                <i className="bi bi-x-square"></i>
+                              </button>
                             </td>
                           </tr>
                         ))}
@@ -606,7 +618,7 @@ export default function ShowSpa() {
                                 type="button"
                                 className="btn btn-sm btn-outline-danger"
                                 onClick={() =>
-                                  navigate(`/dashboard/services/${service.slug}/delete`)
+                                  deleteService(service.slug)
                                 }
                               >
                                 <i className="bi bi-x-square"></i>

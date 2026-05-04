@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Service;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -15,15 +16,17 @@ class ServiceRequest extends FormRequest
     public function rules(): array
     {
         $service = $this->route('service');
-        $serviceId = is_object($service) ? $service->id : null;
-
         $spaId = $this->input('spa_id');
+
+        if (! $service instanceof Service) {
+            $service = Service::where('slug', $service)
+                ->where('spa_id', $spaId)
+                ->first();
+        }
 
         return [
             'spa_id' => 'required|exists:spas,id',
-
             'service_category_id' => 'required|exists:service_categories,id',
-
             'name' => 'required|string|max:255',
 
             'slug' => [
@@ -32,7 +35,7 @@ class ServiceRequest extends FormRequest
                 'max:255',
                 Rule::unique('services', 'slug')
                     ->where(fn($query) => $query->where('spa_id', $spaId))
-                    ->ignore($serviceId),
+                    ->ignore($service?->id),
             ],
 
             'description' => 'nullable|string',

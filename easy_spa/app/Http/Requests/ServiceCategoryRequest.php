@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Service;
 use App\Models\ServiceCategory;
 use App\Models\Spa;
 use Illuminate\Foundation\Http\FormRequest;
@@ -17,11 +18,15 @@ class ServiceCategoryRequest extends FormRequest
     public function rules(): array
     {
         $spaParam = $this->route('spa');
-        $category = $this->route('category');
+        $categorySlug = $this->route('category');
 
         $spa = is_object($spaParam)
             ? $spaParam
-            : Spa::where('slug', $spaParam)->firstOrFail();
+            : Spa::where('slug', $spaParam)->first();
+
+        $category = ServiceCategory::where('slug', $categorySlug)
+            ->where('spa_id', $spa->id)
+            ->first();
 
         return [
             'name' => 'required|string|max:255',
@@ -32,7 +37,7 @@ class ServiceCategoryRequest extends FormRequest
                 'max:255',
                 Rule::unique('service_categories', 'slug')
                     ->where('spa_id', $spa->id)
-                    ->ignore($category, 'slug'),
+                    ->ignore($category?->id),
             ],
 
             'description' => 'nullable|string',

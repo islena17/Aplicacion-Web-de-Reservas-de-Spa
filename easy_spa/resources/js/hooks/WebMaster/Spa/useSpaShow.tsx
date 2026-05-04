@@ -145,6 +145,65 @@ export function useSpaShow(slug?: string) {
     }
   };
 
+// eliminar servicio
+const deleteService = async (serviceSlug: string) => {
+  const confirmDelete = window.confirm(
+    '¿Seguro que quieres eliminar este servicio?'
+  );
+
+  if (!confirmDelete) return;
+
+  try {
+    await api.delete(`/api/webmaster/services/${serviceSlug}`);
+
+    setSpa((prev) => {
+      if (!prev) return prev;
+
+      return {
+        ...prev,
+        services: prev.services.filter(
+          (service) => service.slug !== serviceSlug
+        ),
+      };
+    });
+  } catch {
+    setError('No se ha podido eliminar el servicio.');
+  }
+};
+
+// eliminar categoría
+const deleteCategory = async (categorySlug: string) => {
+  const confirmDelete = window.confirm(
+    '¿Seguro que quieres eliminar esta categoría?'
+  );
+
+  if (!confirmDelete) return;
+
+  try {
+    await api.delete(`/api/webmaster/spas/${slug}/categories/${categorySlug}`);
+
+    setSpa((prev) => {
+      if (!prev) return prev;
+
+      return {
+        ...prev,
+        categories: prev.categories.filter(
+          (category) => category.slug !== categorySlug
+        ),
+      };
+    });
+
+    setSelectedCategory('');
+  } catch (error: any) {
+    if (error.response?.status === 409) {
+      setError(error.response.data.message);
+      return;
+    }
+
+    setError('No se ha podido eliminar la categoría.');
+  }
+}
+
   //filtro de servicios por categorias
 
   const [selectedCategory, setSelectedCategory] = useState('');
@@ -172,5 +231,7 @@ export function useSpaShow(slug?: string) {
     setSelectedCategory,
     filteredServices,
     categories,
+    deleteCategory,
+    deleteService
   };
 }

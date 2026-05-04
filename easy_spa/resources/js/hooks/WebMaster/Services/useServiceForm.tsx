@@ -88,7 +88,7 @@ export function useServiceForm(spaSlug?: string, serviceSlug?: string) {
           const service = serviceRes.data.data ?? serviceRes.data;
 
           setForm({
-            service_category_id: String(service.service_category_id ?? ''),
+            service_category_id: String(  service.service_category_id ?? service.category?.id ?? ''),
             spa_id: String(service.spa_id ?? currentSpaId),
             name: service.name ?? '',
             slug: service.slug ?? '',

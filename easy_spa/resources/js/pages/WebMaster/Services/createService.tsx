@@ -1,21 +1,22 @@
 import { useNavigate, useParams } from 'react-router-dom';
 import DashboardLayout from '../layouts/DashboardLayout';
-import { useEmployeeForm } from '@/hooks/WebMaster/Employee/useEmployeeForm';
-import EmployeeForm from '@/components/forms/EmployeeForm';
+import { useServiceForm } from '@/hooks/WebMaster/Services/useServiceForm';
+import ServiceForm from '@/components/forms/ServiceForm';
 
-export default function CreateEmployee() {
+export default function CreateService() {
   const navigate = useNavigate();
   const { slug } = useParams<{ slug: string }>();
 
   const {
     form,
+    categories,
     errors,
     loading,
     loadingOptions,
     handleChange,
-    createEmployee,
+    createService,
     fieldError,
-  } = useEmployeeForm(slug);
+  } = useServiceForm(slug);
 
   if (loadingOptions) {
     return (
@@ -40,10 +41,10 @@ export default function CreateEmployee() {
           <div className="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
             <div>
               <h1 className="fw-bold mb-1" style={{ color: '#2f2f2f' }}>
-                Crear empleado
+                Crear servicio
               </h1>
               <p className="text-muted mb-0">
-                Añade un nuevo empleado para este spa.
+                Añade un nuevo servicio para este spa.
               </p>
             </div>
 
@@ -63,14 +64,15 @@ export default function CreateEmployee() {
             </button>
           </div>
 
-          <EmployeeForm
+          <ServiceForm
             form={form}
+            categories={categories}
             errors={errors}
             loading={loading}
-            submitText="Crear empleado"
+            submitText="Crear servicio"
             loadingText="Guardando..."
             onChange={handleChange}
-            onSubmit={createEmployee}
+            onSubmit={createService}
             onCancel={() => navigate(-1)}
             fieldError={fieldError}
           />

@@ -56,25 +56,37 @@ class ServiceCategoryController extends Controller
     /**
      * Update the specified resource in storage.
      */
-public function update(ServiceCategoryRequest $request, Spa $spa, ServiceCategory $category)
-{
-    $category->update($request->validated());
+    public function update(ServiceCategoryRequest $request, Spa $spa, ServiceCategory $category)
+    {
+        $category->update($request->validated());
 
-    return response()->json([
-        'message' => 'Categoría actualizada correctamente',
-        'data' => $category,
-    ]);
-}
+        return response()->json([
+            'message' => 'Categoría actualizada correctamente',
+            'data' => $category,
+        ]);
+    }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(ServiceCategory $serviceCategory)
+    public function destroy(Spa $spa, ServiceCategory $category)
     {
-        $serviceCategory->delete();
+        if ($category->spa_id !== $spa->id) {
+            return response()->json([
+                'message' => 'La categoría no pertenece a este spa.',
+            ], 404);
+        }
+
+        if ($category->services()->exists()) {
+            return response()->json([
+                'message' => 'No se puede eliminar la categoría porque tiene servicios asociados.',
+            ], 409);
+        }
+
+        $category->delete();
 
         return response()->json([
-            'message' => 'Categoría eliminada correctamente'
+            'message' => 'Categoría eliminada correctamente',
         ]);
     }
 }
