@@ -30,6 +30,7 @@ import AdminEditSpa from './pages/Admin/Spa/editSpa';
 import AdminShowSpa from './pages/Admin/Spa/showSpa';
 import AdminShowService from './pages/Admin/Services/showService';
 import AdminServicesIndex from './pages/Admin/Services';
+import AdminCreateService from './pages/Admin/Services/createService';
 
 
 export default function MainApp() {
@@ -91,6 +92,8 @@ export default function MainApp() {
 
                 <Route path="services/:serviceSlug" element={<AdminShowService />} />
                 <Route path="services" element={<AdminServicesIndex />} />
+                <Route path="services/create" element={<AdminCreateService />} />
+
               </Routes>
             </ProtectedRoute>
           } />
@@ -99,4 +102,4 @@ export default function MainApp() {
 
     </BrowserRouter>
   )
-              }
+}

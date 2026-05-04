@@ -8,7 +8,7 @@ type CategoryOption = {
 
 type ServiceFormData = {
   service_category_id: string;
-  spa_id: string;
+  spa_id?: string;
   name: string;
   slug: string;
   description: string;

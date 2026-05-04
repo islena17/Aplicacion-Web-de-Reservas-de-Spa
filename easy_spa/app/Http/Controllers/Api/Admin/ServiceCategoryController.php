@@ -5,13 +5,20 @@ namespace App\Http\Controllers\Api\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ServiceCategoryRequest;
 use App\Models\ServiceCategory;
+use App\Models\Spa;
 use Illuminate\Support\Facades\Auth;
 
 class ServiceCategoryController extends Controller
 {
     private function getAdminSpaId(): int
     {
-        return Auth::user()->spa->id;
+        $spa = Spa::where('user_id', Auth::id())->first();
+
+        if (!$spa) {
+            abort(404, 'Este admin no tiene un spa asignado.');
+        }
+
+        return $spa->id;
     }
 
     /**
