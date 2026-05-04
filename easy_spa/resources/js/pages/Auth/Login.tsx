@@ -1,15 +1,16 @@
 import { FormEvent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '@/lib/axios';
+import { useAuth } from '@/context/AuthContext';
 
 type LoginErrors = {
   email?: string | string[];
   password?: string | string[];
   general?: string;
 };
-
 export default function Login() {
-  const navigate = useNavigate();
+    const navigate = useNavigate();
+  const { setUser } = useAuth();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -23,21 +24,26 @@ export default function Login() {
 
     setLoading(true);
     setErrors({});
-
     try {
-      console.log('Pidiendo CSRF...');
       await api.get('/sanctum/csrf-cookie');
 
-      console.log('Haciendo login...');
-      const response = await api.post('/login', {
+      await api.post('/login', {
         email,
         password,
         remember,
       });
 
-      console.log('LOGIN OK', response);
+      const userResponse = await api.get('/api/user');
+      const user = userResponse.data;
 
-      navigate('/dashboard');
+      localStorage.setItem('user', JSON.stringify(user));
+      setUser(user);
+
+      if (user.role?.name === 'WebMaster') {
+        navigate('/dashboard');
+      } else if (user.role?.name === 'Admin') {
+        navigate('/admin');
+      }
     } catch (error: any) {
       console.log('ERROR LOGIN:', error);
       console.log('STATUS:', error.response?.status);

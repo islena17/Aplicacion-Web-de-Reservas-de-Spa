@@ -3,9 +3,12 @@ import { createRoot } from 'react-dom/client';
 import '../css/app.css';
 import MainApp from './MainApp';
 import 'bootstrap-icons/font/bootstrap-icons.css';
+import { AuthProvider } from '@/context/AuthContext';
 
 createRoot(document.getElementById('root')!).render(
-    <StrictMode>
-        <MainApp />
-    </StrictMode>,
+  <StrictMode>
+    <AuthProvider>
+      <MainApp />
+    </AuthProvider>
+  </StrictMode>,
 );
