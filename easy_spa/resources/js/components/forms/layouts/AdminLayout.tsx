@@ -51,7 +51,7 @@ export default function AdminLayout({ children }: DashboardLayoutProps) {
             <span>Dashboard</span>
           </Link>
 
-          <Link to="admin/services" className="sidebar-link" onClick={() => setSidebarOpen(false)}>
+          <Link to="/admin/services" className="sidebar-link" onClick={() => setSidebarOpen(false)}>
             <i className="bi bi-calendar-check"></i>
             <span>Servicios</span>
           </Link>
@@ -72,7 +72,7 @@ export default function AdminLayout({ children }: DashboardLayoutProps) {
 
           <Link to="/admin/spa" className="sidebar-link" onClick={() => setSidebarOpen(false)}>
             <i className="bi bi-shop"></i>
-            <span>Spas</span>
+            <span>Spa</span>
           </Link>
             <Link to="/admin/report" className="sidebar-link" onClick={() => setSidebarOpen(false)}>
             <i className="bi bi-shop"></i>

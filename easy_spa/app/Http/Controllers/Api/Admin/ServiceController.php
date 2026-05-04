@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ServiceRequest;
 use App\Models\Service;
+use App\Models\Spa;
 use Illuminate\Support\Facades\Auth;
 
 class ServiceController extends Controller
@@ -14,7 +15,13 @@ class ServiceController extends Controller
      */
     private function getAdminSpaId(): int
     {
-        return Auth::user()->spa->id;
+        $spa = Spa::where('user_id', Auth::id())->first();
+
+        if (!$spa) {
+            abort(404, 'Este admin no tiene un spa asignado.');
+        }
+
+        return $spa->id;
     }
 
     /**
@@ -26,12 +33,13 @@ class ServiceController extends Controller
 
         $services = Service::with(['category'])
             ->where('spa_id', $spaId)
-            ->orderBy('order')
+            ->orderBy('name')
             ->get();
 
-        return response()->json($services);
+        return response()->json([
+            'data' => $services
+        ]);
     }
-
     /**
      * Store a newly created resource in storage.
      */

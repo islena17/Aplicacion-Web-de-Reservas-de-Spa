@@ -28,6 +28,8 @@ import ProtectedRoute from './components/ProtectedRoute';
 import AdminHome from './pages/Admin/AdminHome';
 import AdminEditSpa from './pages/Admin/Spa/editSpa';
 import AdminShowSpa from './pages/Admin/Spa/showSpa';
+import AdminShowService from './pages/Admin/Services/showService';
+import AdminServicesIndex from './pages/Admin/Services';
 
 
 export default function MainApp() {
@@ -35,64 +37,66 @@ export default function MainApp() {
     <BrowserRouter>
       <Routes>
         {/* AUTH */}
-          <Route path="/" element={<Login />} />
+        <Route path="/" element={<Login />} />
 
         <Route
-  path="/dashboard/*"
-  element={
-    <ProtectedRoute role="WebMaster">
-      <Routes>
-        <Route path="" element={<DashboardHome />} />
+          path="/dashboard/*"
+          element={
+            <ProtectedRoute role="WebMaster">
+              <Routes>
+                <Route path="" element={<DashboardHome />} />
 
-        <Route path="spas" element={<Index />} />
-        <Route path="spas/create" element={<CreateSpa />} />
-        <Route path="spas/:slug" element={<ShowSpa />} />
-        <Route path="spas/:slug/edit" element={<EditSpa />} />
+                <Route path="spas" element={<Index />} />
+                <Route path="spas/create" element={<CreateSpa />} />
+                <Route path="spas/:slug" element={<ShowSpa />} />
+                <Route path="spas/:slug/edit" element={<EditSpa />} />
 
-        <Route path="spas/:slug/reservations/create" element={<CreateReservation />} />
-        <Route path="spas/:slug/reservations/:reservationId" element={<ShowReservation />} />
-        <Route path="spas/:slug/reservations/:reservationId/edit" element={<EditReservation />} />
+                <Route path="spas/:slug/reservations/create" element={<CreateReservation />} />
+                <Route path="spas/:slug/reservations/:reservationId" element={<ShowReservation />} />
+                <Route path="spas/:slug/reservations/:reservationId/edit" element={<EditReservation />} />
 
-        <Route path="reservations" element={<GlobalReservations />} />
+                <Route path="reservations" element={<GlobalReservations />} />
 
-        <Route path="spas/:slug/services/create" element={<CreateService />} />
-        <Route path="spas/:slug/services/:serviceSlug/edit" element={<EditService />} />
+                <Route path="spas/:slug/services/create" element={<CreateService />} />
+                <Route path="spas/:slug/services/:serviceSlug/edit" element={<EditService />} />
 
-        <Route path="spas/:slug/categories/create" element={<CreateServiceCategory />} />
-        <Route path="spas/:slug/categories/:categorySlug" element={<ShowCategory />} />
-        <Route path="spas/:slug/categories/:categorySlug/edit" element={<EditServiceCategory />} />
+                <Route path="spas/:slug/categories/create" element={<CreateServiceCategory />} />
+                <Route path="spas/:slug/categories/:categorySlug" element={<ShowCategory />} />
+                <Route path="spas/:slug/categories/:categorySlug/edit" element={<EditServiceCategory />} />
 
-        <Route path="spas/:slug/employees/create" element={<CreateEmployee />} />
-        <Route path="spas/:slug/employees/:employeeId/edit" element={<EditEmployee />} />
+                <Route path="spas/:slug/employees/create" element={<CreateEmployee />} />
+                <Route path="spas/:slug/employees/:employeeId/edit" element={<EditEmployee />} />
 
-        <Route path="spas/:slug/clients/:clientId/edit" element={<EditClient />} />
-        <Route path="spas/:slug/clients/:clientId" element={<ShowClient />} />
+                <Route path="spas/:slug/clients/:clientId/edit" element={<EditClient />} />
+                <Route path="spas/:slug/clients/:clientId" element={<ShowClient />} />
 
-        <Route path="users" element={<UsersIndex />} />
-        <Route path="users/create" element={<CreateUser />} />
-        <Route path="users/:id" element={<ShowUser />} />
-        <Route path="users/:id/edit" element={<EditUser />} />
+                <Route path="users" element={<UsersIndex />} />
+                <Route path="users/create" element={<CreateUser />} />
+                <Route path="users/:id" element={<ShowUser />} />
+                <Route path="users/:id/edit" element={<EditUser />} />
+              </Routes>
+            </ProtectedRoute>
+
+          }
+        />
+
+        <Route
+          path="/admin/*"
+          element={
+            <ProtectedRoute role="Admin">
+              <Routes>
+                <Route path="" element={<AdminHome />} />
+                <Route path="spa" element={<AdminShowSpa />} />
+                <Route path="spa/edit" element={<AdminEditSpa />} />
+
+                <Route path="services/:serviceSlug" element={<AdminShowService />} />
+                <Route path="services" element={<AdminServicesIndex />} />
+              </Routes>
+            </ProtectedRoute>
+          } />
+
       </Routes>
-    </ProtectedRoute>
 
-  }
-/>
-
- <Route
-  path="/admin/*"
-  element={
-    <ProtectedRoute role="Admin">
-      <Routes>
-        <Route path="" element={<AdminHome />} />
-        <Route path="spa" element={<AdminShowSpa />} />
-        <Route path="spa/edit" element={<AdminEditSpa />} />
-      </Routes>
-    </ProtectedRoute>
-  }
-/>
-    
-
-</Routes>
     </BrowserRouter>
-  );
-}
+  )
+              }
