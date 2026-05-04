@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from 'react-router-dom';
-import DashboardLayout from '../layouts/DashboardLayout';
+import DashboardLayout from '../../../components/forms/layouts/WMLayout';
 import { useReservationForm } from '@/hooks/WebMaster/Reservation/useReservationForm';
 import ReservationForm from '@/components/forms/ReservationForm';
 

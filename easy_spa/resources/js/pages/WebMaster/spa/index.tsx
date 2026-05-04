@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import DashboardLayout from '../layouts/DashboardLayout';
+import DashboardLayout from '../../../components/forms/layouts/WMLayout';
 import { useSpas } from '@/hooks/WebMaster/Spa/useSpas';
 
 export default function Index() {

@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import DashboardLayout from '../layouts/DashboardLayout';
+import DashboardLayout from '../../../components/forms/layouts/WMLayout';
 import { useCreateUser } from '@/hooks/WebMaster/User/useCreateUser';
 
 export default function CreateUser() {

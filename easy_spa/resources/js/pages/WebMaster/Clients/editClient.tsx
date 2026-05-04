@@ -1,31 +1,25 @@
 import { useNavigate, useParams } from 'react-router-dom';
 import DashboardLayout from '../../../components/forms/layouts/WMLayout';
-import { useReservationForm } from '@/hooks/WebMaster/Reservation/useReservationForm';
-import ReservationForm from '@/components/forms/ReservationForm';
+import { useClientForm } from '@/hooks/WebMaster/Client/useClientForm';
+import ClientForm from '@/components/forms/ClientForm';
 
-export default function CreateReservation() {
+export default function EditClient() {
   const navigate = useNavigate();
-  const { slug, reservationId } = useParams<{
-  slug: string;
-  reservationId: string;
-}>();
+
+  const { slug, clientId } = useParams<{
+    slug: string;
+    clientId: string;
+  }>();
 
   const {
     form,
-    clients,
-    services,
-    employees,
     errors,
     loading,
     loadingOptions,
     handleChange,
-    updateReservation,
+    updateClient,
     fieldError,
-    showClientForm,
-    setShowClientForm,
-    clientForm,
-    handleClientChange,
-  } = useReservationForm(slug);
+  } = useClientForm(slug, clientId);
 
   if (loadingOptions) {
     return (
@@ -36,7 +30,7 @@ export default function CreateReservation() {
         >
           <div className="text-center">
             <div className="spinner-border mb-3" style={{ color: '#E0C38D' }} />
-            <p className="mb-0 text-muted">Cargando datos...</p>
+            <p className="mb-0 text-muted">Cargando cliente...</p>
           </div>
         </div>
       </DashboardLayout>
@@ -50,10 +44,10 @@ export default function CreateReservation() {
           <div className="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
             <div>
               <h1 className="fw-bold mb-1" style={{ color: '#2f2f2f' }}>
-                Crear reserva
+                Editar cliente
               </h1>
               <p className="text-muted mb-0">
-                Añade una nueva reserva para este spa.
+                Modifica los datos del cliente.
               </p>
             </div>
 
@@ -73,23 +67,16 @@ export default function CreateReservation() {
             </button>
           </div>
 
-          <ReservationForm
+          <ClientForm
             form={form}
-            clients={clients}
-            services={services}
-            employees={employees}
             errors={errors}
             loading={loading}
             submitText="Guardar cambios"
-            loadingText="Actualizando..."
+            loadingText="Guardando..."
             onChange={handleChange}
-            onSubmit={updateReservation}
+            onSubmit={updateClient}
             onCancel={() => navigate(-1)}
             fieldError={fieldError}
-            showClientForm={showClientForm}
-            setShowClientForm={setShowClientForm}
-            clientForm={clientForm}
-            handleClientChange={handleClientChange}
           />
         </div>
       </div>

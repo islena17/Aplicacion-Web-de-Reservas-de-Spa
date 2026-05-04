@@ -13,7 +13,7 @@ import CreateService from './pages/WebMaster/Services/createService';
 import EditService from './pages/WebMaster/Services/editService';
 import CreateEmployee from './pages/WebMaster/Employees/createEmployee';
 import EditEmployee from './pages/WebMaster/Employees/editEmployee';
-import EditClient from './pages/WebMaster/Clients/edit';
+import EditClient from './pages/WebMaster/Clients/editClient';
 import GlobalReservations from './pages/WebMaster/Reservation/GlobalReservation';
 import CreateServiceCategory from './pages/WebMaster/Services/createServiceCategory';
 import EditServiceCategory from './pages/WebMaster/Services/editServiceCategory';

@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from 'react-router-dom';
-import DashboardLayout from '../layouts/DashboardLayout';
+import DashboardLayout from '../../../components/forms/layouts/WMLayout';
 import { useSpa } from '@/hooks/WebMaster/Spa/useSpa';
 import { useSpaForm } from '@/hooks/WebMaster/Spa/useSpaForm';
 

@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from 'react-router-dom';
-import DashboardLayout from '../layouts/DashboardLayout';
+import DashboardLayout from '../../../components/forms/layouts/WMLayout';
 import { useCategory } from '@/hooks/WebMaster/Services/useCategory';
 
 export default function ShowCategory() {

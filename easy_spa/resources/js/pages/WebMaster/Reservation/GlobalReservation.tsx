@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import DashboardLayout from '../layouts/DashboardLayout';
+import DashboardLayout from '../../../components/forms/layouts/WMLayout';
 import { useGlobalReservation } from '@/hooks/WebMaster/Reservation/useGlobalReservation';
 
 export default function GlobalReservations() {
