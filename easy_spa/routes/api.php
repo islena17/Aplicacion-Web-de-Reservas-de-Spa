@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\Admin\AvailabilityController as AdminAvailabilityController;
+use App\Http\Controllers\Api\Admin\CalendarController;
 use App\Http\Controllers\Api\Admin\ClientController as AdminClientController;
 use App\Http\Controllers\Api\Admin\EmployeeBlockController as AdminEmployeeBlockController;
 use App\Http\Controllers\Api\Admin\EmployeeController as AdminEmployeeController;
@@ -86,6 +87,7 @@ Route::middleware(['auth:sanctum', 'role:WebMaster'])
 Route::middleware(['auth:sanctum', 'role:Admin'])
     ->prefix('admin')
     ->group(function () {
+        Route::get('/reservations/calendar', [CalendarController::class, 'index']);
         Route::get('spa-profile', [SpaProfileController::class, 'show']);
         Route::put('spa-profile', [SpaProfileController::class, 'update']);
 
@@ -99,6 +101,7 @@ Route::middleware(['auth:sanctum', 'role:Admin'])
         Route::apiResource('categories', AdminServiceCategoryController::class);
         Route::get('availability', [AdminAvailabilityController::class, 'index']);
          Route::apiResource('clients', AdminClientController::class);
+        
     });
 
 Route::middleware(['auth:sanctum', 'role:employee'])

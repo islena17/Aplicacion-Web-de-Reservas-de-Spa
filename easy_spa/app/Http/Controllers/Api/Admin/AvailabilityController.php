@@ -3,15 +3,22 @@
 namespace App\Http\Controllers\Api\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Spa;
 use App\Services\AvailabilityService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class AvailabilityController extends Controller
 {
-    private function getAdminSpaId(): int
+ private function getAdminSpaId(): int
     {
-        return Auth::user()->spa->id;
+        $spa = Spa::where('user_id', Auth::id())->first();
+
+        if (!$spa) {
+            abort(404, 'Este admin no tiene un spa asignado.');
+        }
+
+        return $spa->id;
     }
 
     public function index(Request $request, AvailabilityService $availabilityService)

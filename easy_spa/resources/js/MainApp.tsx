@@ -43,6 +43,7 @@ import EmployeeSchedule from './pages/Admin/Employee/employeeSchedule';
 import AdminReservationsIndex from './pages/Admin/Reservation';
 import AdminCreateReservation from './pages/Admin/Reservation/createReservation';
 import AdminEditReservation from './pages/Admin/Reservation/editReservation';
+import Calendar from './pages/Admin/calendar';
 
 
 export default function MainApp() {
@@ -120,6 +121,8 @@ export default function MainApp() {
                 <Route path='reservations' element={<AdminReservationsIndex />} />
                 <Route path='reservations/create' element={<AdminCreateReservation />} />
                 <Route path='reservations/:reservationId/edit' element={<AdminEditReservation />} />
+
+                <Route path='calendar' element={<Calendar />} />
               </Routes>
             </ProtectedRoute>
           } />
