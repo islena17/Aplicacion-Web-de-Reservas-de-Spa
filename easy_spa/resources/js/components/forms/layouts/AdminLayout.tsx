@@ -59,7 +59,7 @@ export default function AdminLayout({ children }: DashboardLayoutProps) {
             <i className="bi bi-calendar-check"></i>
             <span>Servicios</span>
           </Link>
-          <Link to="admin/reservations" className="sidebar-link" onClick={() => setSidebarOpen(false)}>
+          <Link to="/admin/reservations" className="sidebar-link" onClick={() => setSidebarOpen(false)}>
             <i className="bi bi-calendar-check"></i>
             <span>Reservas</span>
           </Link>

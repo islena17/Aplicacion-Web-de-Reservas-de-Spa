@@ -16,7 +16,7 @@ class ReservationRequest extends FormRequest
     {
         return [
             'client_id' => 'required|exists:clients,id',
-            'spa_id' => 'required|exists:spas,id',
+            'spa_id' => 'sometimes|exists:spas,id',
             'service_id' => 'required|exists:services,id',
             'employee_id' => 'nullable|exists:employees,id',
 

@@ -5,13 +5,20 @@ namespace App\Http\Controllers\Api\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ClientRequest;
 use App\Models\Client;
+use App\Models\Spa;
 use Illuminate\Support\Facades\Auth;
 
 class ClientController extends Controller
 {
     private function getAdminSpaId(): int
     {
-        return Auth::user()->spa->id;
+        $spa = Spa::where('user_id', Auth::id())->first();
+
+        if (!$spa) {
+            abort(404, 'Este admin no tiene un spa asignado.');
+        }
+
+        return $spa->id;
     }
 
     private function clientBelongsToAdminSpa(Client $client): bool
@@ -31,11 +38,12 @@ class ClientController extends Controller
             ->whereHas('reservations', function ($query) use ($spaId) {
                 $query->where('spa_id', $spaId);
             })
-            ->distinct()
-            ->latest()
-            ->paginate(10);
+            ->orderBy('name')
+            ->get();
 
-        return response()->json($clients);
+        return response()->json([
+            'data' => $clients,
+        ]);
     }
 
     public function store(ClientRequest $request)

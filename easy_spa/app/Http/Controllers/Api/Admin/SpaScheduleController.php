@@ -4,16 +4,22 @@ namespace App\Http\Controllers\Api\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SpaScheduleRequest;
+use App\Models\Spa;
 use App\Models\SpaSchedule;
 use Illuminate\Support\Facades\Auth;
 
 class SpaScheduleController extends Controller
 {
-    private function getAdminSpaId(): int
+       private function getAdminSpaId(): int
     {
-        return Auth::user()->spa->id;
-    }
+        $spa = Spa::where('user_id', Auth::id())->first();
 
+        if (!$spa) {
+            abort(404, 'Este admin no tiene un spa asignado.');
+        }
+
+        return $spa->id;
+    }
     public function index()
     {
         $spaId = $this->getAdminSpaId();

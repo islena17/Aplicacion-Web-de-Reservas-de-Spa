@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\Admin\AvailabilityController as AdminAvailabilityController;
+use App\Http\Controllers\Api\Admin\ClientController as AdminClientController;
 use App\Http\Controllers\Api\Admin\EmployeeBlockController as AdminEmployeeBlockController;
 use App\Http\Controllers\Api\Admin\EmployeeController as AdminEmployeeController;
 use App\Http\Controllers\Api\Admin\EmployeeScheduleController as AdminEmployeeScheduleController;
@@ -97,6 +98,7 @@ Route::middleware(['auth:sanctum', 'role:Admin'])
         Route::apiResource('employee-blocks', AdminEmployeeBlockController::class);
         Route::apiResource('categories', AdminServiceCategoryController::class);
         Route::get('availability', [AdminAvailabilityController::class, 'index']);
+         Route::apiResource('clients', AdminClientController::class);
     });
 
 Route::middleware(['auth:sanctum', 'role:employee'])

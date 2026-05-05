@@ -40,6 +40,9 @@ import AdminEditEmployee from './pages/Admin/Employee/editEmployee';
 import AdminEmployeesIndex from './pages/Admin/Employee';
 import AdminShowEmployee from './pages/Admin/Employee/showEmployee';
 import EmployeeSchedule from './pages/Admin/Employee/employeeSchedule';
+import AdminReservationsIndex from './pages/Admin/Reservation';
+import AdminCreateReservation from './pages/Admin/Reservation/createReservation';
+import AdminEditReservation from './pages/Admin/Reservation/editReservation';
 
 
 export default function MainApp() {
@@ -113,6 +116,10 @@ export default function MainApp() {
                 <Route path="employees" element={<AdminEmployeesIndex />} />
                 <Route path="employees/:employeeId" element={<AdminShowEmployee />} />
                 <Route path="employees/:employeeId/schedule" element={<EmployeeSchedule />} />
+
+                <Route path='reservations' element={<AdminReservationsIndex />} />
+                <Route path='reservations/create' element={<AdminCreateReservation />} />
+                <Route path='reservations/:reservationId/edit' element={<AdminEditReservation />} />
               </Routes>
             </ProtectedRoute>
           } />
