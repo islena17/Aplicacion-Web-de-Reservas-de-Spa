@@ -34,6 +34,7 @@ import AdminCreateService from './pages/Admin/Services/createService';
 import AdminShowCategory from './pages/Admin/Category/showCategory';
 import AdminCategoriesIndex from './pages/Admin/Category';
 import AdminCreateCategory from './pages/Admin/Category/createCategory';
+import AdminEditCategory from './pages/Admin/Category/editCategory';
 
 
 export default function MainApp() {
@@ -100,6 +101,7 @@ export default function MainApp() {
                 <Route path="categories/:categorySlug" element={<AdminShowCategory />} />
                 <Route path="categories" element={<AdminCategoriesIndex />} />
                 <Route path="categories/create" element={<AdminCreateCategory />} />
+                <Route path="categories/:categorySlug" element={<AdminEditCategory />} />
 
               </Routes>
             </ProtectedRoute>
