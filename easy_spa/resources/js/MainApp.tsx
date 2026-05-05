@@ -38,6 +38,8 @@ import AdminEditCategory from './pages/Admin/Category/editCategory';
 import AdminCreateEmployee from './pages/Admin/Employee/createEmployee';
 import AdminEditEmployee from './pages/Admin/Employee/editEmployee';
 import AdminEmployeesIndex from './pages/Admin/Employee';
+import AdminShowEmployee from './pages/Admin/Employee/showEmployee';
+import EmployeeSchedule from './pages/Admin/Employee/employeeSchedule';
 
 
 export default function MainApp() {
@@ -109,6 +111,8 @@ export default function MainApp() {
                 <Route path="employees/create" element={<AdminCreateEmployee />} />
                 <Route path="employees/:employeeId/edit" element={<AdminEditEmployee />} />
                 <Route path="employees" element={<AdminEmployeesIndex />} />
+                <Route path="employees/:employeeId" element={<AdminShowEmployee />} />
+                <Route path="employees/:employeeId/schedule" element={<EmployeeSchedule />} />
               </Routes>
             </ProtectedRoute>
           } />

@@ -17,6 +17,7 @@ class EmployeeScheduleRequest extends FormRequest
     {
         return [
             'employee_id' => 'required|exists:employees,id',
+            'date' => 'required|date',
 
             'day_of_week' => 'required|integer|min:0|max:6',
 

@@ -93,6 +93,7 @@ Route::middleware(['auth:sanctum', 'role:Admin'])
         Route::apiResource('employees', AdminEmployeeController::class);
         Route::apiResource('spa-schedules', AdminSpaScheduleController::class);
         Route::apiResource('employee-schedules', AdminEmployeeScheduleController::class);
+         Route::post('employee-schedules/bulk', [AdminEmployeeScheduleController::class, 'bulk']);
         Route::apiResource('employee-blocks', AdminEmployeeBlockController::class);
         Route::apiResource('categories', AdminServiceCategoryController::class);
         Route::get('availability', [AdminAvailabilityController::class, 'index']);

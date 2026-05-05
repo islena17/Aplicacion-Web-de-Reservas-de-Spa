@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ReservationRequest;
 use App\Models\Reservation;
+use App\Models\Spa;
 use Illuminate\Support\Facades\Auth;
 
 class ReservationController extends Controller
@@ -12,11 +13,16 @@ class ReservationController extends Controller
     /**
      * Obtener el id del spa del admin autenticado.
      */
-    private function getAdminSpaId(): int
-    {
-        return Auth::user()->spa->id;
+ private function getAdminSpaId(): int
+{
+    $spa = Spa::where('user_id', Auth::id())->first();
+
+    if (!$spa) {
+        abort(404, 'Este admin no tiene un spa asignado.');
     }
 
+    return $spa->id;
+}
     /**
      * Display a listing of the resource.
      */
