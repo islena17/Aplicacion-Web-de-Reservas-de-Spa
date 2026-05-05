@@ -48,16 +48,19 @@ export default function AdminEmployeesIndex() {
               No hay empleados registrados.
             </div>
           ) : (
-            <div className="card border-0 shadow-sm" style={{ borderRadius: '20px' }}>
+            <div className="card border-0 shadow-sm" style={{ borderRadius: '20px', overflow: 'hidden' }}>
               <div className="card-body p-0">
                 <div className="table-responsive">
                   <table className="table align-middle mb-0">
                     <thead style={{ backgroundColor: '#F7F7F7' }}>
                       <tr>
                         <th className="px-4 py-3">Nombre</th>
-                        <th>Email</th>
-                        <th>Teléfono</th>
-                        <th>Activo</th>
+                        <th className="px-4 py-3">
+                          Email</th>
+                        <th className="px-4 py-3">
+                          Teléfono</th>
+                        <th className="px-4 py-3">
+                          Activo</th>
                         <th className="text-end px-4">Acciones</th>
                       </tr>
                     </thead>
@@ -69,14 +72,16 @@ export default function AdminEmployeesIndex() {
                             {emp.name} {emp.surname}
                           </td>
 
-                          <td>{emp.email ?? '-'}</td>
-                          <td>{emp.telephone ?? '-'}</td>
+                          <td className="px-4 py-3">
+                            {emp.email ?? '-'}</td>
+                          <td className="px-4 py-3">
+                            {emp.telephone ?? '-'}</td>
 
-                          <td>
+                          <td className="px-4 py-3">
+
                             <span
-                              className={`badge ${
-                                emp.is_active ? 'bg-success' : 'bg-secondary'
-                              }`}
+                              className={`badge ${emp.is_active ? 'bg-success' : 'bg-secondary'
+                                }`}
                             >
                               {emp.is_active ? 'Activo' : 'Inactivo'}
                             </span>

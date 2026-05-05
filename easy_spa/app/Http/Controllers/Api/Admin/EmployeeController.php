@@ -7,6 +7,7 @@ use App\Http\Requests\EmployeeRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Employee;
+use App\Models\Spa;
 
 class EmployeeController extends Controller
 {
@@ -14,11 +15,17 @@ class EmployeeController extends Controller
     /**
      * Obtener el id del spa del admin autenticado.
      */
+
     private function getAdminSpaId(): int
     {
-        return Auth::user()->spa->id;
-    }
+        $spa = Spa::where('user_id', Auth::id())->first();
 
+        if (!$spa) {
+            abort(404, 'Este admin no tiene un spa asignado.');
+        }
+
+        return $spa->id;
+    }
     /**
      * Display a listing of the resource.
      */
@@ -55,7 +62,7 @@ class EmployeeController extends Controller
     /**
      * Display the specified resource.
      */
-   public function show(Employee $employee)
+    public function show(Employee $employee)
     {
         $spaId = $this->getAdminSpaId();
 
@@ -71,7 +78,7 @@ class EmployeeController extends Controller
     /**
      * Update the specified resource in storage.
      */
- public function update(EmployeeRequest $request, Employee $employee)
+    public function update(EmployeeRequest $request, Employee $employee)
     {
         $spaId = $this->getAdminSpaId();
 
@@ -94,7 +101,7 @@ class EmployeeController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-   public function destroy(Employee $employee)
+    public function destroy(Employee $employee)
     {
         $spaId = $this->getAdminSpaId();
 

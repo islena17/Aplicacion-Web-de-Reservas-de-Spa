@@ -44,17 +44,21 @@ export default function AdminServicesIndex() {
               No hay servicios registrados.
             </div>
           ) : (
-            <div className="card border-0 shadow-sm" style={{ borderRadius: '20px' }}>
+            <div className="card border-0 shadow-sm" style={{ borderRadius: '20px', overflow: 'hidden' }}>
               <div className="card-body p-0">
                 <div className="table-responsive">
                   <table className="table align-middle mb-0">
                     <thead style={{ backgroundColor: '#F7F7F7' }}>
                       <tr>
                         <th className="px-4 py-3">Nombre</th>
-                        <th>Categoría</th>
-                        <th>Duración</th>
-                        <th>Precio</th>
-                        <th>Activo</th>
+                        <th className="px-4 py-3">
+                          Categoría</th>
+                        <th className="px-4 py-3">
+                          Duración</th>
+                        <th className="px-4 py-3">
+                          Precio</th>
+                        <th className="px-4 py-3">
+                          Activo</th>
                         <th className="text-end px-4">Acciones</th>
                       </tr>
                     </thead>
@@ -64,20 +68,23 @@ export default function AdminServicesIndex() {
                         <tr key={service.id}>
                           <td className="px-4 fw-semibold">{service.name}</td>
 
-                          <td>
+                          <td className="px-4 py-3">
+
                             {service.category?.name ??
                               service.service_category?.name ??
                               '-'}
                           </td>
 
-                          <td>{service.length_minutes} min</td>
-                          <td>{service.price} €</td>
+                          <td className="px-4 py-3">
+                            {service.length_minutes} min</td>
+                          <td className="px-4 py-3">
+                            {service.price} €</td>
 
-                          <td>
+                          <td className="px-4 py-3">
+
                             <span
-                              className={`badge ${
-                                service.is_active ? 'bg-success' : 'bg-secondary'
-                              }`}
+                              className={`badge ${service.is_active ? 'bg-success' : 'bg-secondary'
+                                }`}
                             >
                               {service.is_active ? 'Activo' : 'Inactivo'}
                             </span>

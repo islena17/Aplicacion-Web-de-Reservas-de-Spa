@@ -16,7 +16,7 @@ class EmployeeRequest extends FormRequest
     {
         return [
 
-            'spa_id' => ['required', 'exists:spas,id'],
+            'spa_id' => ['sometimes', 'exists:spas,id'],
             'user_id' => [
                 'nullable',
                 'exists:users,id',

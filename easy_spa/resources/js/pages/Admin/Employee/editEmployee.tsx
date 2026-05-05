@@ -1,20 +1,29 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import DashboardLayout from '@/components/forms/layouts/AdminLayout';
 import EmployeeForm from '@/components/forms/EmployeeForm';
 import { useEmployeeForm } from '@/hooks/Admin/Employee/useEmployeeForm';
-import { update } from '@/routes/categories';
 
 export default function AdminEditEmployee() {
   const navigate = useNavigate();
+  const { employeeId } = useParams<{ employeeId: string }>();
 
   const {
     form,
     errors,
     loading,
+    loadingOptions,
     handleChange,
     updateEmployee,
     fieldError,
-  } = useEmployeeForm();
+  } = useEmployeeForm(employeeId);
+
+  if (loadingOptions) {
+    return (
+      <DashboardLayout>
+        <div className="text-center py-5">Cargando empleado...</div>
+      </DashboardLayout>
+    );
+  }
 
   return (
     <DashboardLayout>
@@ -23,10 +32,10 @@ export default function AdminEditEmployee() {
           <div className="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
             <div>
               <h1 className="fw-bold mb-1" style={{ color: '#2f2f2f' }}>
-                Editar empleado/a
+                Editar empleado
               </h1>
               <p className="text-muted mb-0">
-                Edita un empleado/a do tu spa.
+                Modifica los datos del empleado.
               </p>
             </div>
 
@@ -49,8 +58,8 @@ export default function AdminEditEmployee() {
             form={form}
             errors={errors}
             loading={loading}
-            submitText="Crear empleado"
-            loadingText="Creando..."
+            submitText="Guardar cambios"
+            loadingText="Guardando..."
             onChange={handleChange}
             onSubmit={updateEmployee}
             onCancel={() => navigate('/admin/employees')}
