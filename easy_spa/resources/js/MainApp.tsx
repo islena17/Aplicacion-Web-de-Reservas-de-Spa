@@ -35,6 +35,9 @@ import AdminShowCategory from './pages/Admin/Category/showCategory';
 import AdminCategoriesIndex from './pages/Admin/Category';
 import AdminCreateCategory from './pages/Admin/Category/createCategory';
 import AdminEditCategory from './pages/Admin/Category/editCategory';
+import AdminCreateEmployee from './pages/Admin/Employee/createEmployee';
+import AdminEditEmployee from './pages/Admin/Employee/editEmployee';
+import AdminEmployeesIndex from './pages/Admin/Employee';
 
 
 export default function MainApp() {
@@ -103,6 +106,9 @@ export default function MainApp() {
                 <Route path="categories/create" element={<AdminCreateCategory />} />
                 <Route path="categories/:categorySlug" element={<AdminEditCategory />} />
 
+                <Route path="employees/create" element={<AdminCreateEmployee />} />
+                <Route path="employees/:employeeId/edit" element={<AdminEditEmployee />} />
+                <Route path="employees" element={<AdminEmployeesIndex />} />
               </Routes>
             </ProtectedRoute>
           } />
