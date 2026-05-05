@@ -9,6 +9,7 @@ type EmployeeForm = {
   email: string;
   telephone: string;
   is_active: boolean;
+  timetable_colour: string;
 };
 
 type EmployeeErrors = Partial<Record<keyof EmployeeForm, string[]>> & {
@@ -22,6 +23,7 @@ const initialForm: EmployeeForm = {
   email: '',
   telephone: '',
   is_active: true,
+  timetable_colour: '#3788d8',
 };
 
 export function useEmployeeForm(employeeId?: string) {
@@ -49,6 +51,7 @@ export function useEmployeeForm(employeeId?: string) {
           email: employee.email ?? '',
           telephone: employee.telephone ?? '',
           is_active: Boolean(employee.is_active),
+          timetable_colour: employee.timetable_colour ?? '#3788d8',
         });
       } catch (error) {
         console.error(error);
@@ -99,6 +102,7 @@ export function useEmployeeForm(employeeId?: string) {
         email: form.email || null,
         telephone: form.telephone || null,
         is_active: form.is_active,
+        timetable_colour: form.timetable_colour,
       });
 
       navigate('/admin/employees');
@@ -140,6 +144,7 @@ export function useEmployeeForm(employeeId?: string) {
         email: form.email || null,
         telephone: form.telephone || null,
         is_active: form.is_active,
+        timetable_colour: form.timetable_colour,
       });
 
       navigate('/admin/employees');

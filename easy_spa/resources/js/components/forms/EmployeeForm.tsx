@@ -7,6 +7,7 @@ interface EmployeeFormData {
   email: string;
   telephone: string;
   is_active: boolean;
+  timetable_colour: string; // lo añado para que salga en el calendario su color
 }
 
 interface EmployeeErrors {
@@ -16,6 +17,7 @@ interface EmployeeErrors {
   gender?: string[];
   email?: string[];
   telephone?: string[];
+  timetable_colour?: string[];
 }
 
 interface EmployeeFormProps {
@@ -178,6 +180,44 @@ export default function EmployeeForm({
                 </label>
               </div>
             </div>
+          </div>
+          <div className="col-12 col-md-6">
+            <label className="form-label fw-semibold">
+              Color en calendario
+            </label>
+
+            <div className="d-flex align-items-center gap-3">
+              <input
+                type="color"
+                name="timetable_colour"
+                className={`form-control form-control-color ${errors.timetable_colour ? 'is-invalid' : ''
+                  }`}
+                value={form.timetable_colour || "#3788d8"}
+                onChange={onChange}
+                style={{
+                  width: "60px",
+                  height: "45px",
+                  padding: "5px",
+                  borderRadius: "10px",
+                }}
+              />
+
+              <input
+                type="text"
+                name="timetable_colour"
+                className={`form-control ${errors.timetable_colour ? 'is-invalid' : ''
+                  }`}
+                value={form.timetable_colour}
+                onChange={onChange}
+                placeholder="#3788d8"
+              />
+            </div>
+
+            {errors.timetable_colour && (
+              <div className="invalid-feedback d-block">
+                {fieldError(errors.timetable_colour)}
+              </div>
+            )}
           </div>
 
           <div className="d-flex justify-content-end gap-3 mt-5">

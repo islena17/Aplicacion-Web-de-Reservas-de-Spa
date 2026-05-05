@@ -43,7 +43,7 @@ export default function AdminLayout({ children }: DashboardLayoutProps) {
           </div>
         </div>
 
-        <nav className="mt-4">
+        <nav className="opacidad mt-4">
           <p className="sidebar-section">Principal</p>
 
           <Link to="/dashboard" className="sidebar-link" onClick={() => setSidebarOpen(false)}>

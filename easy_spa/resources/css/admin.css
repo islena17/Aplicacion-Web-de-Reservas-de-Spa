@@ -365,6 +365,12 @@ body {
   z-index: 998;
 }
 
+.opacidad{
+  background-color: rgb(0, 0, 0, 0.1);
+  border-radius: 20px;
+  padding: 20px;
+}
+
 
 @media (max-width: 991px) {
   .dashboard-shell {
