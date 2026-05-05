@@ -4,25 +4,29 @@ namespace App\Http\Controllers\Api\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ReservationRequest;
+use App\Models\Employee;
+use App\Models\EmployeeBlock;
+use App\Models\EmployeeSchedule;
 use App\Models\Reservation;
 use App\Models\Spa;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class ReservationController extends Controller
 {
     /**
      * Obtener el id del spa del admin autenticado.
      */
- private function getAdminSpaId(): int
-{
-    $spa = Spa::where('user_id', Auth::id())->first();
+    private function getAdminSpaId(): int
+    {
+        $spa = Spa::where('user_id', Auth::id())->first();
 
-    if (!$spa) {
-        abort(404, 'Este admin no tiene un spa asignado.');
+        if (!$spa) {
+            abort(404, 'Este admin no tiene un spa asignado.');
+        }
+
+        return $spa->id;
     }
-
-    return $spa->id;
-}
     /**
      * Display a listing of the resource.
      */
@@ -64,11 +68,87 @@ class ReservationController extends Controller
     public function store(ReservationRequest $request)
     {
         $spaId = $this->getAdminSpaId();
+        $data = $request->validated();
 
-        $reservation = Reservation::create([
-            ...$request->validated(),
-            'spa_id' => $spaId,
-        ]);
+        unset($data['spa_id']);
+
+        $employeeId = $data['employee_id'] ?? null;
+
+        if ($employeeId) {
+            $employee = Employee::where('spa_id', $spaId)
+                ->where('is_active', true)
+                ->findOrFail($employeeId);
+
+            $date = $data['reservation_date'];
+            $start = $data['start_time'];
+            $end = $data['end_time'];
+
+            // 1. Comprobar que trabaja ese día
+            $schedule = EmployeeSchedule::where('employee_id', $employee->id)
+                ->where('date', $date)
+                ->where('is_working', true)
+                ->where('start_time', '<=', $start)
+                ->where('end_time', '>=', $end)
+                ->first();
+
+            if (!$schedule) {
+                return response()->json([
+                    'message' => 'El empleado no trabaja en ese horario.'
+                ], 422);
+            }
+
+            // 2. Comprobar bloqueos
+            $hasBlock = EmployeeBlock::where('employee_id', $employee->id)
+                ->where('date', $date)
+                ->where('is_available', false)
+                ->where(function ($query) use ($start, $end) {
+                    $query->where('start_time', '<', $end)
+                        ->where('end_time', '>', $start);
+                })
+                ->exists();
+
+            if ($hasBlock) {
+                return response()->json([
+                    'message' => 'El empleado ya está bloqueado en ese horario.'
+                ], 422);
+            }
+
+            // 3. Comprobar reservas existentes
+            $hasReservation = Reservation::where('employee_id', $employee->id)
+                ->where('reservation_date', $date)
+                ->whereIn('status', ['pending', 'confirmed'])
+                ->where(function ($query) use ($start, $end) {
+                    $query->where('start_time', '<', $end)
+                        ->where('end_time', '>', $start);
+                })
+                ->exists();
+
+            if ($hasReservation) {
+                return response()->json([
+                    'message' => 'El empleado ya tiene una reserva en ese horario.'
+                ], 422);
+            }
+        }
+
+        $reservation = DB::transaction(function () use ($data, $spaId, $employeeId) {
+            $reservation = Reservation::create([
+                ...$data,
+                'spa_id' => $spaId,
+            ]);
+
+            if ($employeeId) {
+                EmployeeBlock::create([
+                    'employee_id' => $employeeId,
+                    'date' => $reservation->reservation_date,
+                    'start_time' => $reservation->start_time,
+                    'end_time' => $reservation->end_time,
+                    'reason' => 'Reserva #' . $reservation->id,
+                    'is_available' => false,
+                ]);
+            }
+
+            return $reservation;
+        });
 
         return response()->json([
             'message' => 'Reserva creada correctamente',
@@ -80,7 +160,6 @@ class ReservationController extends Controller
             ]),
         ], 201);
     }
-
     /**
      * Display the specified resource.
      */
@@ -142,6 +221,15 @@ class ReservationController extends Controller
             abort(404);
         }
 
+        //  borrar bloqueo asociado
+        EmployeeBlock::where('employee_id', $reservation->employee_id)
+            ->where('date', $reservation->reservation_date)
+            ->where('start_time', $reservation->start_time)
+            ->where('end_time', $reservation->end_time)
+            ->where('reason', 'Reserva #' . $reservation->id)
+            ->delete();
+
+        // eliminar reserva
         $reservation->delete();
 
         return response()->json([

@@ -6,15 +6,21 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\EmployeeBlockRequest;
 use App\Models\Employee;
 use App\Models\EmployeeBlock;
+use App\Models\Spa;
 use Illuminate\Support\Facades\Auth;
 
 class EmployeeBlockController extends Controller
 {
     private function getAdminSpaId(): int
     {
-        return Auth::user()->spa->id;
-    }
+        $spa = Spa::where('user_id', Auth::id())->first();
 
+        if (!$spa) {
+            abort(404, 'Este admin no tiene un spa asignado.');
+        }
+
+        return $spa->id;
+    }
     public function index()
     {
         $spaId = $this->getAdminSpaId();
