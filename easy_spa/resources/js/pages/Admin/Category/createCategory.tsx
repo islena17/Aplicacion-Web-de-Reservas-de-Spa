@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import DashboardLayout from '@/components/forms/layouts/AdminLayout';
+import DashboardLayout from '@/components/layouts/AdminLayout';
 import ServiceCategoryForm from '@/components/forms/ServiceCategoryForm';
 import { useCategoryForm } from '@/hooks/Admin/Category/useCategoryForm';
 

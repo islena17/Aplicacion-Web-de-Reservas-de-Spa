@@ -1,7 +1,7 @@
 import { useParams, useNavigate } from "react-router-dom";
 import ClientForm from "@/components/forms/ClientForm";
 import { useClientForm } from "@/hooks/WebMaster/Client/useClientForm";
-import AdminLayout from "@/components/forms/layouts/AdminLayout";
+import AdminLayout from "@/components/layouts/AdminLayout";
 
 export default function AdminClientEdit() {
     const { clientId } = useParams();

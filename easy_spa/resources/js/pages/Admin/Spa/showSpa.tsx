@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from 'react-router-dom';
-import DashboardLayout from '@/components/forms/layouts/AdminLayout';
+import DashboardLayout from '@/components/layouts/AdminLayout';
 import { useSpa } from '@/hooks/Admin/Spa/useSpa';
 
 export default function AdminShowSpa() {

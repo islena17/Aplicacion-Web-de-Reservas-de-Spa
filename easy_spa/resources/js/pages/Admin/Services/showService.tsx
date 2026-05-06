@@ -1,6 +1,6 @@
 import useService from "@/hooks/Admin/Services/useService";
 import { useNavigate } from 'react-router-dom';
-import AdminLayout from '@/components/forms/layouts/AdminLayout';
+import AdminLayout from '@/components/layouts/AdminLayout';
 
 export default function AdminShowService() {
   const navigate = useNavigate();

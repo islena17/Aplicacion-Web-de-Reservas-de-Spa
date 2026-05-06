@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from 'react-router-dom';
-import DashboardLayout from '../../../components/forms/layouts/WMLayout';
+import DashboardLayout from "../../../components/layouts/WMLayout";
 import { useReservation } from '@/hooks/WebMaster/Reservation/useReservation';
 
 export default function ShowReservation() {

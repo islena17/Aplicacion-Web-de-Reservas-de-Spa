@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import AdminLayout from '@/components/forms/layouts/AdminLayout';
+import AdminLayout from '@/components/layouts/AdminLayout';
 import useReservations from '@/hooks/Admin/Reservation/useReservations';
 import { useReservation } from '@/hooks/Admin/Reservation/useReservation';
 import api from '@/lib/axios';

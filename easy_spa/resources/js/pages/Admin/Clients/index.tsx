@@ -1,6 +1,6 @@
 import useClients from "@/hooks/Admin/Client/useClients";
 import { Link, useNavigate } from "react-router-dom";
-import AdminLayout from "@/components/forms/layouts/AdminLayout";
+import AdminLayout from "@/components/layouts/AdminLayout";
 
 export default function AdminClientsIndex() {
     const { clients, loading, error } = useClients();

@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from 'react-router-dom';
-import AdminLayout from '@/components/forms/layouts/AdminLayout';
+import AdminLayout from '@/components/layouts/AdminLayout';
 import { useReservationForm } from '@/hooks/Admin/Reservation/useReservationForm';
 import ReservationForm from '@/components/forms/ReservationForm';
 

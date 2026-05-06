@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import DashboardLayout from '@/components/forms/layouts/AdminLayout';
+import DashboardLayout from '@/components/layouts/AdminLayout';
 import useCategories from '@/hooks/Admin/Category/useCategories';
 
 export default function AdminCategoriesIndex() {

@@ -1,4 +1,4 @@
-import DashboardLayout from "../../components/forms/layouts/WMLayout";
+import DashboardLayout from "../../components/layouts/WMLayout";
 
 export default function DashboardHome() {
   return (

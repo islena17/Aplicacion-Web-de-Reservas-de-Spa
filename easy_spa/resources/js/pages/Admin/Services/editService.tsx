@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import AdminLayout from '@/components/forms/layouts/AdminLayout';
+import AdminLayout from '@/components/layouts/AdminLayout';
 import { useServiceForm } from '@/hooks/Admin/Services/useServiceForm';
 import ServiceForm from '@/components/forms/ServiceForm';
 

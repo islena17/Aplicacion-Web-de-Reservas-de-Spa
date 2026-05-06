@@ -1,4 +1,4 @@
-import AdminLayout from "../../components/forms/layouts/AdminLayout";
+import AdminLayout from "../../components/layouts/AdminLayout";
 
 export default function AdminHome() {
   return (

@@ -1,5 +1,5 @@
 import { useParams } from 'react-router-dom';
-import AdminLayout from '@/components/forms/layouts/AdminLayout';
+import AdminLayout from '@/components/layouts/AdminLayout';
 import { useEmployeeSchedule } from '@/hooks/Admin/Employee/useEmployeeSchedule';
 
 export default function EmployeeSchedule() {
