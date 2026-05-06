@@ -207,6 +207,21 @@ class AvailabilityService
             ->exists();
     }
 
+    public function isEmployeeAvailable(
+        int $employeeId,
+        string $date,
+        string $startTime,
+        string $endTime
+    ): bool {
+        $start = Carbon::parse($date . ' ' . $startTime);
+        $end = Carbon::parse($date . ' ' . $endTime);
+
+        return
+            !$this->hasOverlappingReservation($employeeId, $date, $start, $end)
+            &&
+            !$this->hasBlockingPeriod($employeeId, $date, $start, $end);
+    }
+
     private function maxTime(string $timeA, string $timeB): string
     {
         return $timeA > $timeB ? $timeA : $timeB;
@@ -215,5 +230,45 @@ class AvailabilityService
     private function minTime(string $timeA, string $timeB): string
     {
         return $timeA < $timeB ? $timeA : $timeB;
+    }
+
+    public function validateEmployeeAvailability(
+        int $spaId,
+        int $employeeId,
+        string $date,
+        string $startTime,
+        string $endTime
+    ): void {
+        $employee = Employee::where('spa_id', $spaId)
+            ->where('is_active', true)
+            ->findOrFail($employeeId);
+
+        $schedule = EmployeeSchedule::where('employee_id', $employee->id)
+            ->where('date', $date)
+            ->where('is_working', true)
+            ->where('start_time', '<=', $startTime)
+            ->where('end_time', '>=', $endTime)
+            ->first();
+
+        if (!$schedule) {
+            abort(response()->json([
+                'message' => 'El empleado no trabaja en ese horario.',
+            ], 422));
+        }
+
+        $start = Carbon::parse($date . ' ' . $startTime);
+        $end = Carbon::parse($date . ' ' . $endTime);
+
+        if ($this->hasBlockingPeriod($employee->id, $date, $start, $end)) {
+            abort(response()->json([
+                'message' => 'El empleado ya está bloqueado en ese horario.',
+            ], 422));
+        }
+
+        if ($this->hasOverlappingReservation($employee->id, $date, $start, $end)) {
+            abort(response()->json([
+                'message' => 'El empleado ya tiene una reserva en ese horario.',
+            ], 422));
+        }
     }
 }
