@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import DashboardLayout from '@/components/forms/layouts/AdminLayout';
+import AdminLayout from '@/components/forms/layouts/AdminLayout';
 import useEmployees from '@/hooks/Admin/Employee/useEmployees';
 
 export default function AdminEmployeesIndex() {
@@ -7,7 +7,7 @@ export default function AdminEmployeesIndex() {
   const { employees, loading, error } = useEmployees();
 
   return (
-    <DashboardLayout>
+    <AdminLayout>
       <div style={{ backgroundColor: '#F7F7F7', minHeight: '100vh' }}>
         <div className="container py-4 py-lg-5">
 
@@ -49,7 +49,7 @@ export default function AdminEmployeesIndex() {
             </div>
           ) : (
             <div className="card border-0 shadow-sm" style={{ borderRadius: '20px', overflow: 'hidden' }}>
-              <div className="card-body p-0">
+              <div className="card-body p-4">
                 <div className="table-responsive">
                   <table className="table align-middle mb-0">
                     <thead style={{ backgroundColor: '#F7F7F7' }}>
@@ -131,6 +131,6 @@ export default function AdminEmployeesIndex() {
           )}
         </div>
       </div>
-    </DashboardLayout>
+    </AdminLayout>
   );
 }

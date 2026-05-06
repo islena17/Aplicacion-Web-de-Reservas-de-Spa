@@ -51,12 +51,12 @@ export default function AdminLayout({ children }: DashboardLayoutProps) {
             <span>Dashboard</span>
           </Link>
             <Link to="/admin/categories" className="sidebar-link" onClick={() => setSidebarOpen(false)}>
-            <i className="bi bi-calendar-check"></i>
+            <i className="bi bi-tags"></i>
             <span>Categorias de Servicios</span>
           </Link>
 
           <Link to="/admin/services" className="sidebar-link" onClick={() => setSidebarOpen(false)}>
-            <i className="bi bi-calendar-check"></i>
+            <i className="bi bi-gear"></i>
             <span>Servicios</span>
           </Link>
           <Link to="/admin/reservations" className="sidebar-link" onClick={() => setSidebarOpen(false)}>
@@ -64,15 +64,15 @@ export default function AdminLayout({ children }: DashboardLayoutProps) {
             <span>Reservas</span>
           </Link>
             <Link to="/admin/calendar" className="sidebar-link" onClick={() => setSidebarOpen(false)}>
-            <i className="bi bi-calendar-check"></i>
+            <i className="bi bi bi-calendar3"></i>
             <span>Calendario</span>
           </Link>
           <Link to="/admin/employees" className="sidebar-link" onClick={() => setSidebarOpen(false)}>
-            <i className="bi bi-calendar-check"></i>
+            <i className="bi bi bi-people"></i>
             <span>Empleados</span>
           </Link>
-          <Link to="admin/clients" className="sidebar-link" onClick={() => setSidebarOpen(false)}>
-            <i className="bi bi-calendar-check"></i>
+          <Link to="/admin/clients" className="sidebar-link" onClick={() => setSidebarOpen(false)}>
+            <i className="bi bi-person-badge"></i>
             <span>Clientes</span>
           </Link>
 

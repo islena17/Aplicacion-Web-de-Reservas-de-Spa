@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import DashboardLayout from '@/components/forms/layouts/AdminLayout';
+import AdminLayout from '@/components/forms/layouts/AdminLayout';
 import useServices from '@/hooks/Admin/Services/useServices';
 
 export default function AdminServicesIndex() {
@@ -7,7 +7,7 @@ export default function AdminServicesIndex() {
   const { services, loading, error } = useServices();
 
   return (
-    <DashboardLayout>
+    <AdminLayout>
       <div style={{ backgroundColor: '#F7F7F7', minHeight: '100vh' }}>
         <div className="container py-4 py-lg-5">
           <div className="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
@@ -45,7 +45,7 @@ export default function AdminServicesIndex() {
             </div>
           ) : (
             <div className="card border-0 shadow-sm" style={{ borderRadius: '20px', overflow: 'hidden' }}>
-              <div className="card-body p-0">
+              <div className="card-body p-4">
                 <div className="table-responsive">
                   <table className="table align-middle mb-0">
                     <thead style={{ backgroundColor: '#F7F7F7' }}>
@@ -129,6 +129,6 @@ export default function AdminServicesIndex() {
           )}
         </div>
       </div>
-    </DashboardLayout>
+    </AdminLayout>
   );
 }

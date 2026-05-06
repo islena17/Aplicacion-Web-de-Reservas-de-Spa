@@ -44,6 +44,9 @@ import AdminReservationsIndex from './pages/Admin/Reservation';
 import AdminCreateReservation from './pages/Admin/Reservation/createReservation';
 import AdminEditReservation from './pages/Admin/Reservation/editReservation';
 import Calendar from './pages/Admin/calendar';
+import AdminClientsIndex from './pages/Admin/Clients';
+import AdminClientEdit from './pages/Admin/Clients/editClient';
+import AdminClientShow from './pages/Admin/Clients/showClient';
 
 
 export default function MainApp() {
@@ -123,6 +126,10 @@ export default function MainApp() {
                 <Route path='reservations/:reservationId/edit' element={<AdminEditReservation />} />
 
                 <Route path='calendar' element={<Calendar />} />
+
+                <Route path="clients" element={<AdminClientsIndex />} />
+                <Route path='clients/:clientId/edit' element={<AdminClientEdit />} />
+                <Route path='clients/:clientId' element={<AdminClientShow />}/>
               </Routes>
             </ProtectedRoute>
           } />

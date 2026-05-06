@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import DashboardLayout from '@/components/forms/layouts/AdminLayout';
+import AdminLayout from '@/components/forms/layouts/AdminLayout';
 import useReservations from '@/hooks/Admin/Reservation/useReservations';
 import { useReservation } from '@/hooks/Admin/Reservation/useReservation';
 import api from '@/lib/axios';
@@ -20,10 +20,10 @@ export default function AdminReservationsIndex() {
     }
   };
 
-  if (loading) return <div>Cargando...</div>;
-  if (error) return <div>{error}</div>;
+  if (loading) return  <AdminLayout><div>Cargando...</div></AdminLayout>;
+  if (error) return <AdminLayout><div>{error}</div></AdminLayout>;
   return (
-    <DashboardLayout>
+    <AdminLayout>
       <div style={{ backgroundColor: '#F7F7F7', minHeight: '100vh' }}>
         <div className="container py-4 py-lg-5">
 
@@ -63,7 +63,7 @@ export default function AdminReservationsIndex() {
             </div>
           ) : (
             <div className="card border-0 shadow-sm" style={{ borderRadius: '20px', overflow: 'hidden' }}>
-              <div className="card-body p-0">
+              <div className="card-body p-4">
                 <div className="table-responsive">
                   <table className="table align-middle mb-0">
                     <thead style={{ backgroundColor: '#F7F7F7' }}>
@@ -133,20 +133,6 @@ export default function AdminReservationsIndex() {
                               <button
                                 className="btn btn-sm"
                                 onClick={() =>
-                                  navigate(`/admin/reservations/${r.id}`)
-                                }
-                                style={{
-                                  backgroundColor: '#F2E6D0',
-                                  color: '#7a6440',
-                                  borderRadius: '10px',
-                                }}
-                              >
-                                Ver
-                              </button>
-
-                              <button
-                                className="btn btn-sm"
-                                onClick={() =>
                                   navigate(`/admin/reservations/${r.id}/edit`)
                                 }
                                 style={{
@@ -182,6 +168,6 @@ export default function AdminReservationsIndex() {
           )}
         </div>
       </div>
-    </DashboardLayout>
+    </AdminLayout>
   );
 }

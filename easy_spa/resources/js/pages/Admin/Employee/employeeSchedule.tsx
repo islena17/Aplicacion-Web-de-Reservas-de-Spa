@@ -1,5 +1,5 @@
 import { useParams } from 'react-router-dom';
-import DashboardLayout from '@/components/forms/layouts/AdminLayout';
+import AdminLayout from '@/components/forms/layouts/AdminLayout';
 import { useEmployeeSchedule } from '@/hooks/Admin/Employee/useEmployeeSchedule';
 
 export default function EmployeeSchedule() {
@@ -13,7 +13,7 @@ export default function EmployeeSchedule() {
   } = useEmployeeSchedule(employeeId);
 
   return (
-    <DashboardLayout>
+    <AdminLayout>
       <div className="container py-4">
 
         <h2 className="mb-4">Horario mensual</h2>
@@ -99,6 +99,6 @@ export default function EmployeeSchedule() {
         </div>
 
       </div>
-    </DashboardLayout>
+    </AdminLayout>
   );
 }

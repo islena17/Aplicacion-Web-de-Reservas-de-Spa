@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import DashboardLayout from '@/components/forms/layouts/AdminLayout';
+import AdminLayout from '@/components/forms/layouts/AdminLayout';
 import EmployeeForm from '@/components/forms/EmployeeForm';
 import { useEmployeeForm } from '@/hooks/Admin/Employee/useEmployeeForm';
 
@@ -16,7 +16,7 @@ export default function AdminCreateEmployee() {
   } = useEmployeeForm();
 
   return (
-    <DashboardLayout>
+    <AdminLayout>
       <div style={{ backgroundColor: '#F7F7F7', minHeight: '100vh' }}>
         <div className="container py-4 py-lg-5">
           <div className="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
@@ -57,6 +57,6 @@ export default function AdminCreateEmployee() {
           />
         </div>
       </div>
-    </DashboardLayout>
+    </AdminLayout>
   );
 }

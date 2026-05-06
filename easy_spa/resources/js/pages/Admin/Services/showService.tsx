@@ -1,6 +1,6 @@
 import useService from "@/hooks/Admin/Services/useService";
 import { useNavigate } from 'react-router-dom';
-import DashboardLayout from '@/components/forms/layouts/AdminLayout';
+import AdminLayout from '@/components/forms/layouts/AdminLayout';
 
 export default function AdminShowService() {
   const navigate = useNavigate();
@@ -8,22 +8,22 @@ export default function AdminShowService() {
 
   if (loading) {
     return (
-      <DashboardLayout>
+      <AdminLayout>
         <div className="text-center py-5">Cargando servicio...</div>
-      </DashboardLayout>
+      </AdminLayout>
     );
   }
 
   if (error) {
     return (
-      <DashboardLayout>
+      <AdminLayout>
         <div className="alert alert-danger m-4">{error}</div>
-      </DashboardLayout>
+      </AdminLayout>
     );
   }
 
   return (
-    <DashboardLayout>
+    <AdminLayout>
       <div style={{ backgroundColor: '#F7F7F7', minHeight: '100vh' }}>
         <div className="container py-4 py-lg-5">
           <div className="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
@@ -102,7 +102,7 @@ export default function AdminShowService() {
           )}
         </div>
       </div>
-    </DashboardLayout>
+    </AdminLayout>
   );
 }
 

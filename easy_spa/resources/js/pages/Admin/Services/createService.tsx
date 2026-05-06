@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import DashboardLayout from '@/components/forms/layouts/AdminLayout';
+import AdminLayout from '@/components/forms/layouts/AdminLayout';
 import { useServiceForm } from '@/hooks/Admin/Services/useServiceForm';
 import ServiceForm from '@/components/forms/ServiceForm';
 
@@ -19,14 +19,14 @@ export default function AdminCreateService() {
 
   if (loadingOptions) {
     return (
-      <DashboardLayout>
+      <AdminLayout>
         <div className="text-center py-5">Cargando datos...</div>
-      </DashboardLayout>
+      </AdminLayout>
     );
   }
 
   return (
-    <DashboardLayout>
+    <AdminLayout>
       <div style={{ backgroundColor: '#F7F7F7', minHeight: '100vh' }}>
         <div className="container py-4 py-lg-5">
           <h1 className="fw-bold mb-4">Crear servicio</h1>
@@ -45,6 +45,6 @@ export default function AdminCreateService() {
           />
         </div>
       </div>
-    </DashboardLayout>
+    </AdminLayout>
   );
 }

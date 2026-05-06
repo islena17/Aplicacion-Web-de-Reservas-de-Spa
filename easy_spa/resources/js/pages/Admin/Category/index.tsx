@@ -45,7 +45,7 @@ export default function AdminCategoriesIndex() {
             </div>
           ) : (
             <div className="card border-0 shadow-sm" style={{ borderRadius: '20px', overflow: 'hidden'}}>
-              <div className="card-body p-0">
+              <div className="card-body p-4">
                 <div className="table-responsive">
                   <table className="table align-middle mb-0">
                     <thead style={{ backgroundColor: '#F7F7F7' }}>

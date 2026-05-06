@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from 'react-router-dom';
-import DashboardLayout from '@/components/forms/layouts/AdminLayout';
+import AdminLayout from '@/components/forms/layouts/AdminLayout';
 import useEmployee from '@/hooks/Admin/Employee/useEmployee';
 
 export default function AdminShowEmployee() {
@@ -10,24 +10,24 @@ export default function AdminShowEmployee() {
 
   if (loading) {
     return (
-      <DashboardLayout>
+      <AdminLayout>
         <div className="text-center py-5">Cargando empleado...</div>
-      </DashboardLayout>
+      </AdminLayout>
     );
   }
 
   if (error || !employee) {
     return (
-      <DashboardLayout>
+      <AdminLayout>
         <div className="alert alert-danger m-4">
           {error || 'Empleado no encontrado.'}
         </div>
-      </DashboardLayout>
+      </AdminLayout>
     );
   }
 
   return (
-    <DashboardLayout>
+    <AdminLayout>
       <div style={{ backgroundColor: '#F7F7F7', minHeight: '100vh' }}>
         <div className="container py-4 py-lg-5">
           <div className="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
@@ -102,7 +102,7 @@ export default function AdminShowEmployee() {
           </div>
         </div>
       </div>
-    </DashboardLayout>
+    </AdminLayout>
   );
 }
 
