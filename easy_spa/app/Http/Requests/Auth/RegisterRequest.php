@@ -14,7 +14,11 @@ class RegisterRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'role_id' => 'required|exists:roles,id',
+            //añado la validacion de datos del cliente por la transaccion
+            'name' => ['required', 'string', 'max:255'],
+            'surname' => ['required', 'string', 'max:255'],
+            'telephone' => ['nullable', 'string', 'max:20'],
+
             'email' => 'required|string|email|max:255|unique:users,email',
             'password' => 'required|string|min:8|confirmed',
         ];

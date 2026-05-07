@@ -51,6 +51,7 @@ import { Home } from './pages/Site/home';
 import Spas from './pages/Site/spas';
 import SpaShow from './pages/Site/SpaShow';
 import AdminUpdateService from './pages/Admin/Services/editService';
+import Register from './pages/Auth/Register';
 
 
 export default function MainApp() {
@@ -141,6 +142,7 @@ export default function MainApp() {
           } />
         <Route path="spas" element={<Spas />} />
         <Route path='spas/:slug' element={<SpaShow/>} />
+        <Route path='/register' element={<Register />} />
       </Routes>
 
 
