@@ -22,6 +22,7 @@ class Service extends Model
         'order'
     ];
 
+    protected $appends = ['image_url'];
     public function spa()
     {
         return $this->belongsTo(Spa::class, 'spa_id');
@@ -44,5 +45,12 @@ class Service extends Model
     public function getRouteKeyName()
     {
         return 'slug';
+    }
+
+    public function getImageUrlAttribute()
+    {
+        return $this->image
+            ? asset('storage/' . $this->image)
+            : null;
     }
 }

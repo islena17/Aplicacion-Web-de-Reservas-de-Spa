@@ -49,7 +49,7 @@ class ServiceRequest extends FormRequest
             ],
 
             'description' => 'nullable|string',
-            'image' => 'nullable|string',
+            'image' => 'nullable|image|max:255',
             'length_minutes' => 'required|integer|min:1',
             'price' => 'required|numeric|min:0',
             'capacity' => 'sometimes|integer|min:1',

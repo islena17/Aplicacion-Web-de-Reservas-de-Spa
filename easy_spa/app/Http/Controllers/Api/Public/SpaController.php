@@ -18,9 +18,14 @@ class SpaController extends Controller
 
     public function show(Spa $spa)
     {
+
         if (!$spa->is_active) {
             abort(404);
         }
+        $spa->load([
+            'services.category',
+            'categories',
+        ]);
 
         return response()->json([
             'data' => $spa

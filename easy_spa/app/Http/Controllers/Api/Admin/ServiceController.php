@@ -7,6 +7,7 @@ use App\Http\Requests\ServiceRequest;
 use App\Models\Service;
 use App\Models\Spa;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class ServiceController extends Controller
 {
@@ -43,12 +44,21 @@ class ServiceController extends Controller
     /**
      * Store a newly created resource in storage.
      */
+
     public function store(ServiceRequest $request)
     {
         $spaId = $this->getAdminSpaId();
 
+        $data = $request->validated();
+
+        if ($request->hasFile('image')) {
+            $path = $request->file('image')->store('services', 'public');
+
+            $data['image'] = $path;
+        }
+
         $service = Service::create([
-            ...$request->validated(),
+            ...$data,
             'spa_id' => $spaId,
         ]);
 
@@ -56,9 +66,7 @@ class ServiceController extends Controller
             'message' => 'Servicio creado correctamente',
             'data' => $service->load(['category'])
         ], 201);
-    }
-
-    /**
+    } /*
      * Display the specified resource.
      */
     public function show(Service $service)
@@ -77,26 +85,44 @@ class ServiceController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(ServiceRequest $request, Service $service)
-    {
-        $spaId = $this->getAdminSpaId();
 
-        if ($service->spa_id !== $spaId) {
-            abort(404);
+public function update(ServiceRequest $request, Service $service)
+{
+    $spaId = $this->getAdminSpaId();
+
+    if ($service->spa_id !== $spaId) {
+        abort(404);
+    }
+
+    $data = $request->validated();
+    unset($data['spa_id']);
+
+    // 1. Verificar si viene una nueva imagen en la petición
+    if ($request->hasFile('image')) {
+        
+        // 2.  Borrar la imagen anterior del disco para no llenar el servidor de basura
+        if ($service->image) {
+            Storage::disk('public')->delete($service->image);
         }
 
-        $data = $request->validated();
+        // 3. Guardar el nuevo archivo en la carpeta 'services' dentro del disco 'public'
+       
+        $path = $request->file('image')->store('services', 'public');
 
-        // 🔒 Evitar que cambien el spa_id
-        unset($data['spa_id']);
-
-        $service->update($data);
-
-        return response()->json([
-            'message' => 'Servicio actualizado correctamente',
-            'data' => $service->load(['serviceCategory'])
-        ]);
+        // 4. Reemplazar el objeto de la imagen por la ruta de texto para la BD
+        $data['image'] = $path;
+    } else {
+        // para que no sobrescriba la ruta vieja con NULL en la base de datos.
+        unset($data['image']);
     }
+
+    $service->update($data);
+
+    return response()->json([
+        'message' => 'Servicio actualizado correctamente',
+        'data' => $service->load(['category'])
+    ]);
+}
 
     /**
      * Remove the specified resource from storage.

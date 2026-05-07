@@ -1,4 +1,5 @@
 import "../../../css/home.css"
+import homeHero from '@images/homeHero.jpg';
 export default function Hero() {
   return (
     <section className="hero-section">
@@ -50,7 +51,7 @@ export default function Hero() {
           <div className="col-lg-6 mt-5 mt-lg-0">
             <div className="hero-card">
               <img
-                src="https://images.unsplash.com/photo-1544161515-4ab6ce6db874?auto=format&fit=crop&w=900&q=80"
+                src={homeHero}
                 alt="Spa relajante"
                 className="hero-img"
               />

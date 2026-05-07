@@ -1,22 +1,21 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import AdminLayout from '@/components/layouts/AdminLayout';
 import { useServiceForm } from '@/hooks/Admin/Services/useServiceForm';
 import ServiceForm from '@/components/forms/ServiceForm';
 
 export default function AdminUpdateService() {
-  const navigate = useNavigate();
-
-  const {
-    form,
-    categories,
-    errors,
-    loading,
-    loadingOptions,
-    handleChange,
-    updateService,
-    fieldError,
-  } = useServiceForm();
-
+const { serviceSlug } = useParams<{ serviceSlug: string }>();
+const navigate = useNavigate();
+const {
+  form,
+  categories,
+  errors,
+  loading,
+  loadingOptions,
+  handleChange,
+  updateService,
+  fieldError,
+} = useServiceForm(serviceSlug);
   if (loadingOptions) {
     return (
       <AdminLayout>
@@ -36,8 +35,8 @@ export default function AdminUpdateService() {
             categories={categories}
             errors={errors}
             loading={loading}
-            submitText="Actualizar servicio"
-            loadingText="Actualizando..."
+            submitText="Guardar cambios"
+            loadingText="Guardando..."
             onChange={handleChange}
             onSubmit={updateService}
             onCancel={() => navigate('/admin/services')}

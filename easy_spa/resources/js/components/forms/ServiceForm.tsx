@@ -1,4 +1,4 @@
-import { ChangeEvent, FormEvent } from 'react';
+import { ChangeEvent, FormEvent, useState, useEffect } from 'react';
 
 type CategoryOption = {
   id: number;
@@ -6,13 +6,15 @@ type CategoryOption = {
   spa_id?: number;
 };
 
+// Actualizado para coincidir con el Hook
 type ServiceFormData = {
   service_category_id: string;
   spa_id?: string;
   name: string;
   slug: string;
   description: string;
-  image: string;
+  image: File | null;
+  current_image?: string; // URL que viene de la base de datos
   length_minutes: string;
   price: string;
   requires_employee: boolean;
@@ -50,6 +52,23 @@ export default function ServiceForm({
   onCancel,
   fieldError,
 }: ServiceFormProps) {
+  // Estado local para la previsualización de la nueva imagen seleccionada
+  const [preview, setPreview] = useState<string | null>(null);
+
+  // Efecto para generar la URL de previsualización cuando cambia el archivo
+  useEffect(() => {
+    if (!form.image) {
+      setPreview(null);
+      return;
+    }
+
+    const objectUrl = URL.createObjectURL(form.image);
+    setPreview(objectUrl);
+
+    // Limpieza de memoria
+    return () => URL.revokeObjectURL(objectUrl);
+  }, [form.image]);
+
   return (
     <div
       className="card border-0 shadow-sm"
@@ -66,6 +85,8 @@ export default function ServiceForm({
 
         <form onSubmit={onSubmit}>
           <div className="row g-4">
+            
+            {/* CATEGORÍA */}
             <div className="col-12 col-md-6">
               <label className="form-label fw-semibold">Categoría *</label>
               <select
@@ -75,21 +96,18 @@ export default function ServiceForm({
                 onChange={onChange}
               >
                 <option value="">Selecciona una categoría</option>
-
                 {categories.map((category) => (
                   <option key={category.id} value={String(category.id)}>
                     {category.name}
                   </option>
                 ))}
               </select>
-
               {errors.service_category_id && (
-                <div className="invalid-feedback">
-                  {fieldError(errors.service_category_id)}
-                </div>
+                <div className="invalid-feedback">{fieldError(errors.service_category_id)}</div>
               )}
             </div>
 
+            {/* NOMBRE */}
             <div className="col-12 col-md-6">
               <label className="form-label fw-semibold">Nombre *</label>
               <input
@@ -100,14 +118,12 @@ export default function ServiceForm({
                 onChange={onChange}
                 placeholder="Ej: Masaje relajante"
               />
-
               {errors.name && (
-                <div className="invalid-feedback">
-                  {fieldError(errors.name)}
-                </div>
+                <div className="invalid-feedback">{fieldError(errors.name)}</div>
               )}
             </div>
 
+            {/* SLUG */}
             <div className="col-12 col-md-6">
               <label className="form-label fw-semibold">Slug</label>
               <input
@@ -118,34 +134,57 @@ export default function ServiceForm({
                 onChange={onChange}
                 placeholder="Ej: masaje-relajante"
               />
-
               {errors.slug && (
-                <div className="invalid-feedback">
-                  {fieldError(errors.slug)}
-                </div>
+                <div className="invalid-feedback">{fieldError(errors.slug)}</div>
               )}
             </div>
 
+            {/* IMAGEN (UPLOAD) */}
             <div className="col-12 col-md-6">
-              <label className="form-label fw-semibold">Imagen</label>
+              <label className="form-label fw-semibold">Imagen del servicio</label>
               <input
-                type="text"
+                type="file"
                 name="image"
+                accept="image/*"
                 className={`form-control ${errors.image ? 'is-invalid' : ''}`}
-                value={form.image}
                 onChange={onChange}
-                placeholder="URL o nombre de imagen"
               />
-
+              <small className="text-muted">Formatos aceptados: JPG, PNG. Máx 2MB.</small>
               {errors.image && (
-                <div className="invalid-feedback">
-                  {fieldError(errors.image)}
-                </div>
+                <div className="invalid-feedback">{fieldError(errors.image)}</div>
               )}
             </div>
 
+            {/* SECCIÓN DE PREVISUALIZACIÓN */}
+            {(preview || form.current_image) && (
+              <div className="col-12">
+                <div className="d-flex gap-4 align-items-end">
+                  {/* Mostrar imagen actual de la DB si existe */}
+                  {form.current_image && !preview && (
+                    <div>
+                      <label className="form-label small text-muted">Imagen actual</label>
+                      <div style={imageContainerStyle}>
+                        <img src={form.current_image} className="w-100 h-100" style={{ objectFit: 'cover' }} alt="Actual" />
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Mostrar previsualización de la nueva imagen seleccionada */}
+                  {preview && (
+                    <div>
+                      <label className="form-label small text-success fw-bold">Nueva imagen (vista previa)</label>
+                      <div style={{ ...imageContainerStyle, border: '2px solid #5ebd94' }}>
+                        <img src={preview} className="w-100 h-100" style={{ objectFit: 'cover' }} alt="Preview" />
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {/* DURACIÓN */}
             <div className="col-12 col-md-6">
-              <label className="form-label fw-semibold">Duración *</label>
+              <label className="form-label fw-semibold">Duración (minutos) *</label>
               <input
                 type="number"
                 name="length_minutes"
@@ -154,16 +193,14 @@ export default function ServiceForm({
                 onChange={onChange}
                 placeholder="Ej: 60"
               />
-
               {errors.length_minutes && (
-                <div className="invalid-feedback">
-                  {fieldError(errors.length_minutes)}
-                </div>
+                <div className="invalid-feedback">{fieldError(errors.length_minutes)}</div>
               )}
             </div>
 
+            {/* PRECIO */}
             <div className="col-12 col-md-6">
-              <label className="form-label fw-semibold">Precio *</label>
+              <label className="form-label fw-semibold">Precio (€) *</label>
               <input
                 type="number"
                 step="0.01"
@@ -173,14 +210,12 @@ export default function ServiceForm({
                 onChange={onChange}
                 placeholder="Ej: 49.99"
               />
-
               {errors.price && (
-                <div className="invalid-feedback">
-                  {fieldError(errors.price)}
-                </div>
+                <div className="invalid-feedback">{fieldError(errors.price)}</div>
               )}
             </div>
 
+            {/* DESCRIPCIÓN */}
             <div className="col-12">
               <label className="form-label fw-semibold">Descripción</label>
               <textarea
@@ -189,25 +224,16 @@ export default function ServiceForm({
                 rows={4}
                 value={form.description}
                 onChange={onChange}
-                placeholder="Describe brevemente el servicio..."
+                placeholder="Describe el servicio..."
               />
-
               {errors.description && (
-                <div className="invalid-feedback">
-                  {fieldError(errors.description)}
-                </div>
+                <div className="invalid-feedback">{fieldError(errors.description)}</div>
               )}
             </div>
 
+            {/* CHECKBOXES */}
             <div className="col-12 col-md-6">
-              <div
-                className="form-check p-3"
-                style={{
-                  backgroundColor: '#F7F7F7',
-                  borderRadius: '12px',
-                  border: '1px solid #eee',
-                }}
-              >
+              <div className="form-check p-3" style={checkboxStyle}>
                 <input
                   type="checkbox"
                   name="requires_employee"
@@ -216,21 +242,14 @@ export default function ServiceForm({
                   checked={form.requires_employee}
                   onChange={onChange}
                 />
-                <label className="form-check-label fw-semibold" htmlFor="requires_employee">
+                <label className="form-check-label fw-semibold ms-2" htmlFor="requires_employee">
                   Requiere empleado
                 </label>
               </div>
             </div>
 
             <div className="col-12 col-md-6">
-              <div
-                className="form-check p-3"
-                style={{
-                  backgroundColor: '#F7F7F7',
-                  borderRadius: '12px',
-                  border: '1px solid #eee',
-                }}
-              >
+              <div className="form-check p-3" style={checkboxStyle}>
                 <input
                   type="checkbox"
                   name="is_active"
@@ -239,42 +258,19 @@ export default function ServiceForm({
                   checked={form.is_active}
                   onChange={onChange}
                 />
-                <label className="form-check-label fw-semibold" htmlFor="is_active">
+                <label className="form-check-label fw-semibold ms-2" htmlFor="is_active">
                   Servicio activo
                 </label>
               </div>
             </div>
           </div>
 
+          {/* BOTONES */}
           <div className="d-flex justify-content-end gap-3 mt-5">
-            <button
-              type="button"
-              className="btn"
-              onClick={onCancel}
-              style={{
-                backgroundColor: '#F2E6D0',
-                color: '#7a6440',
-                borderRadius: '12px',
-                padding: '10px 20px',
-                fontWeight: 600,
-              }}
-            >
+            <button type="button" className="btn" onClick={onCancel} style={cancelButtonStyle}>
               Cancelar
             </button>
-
-            <button
-              type="submit"
-              className="btn"
-              disabled={loading}
-              style={{
-                backgroundColor: '#E0C38D',
-                color: '#fff',
-                borderRadius: '12px',
-                padding: '10px 24px',
-                fontWeight: 700,
-                border: 'none',
-              }}
-            >
+            <button type="submit" className="btn" disabled={loading} style={submitButtonStyle}>
               {loading ? loadingText : submitText}
             </button>
           </div>
@@ -283,3 +279,39 @@ export default function ServiceForm({
     </div>
   );
 }
+
+// Estilos en objetos para mantener limpio el JSX
+const imageContainerStyle: React.CSSProperties = {
+  width: '150px',
+  height: '100px',
+  borderRadius: '12px',
+  overflow: 'hidden',
+  border: '1px solid #eee',
+  backgroundColor: '#f9f9f9'
+};
+
+const checkboxStyle: React.CSSProperties = {
+  backgroundColor: '#F7F7F7',
+  borderRadius: '12px',
+  border: '1px solid #eee',
+  display: 'flex',
+  alignItems: 'center'
+};
+
+const cancelButtonStyle: React.CSSProperties = {
+  backgroundColor: '#F2E6D0',
+  color: '#7a6440',
+  borderRadius: '12px',
+  padding: '10px 20px',
+  fontWeight: 600,
+  border: 'none'
+};
+
+const submitButtonStyle: React.CSSProperties = {
+  backgroundColor: '#E0C38D',
+  color: '#fff',
+  borderRadius: '12px',
+  padding: '10px 24px',
+  fontWeight: 700,
+  border: 'none'
+};

@@ -49,6 +49,8 @@ import AdminClientEdit from './pages/Admin/Clients/editClient';
 import AdminClientShow from './pages/Admin/Clients/showClient';
 import { Home } from './pages/Site/home';
 import Spas from './pages/Site/spas';
+import SpaShow from './pages/Site/SpaShow';
+import AdminUpdateService from './pages/Admin/Services/editService';
 
 
 export default function MainApp() {
@@ -110,6 +112,7 @@ export default function MainApp() {
                 <Route path="spa/edit" element={<AdminEditSpa />} />
 
                 <Route path="services/:serviceSlug" element={<AdminShowService />} />
+                <Route path="services/:serviceSlug/edit" element={<AdminUpdateService />} />
                 <Route path="services" element={<AdminServicesIndex />} />
                 <Route path="services/create" element={<AdminCreateService />} />
 
@@ -137,6 +140,7 @@ export default function MainApp() {
             </ProtectedRoute>
           } />
         <Route path="spas" element={<Spas />} />
+        <Route path='spas/:slug' element={<SpaShow/>} />
       </Routes>
 
 
