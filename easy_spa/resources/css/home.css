@@ -1,0 +1,239 @@
+/* NAVBAR */
+
+.custom-navbar {
+background: white;
+  box-shadow: var(--color-shadow);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.navbar-nav {
+    display: flex !important; 
+}
+
+/* LOGO */
+.navbar-brand {
+  color: var(--color-main);
+  font-size: 1.5rem;
+  letter-spacing: 0.5px;
+}
+
+.navbar-brand:hover {
+  color: var(--color-main-hover);
+}
+
+/* LINKS */
+.nav-link {
+  color: var(--color-main-hover) !important;
+  font-weight: 500;
+  transition: all 0.25s ease;
+  position: relative;
+  display: block;
+    padding: 0.5rem 1rem;
+}
+
+
+.nav-link.active {
+  color: var(--color-main) !important;
+}
+
+/* UNDERLINE EFFECT */
+.nav-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+
+  width: 0%;
+  height: 2px;
+
+  background-color: var(--color-main);
+  transition: width 0.3s ease;
+}
+
+.nav-link:hover::after {
+  width: 100%;
+}
+
+/* LOGIN BUTTON */
+.btn-login {
+  border: 1px solid var(--color-button);
+  color: var(--color-text);
+  background-color: white;
+  padding: 0.55rem 1rem;
+  border-radius: 12px;
+  transition: all 0.25s ease;
+}
+
+.btn-login:hover {
+  background-color: var(--color-bg-soft);
+  border-color: var(--color-main);
+}
+
+/* REGISTER BUTTON */
+.btn-register {
+  background-color: var(--color-button);
+  color: var(--color-text);
+  border-radius: 12px;
+  padding: 0.55rem 1.2rem;
+  font-weight: 600;
+  transition: all 0.25s ease;
+  border: none;
+}
+
+.btn-register:hover {
+  background-color: var(--color-secondary);
+  transform: translateY(-1px);
+}
+
+/* MOBILE */
+.navbar-toggler {
+  border: none;
+}
+
+.navbar-toggler:focus {
+  box-shadow: none;
+}
+
+@media (min-width: 992px) {
+  .navbar-collapse.collapse {
+    display: flex !important;
+    height: auto !important;
+    visibility: visible !important;
+  }
+
+}
+
+/********HERO********/
+
+.hero-section {
+  background:
+    linear-gradient(135deg, rgba(148, 190, 172, 0.25), rgba(215, 183, 124, 0.25)),
+    #f7f7f7;
+  overflow: hidden;
+}
+
+.hero-badge {
+  display: inline-block;
+  background-color: var(--color-soft);
+  color: var(--color-text);
+  padding: 0.55rem 1rem;
+  border-radius: 999px;
+  font-weight: 600;
+  margin-bottom: 1.2rem;
+}
+
+.hero-title {
+  font-size: clamp(2.5rem, 5vw, 4.8rem);
+  font-weight: 800;
+  color: var(--color-text);
+  line-height: 1.05;
+  margin-bottom: 1.5rem;
+}
+
+.hero-text {
+  font-size: 1.15rem;
+  color: var(--color-muted);
+  max-width: 520px;
+}
+
+.hero-btn-primary {
+  background-color: #E0C38D;
+  color: var(--color-text);
+  padding: 0.8rem 1.5rem;
+  border-radius: 14px;
+  font-weight: 700;
+  border: none;
+}
+
+.hero-btn-primary:hover {
+  background-color: #d7b77c;
+  transform: translateY(-2px);
+}
+
+.hero-btn-secondary {
+  background-color: white;
+  color: var(--color-text);
+  padding: 0.8rem 1.5rem;
+  border-radius: 14px;
+  font-weight: 700;
+  border: 1px solid var(--color-border);
+}
+
+.hero-btn-secondary:hover {
+  background-color: var(--color-soft);
+}
+
+.hero-stats {
+  display: flex;
+  gap: 2rem;
+  margin-top: 3rem;
+}
+
+.hero-stats strong {
+  display: block;
+  font-size: 1.6rem;
+  color: var(--color-main-hover);
+}
+
+.hero-stats span {
+  color: var(--color-muted);
+  font-size: 0.95rem;
+}
+
+.hero-card {
+  position: relative;
+  border-radius: 32px;
+  overflow: hidden;
+  box-shadow: var(--color-shadow);
+}
+
+.hero-img {
+  width: 100%;
+  height: 580px;
+  object-fit: cover;
+  display: block;
+}
+
+.floating-card {
+  position: absolute;
+  left: 2rem;
+  bottom: 2rem;
+  background-color: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(12px);
+  padding: 1rem 1.2rem;
+  border-radius: 18px;
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  box-shadow: var(--color-shadow);
+}
+
+.floating-card i {
+  font-size: 1.8rem;
+  color: var(--color-main-hover);
+}
+
+.floating-card strong {
+  display: block;
+  color: var(--color-text);
+}
+
+.floating-card span {
+  color: var(--color-muted);
+  font-size: 0.9rem;
+}
+
+@media (max-width: 768px) {
+  .hero-section {
+    padding: 4rem 0;
+  }
+
+  .hero-img {
+    height: 420px;
+  }
+
+  .hero-stats {
+    flex-direction: column;
+    gap: 1rem;
+  }
+}

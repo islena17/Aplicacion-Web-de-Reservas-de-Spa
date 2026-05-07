@@ -62,6 +62,22 @@
 }
 
 :root {
+
+  --color-main: #94beac;
+  --color-main-hover: #5ebd94;
+
+  --color-bg-soft: #f7f7f7;
+  --color-soft: #d0eee1;
+
+  --color-text: #2f2f2f;
+  --color-muted: #7a7a7a;
+
+  --color-border: #d4e2dc;
+  --color-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+
+  --color-secondary: #d7b77c;
+  --color-button: #E0C38D;
+
     --background: oklch(1 0 0);
     --foreground: oklch(0.145 0 0);
     --card: oklch(1 0 0);

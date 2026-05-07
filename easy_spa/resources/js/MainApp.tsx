@@ -47,6 +47,7 @@ import Calendar from './pages/Admin/calendar';
 import AdminClientsIndex from './pages/Admin/Clients';
 import AdminClientEdit from './pages/Admin/Clients/editClient';
 import AdminClientShow from './pages/Admin/Clients/showClient';
+import { Home } from './pages/Site/home';
 
 
 export default function MainApp() {
@@ -54,7 +55,8 @@ export default function MainApp() {
     <BrowserRouter>
       <Routes>
         {/* AUTH */}
-        <Route path="/" element={<Login />} />
+        <Route path='/' element={<Home />} />
+        <Route path="/login" element={<Login />} />
 
         <Route
           path="/dashboard/*"

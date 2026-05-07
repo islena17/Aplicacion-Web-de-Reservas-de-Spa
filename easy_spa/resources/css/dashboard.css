@@ -1,14 +1,4 @@
-:root {
-  --color-main: #e0c38d;
-  --color-main-hover: #d6b779;
-  --color-bg: #ffffff;
-  --color-bg-soft: #f7f7f7;
-  --color-soft: #f2e6d0;
-  --color-text: #2f2f2f;
-  --color-muted: #7a7a7a;
-  --color-border: #ece7de;
-  --color-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
-}
+
 
 body {
   background-color: var(--color-bg-soft);
