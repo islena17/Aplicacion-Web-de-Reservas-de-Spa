@@ -26,7 +26,7 @@ export default function Navbar() {
                             <a className="nav-link active" href="/">Home</a>
                         </li>
                         <li className="nav-item">
-                            <a className="nav-link" href="#">Spas</a>
+                            <a className="nav-link" href="/spas">Spas</a>
                         </li>
                         <li className="nav-item">
                             <a className="nav-link" href="#">Servicios</a>
@@ -40,7 +40,7 @@ export default function Navbar() {
                     </ul>
 
                     <div className="d-flex gap-2">
-                        <button className="btn btn-login">Login</button>
+                        <a className="btn btn-login" href="/login">Login</a>
                         <button className="btn btn-register">Registrarse</button>
                     </div>
                 </div>

@@ -10,7 +10,7 @@ class SpaController extends Controller
     public function index()
     {
         $spas = Spa::where('is_active', true)
-            ->select('id', 'name', 'slug', 'city', 'logo')
+            ->select('id', 'description', 'name', 'slug', 'city', 'logo')
             ->paginate(10);
 
         return response()->json($spas);

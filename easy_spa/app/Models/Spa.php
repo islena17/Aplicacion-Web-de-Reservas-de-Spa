@@ -21,6 +21,7 @@ class Spa extends Model
         'is_active',
         'slug',
     ];
+     protected $appends = ['logo_url'];
 
     public function categories()
     {
@@ -54,5 +55,12 @@ class Spa extends Model
     public function getRouteKeyName()
     {
         return 'slug';
+    }
+
+    public function getLogoUrlAttribute()
+    {
+        return $this->logo
+            ? asset('storage/' . $this->logo)
+            : null;
     }
 }

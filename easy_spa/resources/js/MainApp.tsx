@@ -48,6 +48,7 @@ import AdminClientsIndex from './pages/Admin/Clients';
 import AdminClientEdit from './pages/Admin/Clients/editClient';
 import AdminClientShow from './pages/Admin/Clients/showClient';
 import { Home } from './pages/Site/home';
+import Spas from './pages/Site/spas';
 
 
 export default function MainApp() {
@@ -131,12 +132,14 @@ export default function MainApp() {
 
                 <Route path="clients" element={<AdminClientsIndex />} />
                 <Route path='clients/:clientId/edit' element={<AdminClientEdit />} />
-                <Route path='clients/:clientId' element={<AdminClientShow />}/>
+                <Route path='clients/:clientId' element={<AdminClientShow />} />
               </Routes>
             </ProtectedRoute>
           } />
-
+        <Route path="spas" element={<Spas />} />
       </Routes>
+
+
 
     </BrowserRouter>
   )

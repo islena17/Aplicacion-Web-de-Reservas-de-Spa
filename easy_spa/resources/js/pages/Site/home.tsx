@@ -1,4 +1,4 @@
-import Hero from "@/components/layouts/Hero";
+import Hero from "@/components/layouts/HeroBanner";
 import Navbar from "@/components/layouts/Navbar";
 export function Home (){
 

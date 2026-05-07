@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Spa;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 
 class SpaRequest extends FormRequest
@@ -14,6 +16,7 @@ class SpaRequest extends FormRequest
 
     public function rules(): array
     {
+        $spaId = Spa::where('user_id', Auth::id())->value('id');
         return [
 
         
@@ -24,7 +27,7 @@ class SpaRequest extends FormRequest
                 'nullable',
                 'string',
                 'max:255',
-                Rule::unique('spas', 'slug')->ignore($this->route('spa'))
+                Rule::unique('spas', 'slug')->ignore($spaId)
             ],
 
             'description' => 'nullable|string',
@@ -39,7 +42,7 @@ class SpaRequest extends FormRequest
             'opening_time' => 'nullable|date_format:H:i',
             'closing_time' => 'nullable|date_format:H:i',
 
-            'logo' => 'nullable|string|max:255',
+            'logo' => 'nullable|image|max:255',
 
             'is_active' => 'boolean',
         ];
