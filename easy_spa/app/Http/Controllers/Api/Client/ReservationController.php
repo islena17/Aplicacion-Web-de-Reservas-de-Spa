@@ -6,12 +6,14 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\ReservationRequest;
 use App\Models\Client;
 use App\Models\Employee;
+use App\Models\EmployeeBlock;
 use App\Models\Reservation;
 use App\Models\Service;
 use App\Models\Spa;
 use App\Services\AvailabilityService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class ReservationController extends Controller
 {
@@ -37,35 +39,53 @@ class ReservationController extends Controller
         return response()->json($reservations);
     }
 
-    public function store(ReservationRequest $request, AvailabilityService $availabilityService)
-    {
+    public function store(
+        ReservationRequest $request,
+        AvailabilityService $availabilityService
+    ) {
         $client = $this->getAuthenticatedClient();
-
         $data = $request->validated();
 
         $service = Service::where('is_active', true)
             ->findOrFail($data['service_id']);
 
-        if (!empty($data['employee_id'])) {
+        $employeeId = $data['employee_id'] ?? null;
 
+        if ($employeeId) {
             Employee::where('spa_id', $service->spa_id)
-                ->findOrFail($data['employee_id']);
+                ->findOrFail($employeeId);
 
             $availabilityService->validateEmployeeAvailability(
                 $service->spa_id,
-                $data['employee_id'],
+                $employeeId,
                 $data['reservation_date'],
                 $data['start_time'],
                 $data['end_time']
             );
         }
 
-        $data['client_id'] = $client->id;
-        $data['spa_id'] = $service->spa_id;
-        $data['status'] = 'pending';
-        $data['final_price'] = $service->price;
+        $reservation = DB::transaction(function () use ($data, $client, $service, $employeeId) {
+            $reservation = Reservation::create([
+                ...$data,
+                'client_id' => $client->id,
+                'spa_id' => $service->spa_id,
+                'status' => 'pending',
+                'final_price' => $service->price,
+            ]);
 
-        $reservation = Reservation::create($data);
+            if ($employeeId) {
+                EmployeeBlock::create([
+                    'employee_id' => $employeeId,
+                    'date' => $reservation->reservation_date,
+                    'start_time' => $reservation->start_time,
+                    'end_time' => $reservation->end_time,
+                    'reason' => 'Reserva #' . $reservation->id,
+                    'is_available' => false,
+                ]);
+            }
+
+            return $reservation;
+        });
 
         return response()->json([
             'message' => 'Reserva creada correctamente',
