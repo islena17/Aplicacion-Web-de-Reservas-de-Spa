@@ -2,6 +2,7 @@ import { FormEvent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '@/lib/axios';
 import { useAuth } from '@/context/AuthContext';
+import { useLocation } from 'react-router-dom';
 
 type LoginErrors = {
   email?: string | string[];
@@ -9,8 +10,11 @@ type LoginErrors = {
   general?: string;
 };
 export default function Login() {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
+  const location = useLocation();
   const { setUser } = useAuth();
+
+  const from = location.state?.from;
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -39,10 +43,17 @@ export default function Login() {
       localStorage.setItem('user', JSON.stringify(user));
       setUser(user);
 
+      if (from) {
+        navigate(from, { replace: true });
+        return;
+      }
+
       if (user.role?.name === 'WebMaster') {
         navigate('/dashboard');
       } else if (user.role?.name === 'Admin') {
         navigate('/admin');
+      } else if (user.role?.name === 'Client') {
+        navigate('/');
       }
     } catch (error: any) {
       console.log('ERROR LOGIN:', error);

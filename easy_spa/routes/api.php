@@ -36,6 +36,7 @@ use App\Http\Controllers\Api\WebMaster\SpaController;
 use App\Http\Controllers\Api\WebMaster\SpaScheduleController;
 
 use App\Http\Controllers\Api\Client\AvailabilityController as ClientAvailabilityController;
+use App\Http\Controllers\Api\Client\ReservationController as ClientReservationController;
 use App\Http\Controllers\Api\Public\SpaController as PublicSpaController;
 use App\Http\Controllers\Api\WebMaster\RoleController;
 use App\Http\Controllers\Api\WebMaster\UserController;
@@ -96,12 +97,11 @@ Route::middleware(['auth:sanctum', 'role:Admin'])
         Route::apiResource('employees', AdminEmployeeController::class);
         Route::apiResource('spa-schedules', AdminSpaScheduleController::class);
         Route::apiResource('employee-schedules', AdminEmployeeScheduleController::class);
-         Route::post('employee-schedules/bulk', [AdminEmployeeScheduleController::class, 'bulk']);
+        Route::post('employee-schedules/bulk', [AdminEmployeeScheduleController::class, 'bulk']);
         Route::apiResource('employee-blocks', AdminEmployeeBlockController::class);
         Route::apiResource('categories', AdminServiceCategoryController::class);
         Route::get('availability', [AdminAvailabilityController::class, 'index']);
-         Route::apiResource('clients', AdminClientController::class);
-        
+        Route::apiResource('clients', AdminClientController::class);
     });
 
 Route::middleware(['auth:sanctum', 'role:employee'])
@@ -113,7 +113,7 @@ Route::middleware(['auth:sanctum', 'role:employee'])
         Route::get('availability', [EmployeeAvailabilityController::class, 'index']);
     });
 
-Route::middleware(['auth:sanctum', 'role:client'])
+Route::middleware(['auth:sanctum', 'role:Client'])
     ->prefix('client')
     ->group(function () {
         Route::get('profile', [ProfileController::class, 'show']);
@@ -125,8 +125,11 @@ Route::middleware(['auth:sanctum', 'role:client'])
         Route::get('services', [ServiceController::class, 'index']);
         Route::get('services/{service}', [ServiceController::class, 'show']);
 
-        Route::apiResource('reservations', ReservationController::class);
-
+        Route::apiResource('reservations', ClientReservationController::class);
+        Route::get(
+            '/reservation-data/{spa:slug}/{service:slug}',
+            [ClientReservationController::class, 'data']
+        );
         Route::get('availability', [ClientAvailabilityController::class, 'index']);
     });
 

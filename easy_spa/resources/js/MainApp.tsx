@@ -52,6 +52,7 @@ import Spas from './pages/Site/spas';
 import SpaShow from './pages/Site/SpaShow';
 import AdminUpdateService from './pages/Admin/Services/editService';
 import Register from './pages/Auth/Register';
+import ClientReservation from './pages/Site/reservation';
 
 
 export default function MainApp() {
@@ -143,10 +144,17 @@ export default function MainApp() {
         <Route path="spas" element={<Spas />} />
         <Route path='spas/:slug' element={<SpaShow/>} />
         <Route path='/register' element={<Register />} />
+
+        <Route
+          path="/client/*"
+          element={
+            <ProtectedRoute role="Client">
+              <Routes>
+                <Route path="reservation-data/:spaSlug/:serviceSlug" element={<ClientReservation />} />
+              </Routes>
+            </ProtectedRoute>
+          }/>
       </Routes>
-
-
-
     </BrowserRouter>
-  )
+  );
 }

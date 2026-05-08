@@ -1,9 +1,13 @@
 import { useParams } from 'react-router-dom';
 import Navbar from '@/components/layouts/Navbar';
 import { useSpaShow } from '@/hooks/Public/Spa/useSpaShow';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '@/context/AuthContext';
 
 export default function SpaShow() {
   const { slug } = useParams<{ slug: string }>();
+  const navigate = useNavigate();
+  const { user } = useAuth();
 
   const {
     spa,
@@ -265,6 +269,18 @@ export default function SpaShow() {
 
                                   <button
                                     className="btn"
+                                    onClick={() => {
+                                      const reservationUrl = `/client/reservation-data/${spa.slug}/${service.slug}`;
+
+                                      if (!user) {
+                                        navigate('/login', {
+                                          state: { from: reservationUrl },
+                                        });
+                                        return;
+                                      }
+
+                                      navigate(reservationUrl);
+                                    }}
                                     style={{
                                       backgroundColor: '#E0C38D',
                                       color: '#fff',

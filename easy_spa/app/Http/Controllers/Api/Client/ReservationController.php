@@ -8,6 +8,9 @@ use App\Models\Client;
 use App\Models\Employee;
 use App\Models\Reservation;
 use App\Models\Service;
+use App\Models\Spa;
+use App\Services\AvailabilityService;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class ReservationController extends Controller
@@ -27,28 +30,40 @@ class ReservationController extends Controller
             'service',
             'employee',
         ])
-        ->where('client_id', $client->id)
-        ->latest()
-        ->paginate(10);
+            ->where('client_id', $client->id)
+            ->latest()
+            ->paginate(10);
 
         return response()->json($reservations);
     }
 
-    public function store(ReservationRequest $request)
+    public function store(ReservationRequest $request, AvailabilityService $availabilityService)
     {
         $client = $this->getAuthenticatedClient();
+
         $data = $request->validated();
 
         $service = Service::where('is_active', true)
             ->findOrFail($data['service_id']);
 
         if (!empty($data['employee_id'])) {
+
             Employee::where('spa_id', $service->spa_id)
                 ->findOrFail($data['employee_id']);
+
+            $availabilityService->validateEmployeeAvailability(
+                $service->spa_id,
+                $data['employee_id'],
+                $data['reservation_date'],
+                $data['start_time'],
+                $data['end_time']
+            );
         }
 
         $data['client_id'] = $client->id;
         $data['spa_id'] = $service->spa_id;
+        $data['status'] = 'pending';
+        $data['final_price'] = $service->price;
 
         $reservation = Reservation::create($data);
 
@@ -133,6 +148,22 @@ class ReservationController extends Controller
 
         return response()->json([
             'message' => 'Reserva eliminada correctamente',
+        ]);
+    }
+
+    public function data(Spa $spa, Service $service, Request $request)
+    {
+        $client = Client::where('user_id', Auth::id())->firstOrFail();
+
+        $employees = Employee::where('spa_id', $spa->id)
+            ->where('is_active', true)
+            ->get(['id', 'name']);
+
+        return response()->json([
+            'spa' => $spa,
+            'service' => $service,
+            'client' => $client,
+            'employees' => $employees,
         ]);
     }
 }
