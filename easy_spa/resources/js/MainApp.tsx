@@ -123,7 +123,8 @@ export default function MainApp() {
                 <Route path="categories/:categorySlug" element={<AdminShowCategory />} />
                 <Route path="categories" element={<AdminCategoriesIndex />} />
                 <Route path="categories/create" element={<AdminCreateCategory />} />
-                <Route path="categories/:categorySlug" element={<AdminEditCategory />} />
+                <Route path="categories/:categorySlug/edit" element={<AdminEditCategory />} />
+
 
                 <Route path="employees/create" element={<AdminCreateEmployee />} />
                 <Route path="employees/:employeeId/edit" element={<AdminEditEmployee />} />

@@ -17,27 +17,16 @@ class ServiceCategoryRequest extends FormRequest
 
     public function rules(): array
     {
-        $spaParam = $this->route('spa');
-        $categorySlug = $this->route('category');
+        $category = $this->route('category');
 
-        if ($spaParam) {
-            $spa = is_object($spaParam)
-                ? $spaParam
-                : Spa::where('slug', $spaParam)->first();
+        if ($category instanceof ServiceCategory) {
+            $spa = $category->spa;
         } else {
             $spa = Spa::where('user_id', Auth::id())->first();
         }
 
         if (!$spa) {
             abort(404, 'Spa no encontrado.');
-        }
-
-        $category = null;
-
-        if ($categorySlug) {
-            $category = ServiceCategory::where('slug', $categorySlug)
-                ->where('spa_id', $spa->id)
-                ->first();
         }
 
         return [
@@ -49,7 +38,7 @@ class ServiceCategoryRequest extends FormRequest
                 'max:255',
                 Rule::unique('service_categories', 'slug')
                     ->where('spa_id', $spa->id)
-                    ->ignore($category?->id),
+                    ->ignore($category instanceof ServiceCategory ? $category->id : null),
             ],
 
             'description' => 'nullable|string',
@@ -57,7 +46,6 @@ class ServiceCategoryRequest extends FormRequest
             'order' => 'sometimes|integer|min:0',
         ];
     }
-
     public function messages(): array
     {
         return [

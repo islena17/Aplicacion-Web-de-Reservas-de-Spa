@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import api from '@/lib/axios';
 
 type CategoryForm = {
+   id?: number;
   name: string;
   slug: string;
   description: string;
@@ -22,7 +23,7 @@ const initialForm: CategoryForm = {
   order: 0,
 };
 
-export function useCategoryForm(categoryId?: string) {
+export function useCategoryForm(categorySlug?: string) {
   const navigate = useNavigate();
 
   const [form, setForm] = useState<CategoryForm>(initialForm);
@@ -32,24 +33,34 @@ export function useCategoryForm(categoryId?: string) {
 
   //  cargar categoría si es edit
   useEffect(() => {
-    if (!categoryId) return;
+    console.log('CATEGORY ID:', categorySlug);
+
+    if (!categorySlug) {
+      console.log('No hay categorySlug, no se cargan datos');
+      return;
+    }
 
     const fetchCategory = async () => {
       try {
         setLoadingData(true);
 
-        const res = await api.get(`/api/admin/categories/${categoryId}`);
+        const res = await api.get(`/api/admin/categories/${categorySlug}`);
+
+        console.log('RESPUESTA CATEGORY:', res.data);
+
         const category = res.data.data ?? res.data;
 
         setForm({
+           id: category.id,
           name: category.name ?? '',
           slug: category.slug ?? '',
           description: category.description ?? '',
           is_active: Boolean(category.is_active),
           order: category.order ?? 0,
         });
-      } catch (error) {
-        console.error(error);
+      } catch (error: any) {
+        console.error('ERROR CATEGORY:', error.response?.status, error.response?.data);
+
         setErrors({ general: 'No se pudo cargar la categoría.' });
       } finally {
         setLoadingData(false);
@@ -57,7 +68,7 @@ export function useCategoryForm(categoryId?: string) {
     };
 
     fetchCategory();
-  }, [categoryId]);
+  }, [categorySlug]);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -109,13 +120,13 @@ export function useCategoryForm(categoryId?: string) {
   const updateCategory = async (e: FormEvent) => {
     e.preventDefault();
 
-    if (!categoryId) return;
+    if (!categorySlug) return;
 
     setLoading(true);
     setErrors({});
 
     try {
-      await api.put(`/api/admin/categories/${categoryId}`, form);
+     await api.put(`/api/admin/categories/${categorySlug}`, form);
 
       navigate('/admin/categories');
     } catch (error: any) {

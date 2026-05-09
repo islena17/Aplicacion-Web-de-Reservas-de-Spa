@@ -73,22 +73,22 @@ class ServiceCategoryController extends Controller
     /**
      * Actualizar categoría
      */
-    public function update(ServiceCategoryRequest $request, ServiceCategory $serviceCategory)
+    public function update(ServiceCategoryRequest $request, ServiceCategory $category)
     {
         $spaId = $this->getAdminSpaId();
 
-        if ($serviceCategory->spa_id !== $spaId) {
+        if ($category->spa_id !== $spaId) {
             abort(404);
         }
 
         $data = $request->validated();
-        unset($data['spa_id']); // seguridad
+        unset($data['spa_id']);
 
-        $serviceCategory->update($data);
+        $category->update($data);
 
         return response()->json([
             'message' => 'Categoría actualizada correctamente',
-            'data' => $serviceCategory
+            'data' => $category
         ]);
     }
 
