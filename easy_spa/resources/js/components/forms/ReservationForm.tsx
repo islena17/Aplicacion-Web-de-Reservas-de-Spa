@@ -35,6 +35,12 @@ type ReservationErrors = Partial<Record<keyof ReservationFormData, string[]>> & 
   general?: string;
 };
 
+type AvailableSlot = {
+  employee_id: number | null;
+  start_time: string;
+  end_time: string;
+};
+
 type ReservationFormProps = {
   form: ReservationFormData;
   clients: Option[];
@@ -54,6 +60,8 @@ type ReservationFormProps = {
   setShowClientForm: (value: boolean) => void;
   clientForm: ClientFormData;
   handleClientChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  availableSlots: AvailableSlot[];
+  loadingSlots: boolean;
 };
 
 export default function ReservationForm({
@@ -73,6 +81,8 @@ export default function ReservationForm({
   setShowClientForm,
   clientForm,
   handleClientChange,
+  availableSlots,
+  loadingSlots,
 }: ReservationFormProps) {
   return (
     <div
