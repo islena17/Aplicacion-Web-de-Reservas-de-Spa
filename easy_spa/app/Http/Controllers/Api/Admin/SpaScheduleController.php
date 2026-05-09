@@ -6,11 +6,12 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\SpaScheduleRequest;
 use App\Models\Spa;
 use App\Models\SpaSchedule;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class SpaScheduleController extends Controller
 {
-       private function getAdminSpaId(): int
+    private function getAdminSpaId(): int
     {
         $spa = Spa::where('user_id', Auth::id())->first();
 
@@ -46,7 +47,36 @@ class SpaScheduleController extends Controller
             'data' => $schedule->load('spa'),
         ], 201);
     }
+    public function bulk(Request $request)
+    {
+        $spaId = $this->getAdminSpaId();
 
+        $data = $request->validate([
+            'schedules' => 'required|array',
+            'schedules.*.day_of_week' => 'required|integer|min:0|max:6',
+            'schedules.*.start_time' => 'required',
+            'schedules.*.end_time' => 'required',
+            'schedules.*.is_working' => 'required|boolean',
+        ]);
+
+        foreach ($data['schedules'] as $schedule) {
+            SpaSchedule::updateOrCreate(
+                [
+                    'spa_id' => $spaId,
+                    'day_of_week' => $schedule['day_of_week'],
+                ],
+                [
+                    'start_time' => $schedule['start_time'],
+                    'end_time' => $schedule['end_time'],
+                    'is_working' => $schedule['is_working'],
+                ]
+            );
+        }
+
+        return response()->json([
+            'message' => 'Horario del spa guardado correctamente',
+        ]);
+    }
     public function show(SpaSchedule $spaSchedule)
     {
         $spaId = $this->getAdminSpaId();

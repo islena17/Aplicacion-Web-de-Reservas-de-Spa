@@ -57,7 +57,7 @@ class AvailabilityService
 
         foreach ($employees as $employee) {
             $employeeSchedule = EmployeeSchedule::where('employee_id', $employee->id)
-                ->where('day_of_week', $dayOfWeek)
+                ->where('date', $date)
                 ->where('is_working', true)
                 ->first();
 
@@ -92,6 +92,7 @@ class AvailabilityService
                 ];
             }
         }
+
 
         usort($slots, function ($a, $b) {
             return strcmp($a['start_time'], $b['start_time']);
@@ -243,8 +244,10 @@ class AvailabilityService
             ->where('is_active', true)
             ->findOrFail($employeeId);
 
+        $dayOfWeek = Carbon::parse($date)->dayOfWeek;
+
         $schedule = EmployeeSchedule::where('employee_id', $employee->id)
-            ->where('date', $date)
+            ->where('day_of_week', $dayOfWeek)
             ->where('is_working', true)
             ->where('start_time', '<=', $startTime)
             ->where('end_time', '>=', $endTime)

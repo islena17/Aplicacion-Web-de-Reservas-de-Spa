@@ -53,6 +53,7 @@ import SpaShow from './pages/Site/SpaShow';
 import AdminUpdateService from './pages/Admin/Services/editService';
 import Register from './pages/Auth/Register';
 import ClientReservation from './pages/Site/reservation';
+import SpaSchedule from './pages/Admin/Spa/spaSchedule';
 
 
 export default function MainApp() {
@@ -112,6 +113,7 @@ export default function MainApp() {
                 <Route path="" element={<AdminHome />} />
                 <Route path="spa" element={<AdminShowSpa />} />
                 <Route path="spa/edit" element={<AdminEditSpa />} />
+                <Route path="spa/spa-schedule" element={<SpaSchedule />} />
 
                 <Route path="services/:serviceSlug" element={<AdminShowService />} />
                 <Route path="services/:serviceSlug/edit" element={<AdminUpdateService />} />
@@ -138,6 +140,7 @@ export default function MainApp() {
                 <Route path="clients" element={<AdminClientsIndex />} />
                 <Route path='clients/:clientId/edit' element={<AdminClientEdit />} />
                 <Route path='clients/:clientId' element={<AdminClientShow />} />
+                
               </Routes>
             </ProtectedRoute>
           } />

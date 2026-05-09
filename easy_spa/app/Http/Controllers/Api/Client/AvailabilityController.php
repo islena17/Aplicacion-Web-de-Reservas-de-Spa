@@ -25,6 +25,7 @@ class AvailabilityController extends Controller
             $data['employee_id'] ?? null,
             $data['interval'] ?? 30
         );
+       
 
         return response()->json($slots);
     }

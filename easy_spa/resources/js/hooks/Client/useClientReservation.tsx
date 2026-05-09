@@ -80,13 +80,16 @@ export function useClientReservation(spaSlug?: string, serviceSlug?: string) {
                         service_id: service.id,
                         date: form.reservation_date,
                         employee_id: form.employee_id || undefined,
+
                     },
                 });
+           console.log('SLOTS RESPONSE:', response.data);
 
                 setSlots(response.data);
             } catch (error: any) {
                 console.log('ERROR AVAILABILITY:', error.response?.status);
                 console.log(error.response?.data);
+                 
 
                 setSlots([]);
             } finally {
@@ -128,11 +131,13 @@ export function useClientReservation(spaSlug?: string, serviceSlug?: string) {
         try {
             await api.post('/api/client/reservations', {
                 service_id: service.id,
+                client_id: client.id,
                 employee_id: form.employee_id || null,
                 reservation_date: form.reservation_date,
                 start_time: form.start_time,
                 end_time: form.end_time,
                 observations: form.observations || null,
+                final_price: service.price
             });
 
             navigate('/');
