@@ -16,6 +16,7 @@ type EmployeeForm = {
   email: string;
   telephone: string;
   is_active: boolean;
+  timetable_colour: string;
 };
 
 type EmployeeErrors = Partial<Record<keyof EmployeeForm, string[]>> & {
@@ -30,6 +31,7 @@ const initialForm: EmployeeForm = {
   email: '',
   telephone: '',
   is_active: true,
+  timetable_colour: ''
 };
 
 const getList = (response: any) => {
@@ -69,156 +71,157 @@ export function useEmployeeForm(spaSlug?: string, employeeId?: string) {
 
         if (employeeId) {
           const employeeRes = await api.get(`/api/webmaster/employees/${employeeId}`);
-        
-        const employee = employeeRes.data.data ?? employeeRes.data;
 
-        setForm({
-          spa_id: String(employee.spa_id ?? currentSpaId),
-          name: employee.name ?? '',
-          surname: employee.surname ?? '',
-          gender: employee.gender ?? '',
-          email: employee.email ?? '',
-          telephone: employee.telephone ?? '',
-          is_active: Boolean(employee.is_active),
+          const employee = employeeRes.data.data ?? employeeRes.data;
+
+          setForm({
+            spa_id: String(employee.spa_id ?? currentSpaId),
+            name: employee.name ?? '',
+            surname: employee.surname ?? '',
+            gender: employee.gender ?? '',
+            email: employee.email ?? '',
+            telephone: employee.telephone ?? '',
+            is_active: Boolean(employee.is_active),
+            timetable_colour: employee.timetable_colour ?? '#3788d8',
+          });
+        }
+      } catch (error) {
+        console.error(error);
+        setErrors({
+          general: 'No se han podido cargar los datos necesarios.',
         });
+      } finally {
+        setLoadingOptions(false);
       }
-    } catch (error) {
-      console.error(error);
-      setErrors({
-        general: 'No se han podido cargar los datos necesarios.',
-      });
-    } finally {
-      setLoadingOptions(false);
+    };
+
+    fetchOptions();
+  }, [spaSlug, employeeId]);
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value, type } = e.target;
+
+    if (type === 'checkbox') {
+      const checked = (e.target as HTMLInputElement).checked;
+
+      setForm((prev) => ({
+        ...prev,
+        [name]: checked,
+      }));
+
+      return;
     }
-  };
-
-  fetchOptions();
-}, [spaSlug, employeeId]);
-
-const handleChange = (
-  e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
-) => {
-  const { name, value, type } = e.target;
-
-  if (type === 'checkbox') {
-    const checked = (e.target as HTMLInputElement).checked;
 
     setForm((prev) => ({
       ...prev,
-      [name]: checked,
+      [name]: value,
     }));
+  };
 
-    return;
-  }
+  //constantes del formulario
+  //crear empleado
+  const createEmployee = async (e: FormEvent) => {
+    e.preventDefault();
 
-  setForm((prev) => ({
-    ...prev,
-    [name]: value,
-  }));
-};
-
-//constantes del formulario
-//crear empleado
-const createEmployee = async (e: FormEvent) => {
-  e.preventDefault();
-
-  if (!spaId) {
-    setErrors({
-      general: 'No se ha podido identificar el spa.',
-    });
-    return;
-  }
-  setLoading(true);
-  setErrors({});
-
-  try {
-    await api.post('/api/webmaster/employees', {
-      spa_id: spaId,
-      name: form.name,
-      surname: form.surname,
-      gender: form.gender || null,
-      email: form.email || null,
-      telephone: form.telephone || null,
-      is_active: form.is_active,
-    });
-
-    navigate(`/dashboard/spas/${spaSlug}?tab=empleados`);
-  } catch (error: any) {
-    console.log('STATUS:', error.response?.status);
-    console.log('ERRORES:', error.response?.data);
-
-    if (error.response?.status === 422) {
-      setErrors(
-        error.response.data.errors || {
-          general: error.response.data.message,
-        }
-      );
-    } else {
+    if (!spaId) {
       setErrors({
-        general: 'Ha ocurrido un error al crear el empleado.',
+        general: 'No se ha podido identificar el spa.',
       });
+      return;
     }
-  } finally {
-    setLoading(false);
-  }
-};
+    setLoading(true);
+    setErrors({});
 
-//actualizar empleado
-const updateEmployee = async (e: FormEvent) => {
-  e.preventDefault();
+    try {
+      await api.post('/api/webmaster/employees', {
+        spa_id: spaId,
+        name: form.name,
+        surname: form.surname,
+        gender: form.gender || null,
+        email: form.email || null,
+        telephone: form.telephone || null,
+        is_active: form.is_active,
+      });
 
-  if (!spaId) {
-    setErrors({
-      general: 'No se ha podido identificar el spa.',
-    });
-    return;
-  }
+      navigate(`/dashboard/spas/${spaSlug}?tab=empleados`);
+    } catch (error: any) {
+      console.log('STATUS:', error.response?.status);
+      console.log('ERRORES:', error.response?.data);
 
-  setLoading(true);
-  setErrors({});
+      if (error.response?.status === 422) {
+        setErrors(
+          error.response.data.errors || {
+            general: error.response.data.message,
+          }
+        );
+      } else {
+        setErrors({
+          general: 'Ha ocurrido un error al crear el empleado.',
+        });
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
 
-  try {
-    await api.put(`/api/webmaster/employees/${employeeId}`, {
-      spa_id: spaId,
-      name: form.name,
-      surname: form.surname,
-      gender: form.gender || null,
-      email: form.email || null,
-      telephone: form.telephone || null,
-      is_active: form.is_active,
-    });
+  //actualizar empleado
+  const updateEmployee = async (e: FormEvent) => {
+    e.preventDefault();
 
-    navigate(`/dashboard/spas/${spaSlug}?tab=empleados`);
-  } catch (error: any) {
-    console.log('STATUS:', error.response?.status);
-    console.log('ERRORES:', error.response?.data);
+    const currentSpaId = spaId ?? Number(form.spa_id);
 
-    if (error.response?.status === 422) {
-      setErrors(
-        error.response.data.errors || {
-          general: error.response.data.message,
-        }
-      );
-    } else {
+    if (!currentSpaId) {
       setErrors({
-        general: 'Ha ocurrido un error al actualizar el empleado.',
+        general: 'No se ha podido identificar el spa.',
       });
+      return;
     }
-  } finally {
-    setLoading(false);
-  }
-};
 
-const fieldError = (field?: string[]) => field?.[0];
+    setLoading(true);
+    setErrors({});
 
-return {
-  form,
-  errors,
-  loading,
-  loadingOptions,
-  handleChange,
-  createEmployee,
-  updateEmployee,
-  fieldError,
-};
+    try {
+      await api.put(`/api/webmaster/employees/${employeeId}`, {
+        spa_id: currentSpaId,
+        name: form.name,
+        surname: form.surname,
+        gender: form.gender || null,
+        email: form.email || null,
+        telephone: form.telephone || null,
+        is_active: form.is_active,
+        timetable_colour: form.timetable_colour,
+      });
+
+      navigate(`/dashboard/spas/${spaSlug}?tab=empleados`);
+    } catch (error: any) {
+      if (error.response?.status === 422) {
+        setErrors(
+          error.response.data.errors || {
+            general: error.response.data.message,
+          }
+        );
+      } else {
+        setErrors({
+          general: 'Ha ocurrido un error al actualizar el empleado.',
+        });
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fieldError = (field?: string[]) => field?.[0];
+
+  return {
+    form,
+    errors,
+    loading,
+    loadingOptions,
+    handleChange,
+    createEmployee,
+    updateEmployee,
+    fieldError,
+  };
 }
