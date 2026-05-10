@@ -54,6 +54,7 @@ import AdminUpdateService from './pages/Admin/Services/editService';
 import Register from './pages/Auth/Register';
 import ClientReservation from './pages/Site/reservation';
 import SpaSchedule from './pages/Admin/Spa/spaSchedule';
+import SpaCalendar from './pages/WebMaster/SpaCalendar';
 
 
 export default function MainApp() {
@@ -75,6 +76,7 @@ export default function MainApp() {
                 <Route path="spas/create" element={<CreateSpa />} />
                 <Route path="spas/:slug" element={<ShowSpa />} />
                 <Route path="spas/:slug/edit" element={<EditSpa />} />
+                <Route path="spas/:slug/calendar" element={<SpaCalendar />} />
 
                 <Route path="spas/:slug/reservations/create" element={<CreateReservation />} />
                 <Route path="spas/:slug/reservations/:reservationId" element={<ShowReservation />} />

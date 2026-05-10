@@ -6,7 +6,7 @@ export default function AdminShowSpa() {
   const navigate = useNavigate();
   const { slug } = useParams<{ slug: string }>();
 
- const { spa, loadingData, error } = useSpa();
+  const { spa, loadingData, error } = useSpa();
 
   if (loadingData) {
     return (
@@ -35,7 +35,7 @@ export default function AdminShowSpa() {
               </h1>
               <p className="text-muted mb-0">Consulta la información de tu spa.</p>
             </div>
-
+<div className="d-flex gap-2">
             <button
               type="button"
               className="btn"
@@ -50,6 +50,22 @@ export default function AdminShowSpa() {
             >
               <i className="bi bi-pencil-square"></i> Editar spa
             </button>
+
+            <button
+              type="button"
+              className="btn"
+              onClick={() => navigate(`/admin/spa/spa-schedule`)}
+              style={{
+                backgroundColor: '#7a9e9f',
+                color: '#fff',
+                borderRadius: '12px',
+                padding: '10px 18px',
+                fontWeight: 700,
+              }}
+            >
+              <i className="bi bi-calendar-week"></i> Horario
+            </button>
+          </div>
           </div>
 
           {error && <div className="alert alert-danger">{error}</div>}

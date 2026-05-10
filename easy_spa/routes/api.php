@@ -38,8 +38,10 @@ use App\Http\Controllers\Api\WebMaster\SpaScheduleController;
 use App\Http\Controllers\Api\Client\AvailabilityController as ClientAvailabilityController;
 use App\Http\Controllers\Api\Client\ReservationController as ClientReservationController;
 use App\Http\Controllers\Api\Public\SpaController as PublicSpaController;
+use App\Http\Controllers\Api\WebMaster\CalendarController as WebMasterCalendarController;
 use App\Http\Controllers\Api\WebMaster\RoleController;
 use App\Http\Controllers\Api\WebMaster\UserController;
+use App\Http\Controllers\Api\WebMaster\WebmasterSpaCalendarController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Features;
@@ -83,6 +85,10 @@ Route::middleware(['auth:sanctum', 'role:WebMaster'])
         Route::apiResource('users', UserController::class);
         Route::get('availability', [AvailabilityController::class, 'index']);
         Route::get('roles', [RoleController::class, 'index']);
+
+        
+        Route::get('spas/{spa:slug}/calendar', [WebMasterCalendarController::class, 'index']);
+
     });
 
 Route::middleware(['auth:sanctum', 'role:Admin'])

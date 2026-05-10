@@ -78,7 +78,22 @@ export default function ShowSpa() {
                   fontWeight: 600,
                 }}
               >
-                <i className="bi bi-pencil-square"></i> spa
+                Editar spa
+              </button>
+      
+              <button
+                type="button"
+                className="btn"
+                onClick={() => navigate(`/dashboard/spas/${spa.slug}/calendar`)}
+                style={{
+                  backgroundColor: '#7a9e9f',
+                  color: '#fff',
+                  borderRadius: '12px',
+                  padding: '10px 18px',
+                  fontWeight: 600,
+                }}
+              >
+               <i className="bi bi-calendar-week"></i> Calendario
               </button>
 
               <button
