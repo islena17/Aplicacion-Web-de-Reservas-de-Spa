@@ -140,7 +140,7 @@ export function useClientReservation(spaSlug?: string, serviceSlug?: string) {
                 final_price: service.price
             });
 
-            navigate('/');
+            navigate(`/spas/${spaSlug}`);
         } catch (error: any) {
             console.log('ERROR CREATE RESERVATION:', error.response?.status);
             console.log(error.response?.data);

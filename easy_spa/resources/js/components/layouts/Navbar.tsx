@@ -1,6 +1,9 @@
+import { useAuth } from "@/context/AuthContext";
 import "../../../css/home.css";
 
 export default function Navbar() {
+    const { user } = useAuth();
+    const role = user?.role.name;
     return (
         <nav className="navbar navbar-expand-lg custom-navbar py-3">
             <div className="container-fluid px-5">
@@ -15,8 +18,8 @@ export default function Navbar() {
                     data-bs-toggle="collapse"
                     data-bs-target="#navbarContent"
                 >
-                    
-                        <span className="navbar-toggler-icon"></span>
+
+                    <span className="navbar-toggler-icon"></span>
                 </button>
 
                 {/* Quitamos la clase 'show' para que no rompa el flujo normal */}
@@ -29,10 +32,7 @@ export default function Navbar() {
                             <a className="nav-link" href="/spas">Spas</a>
                         </li>
                         <li className="nav-item">
-                            <a className="nav-link" href="#">Servicios</a>
-                        </li>
-                        <li className="nav-item">
-                            <a className="nav-link" href="#">Reservar</a>
+                            <a className="nav-link" href="/services">Servicios</a>
                         </li>
                         <li className="nav-item">
                             <a className="nav-link" href="#">Nosotros</a>
@@ -40,8 +40,40 @@ export default function Navbar() {
                     </ul>
 
                     <div className="d-flex gap-2">
-                        <a className="btn btn-login" href="/login">Login</a>
-                        <button className="btn btn-register">Registrarse</button>
+
+                        {!user && (
+                            <>
+                                <a className="btn btn-login" href="/login">
+                                    Login
+                                </a>
+
+                                <a className="btn btn-register" href="/register">
+                                    Registrarse
+                                </a>
+                            </>
+                        )}
+
+                        {role === "Admin" && (
+                            <a className="btn btn-sm"
+                                style={{
+                                    backgroundColor: 'var(--color-secondary)',
+                                    color: 'var(--color-text)'
+                                }}
+                                href="/admin">
+                                Panel de Administración
+                            </a>
+                        )}
+
+                        {role === "WebMaster" && (
+                            <a className="btn btn-sm btn-warning"
+                                style={{
+                                    backgroundColor: 'var(--color-secondary)',
+                                    color: 'var(--color-text)'
+                                }} href="/webmaster">
+                                Panel WebMaster
+                            </a>
+                        )}
+
                     </div>
                 </div>
             </div>

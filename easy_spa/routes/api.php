@@ -37,6 +37,7 @@ use App\Http\Controllers\Api\WebMaster\SpaScheduleController;
 
 use App\Http\Controllers\Api\Client\AvailabilityController as ClientAvailabilityController;
 use App\Http\Controllers\Api\Client\ReservationController as ClientReservationController;
+use App\Http\Controllers\Api\Public\ServiceController as PublicServiceController;
 use App\Http\Controllers\Api\Public\SpaController as PublicSpaController;
 use App\Http\Controllers\Api\WebMaster\CalendarController as WebMasterCalendarController;
 use App\Http\Controllers\Api\WebMaster\RoleController;
@@ -147,6 +148,7 @@ Route::prefix('public')->group(function () {
     Route::get('availability', [PublicAvailabilityController::class, 'index']);
     Route::get('spas', [PublicSpaController::class, 'index']);
     Route::get('spas/{spa}', [PublicSpaController::class, 'show']);
+    Route::get('services', [PublicServiceController::class, 'index']);
 });
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {

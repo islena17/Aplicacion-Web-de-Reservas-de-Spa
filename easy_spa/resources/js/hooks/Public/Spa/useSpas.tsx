@@ -16,6 +16,7 @@ export function useSpas() {
   const [spas, setSpas] = useState<Spa[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [lastPage, setLastPage] = useState(1);
 
   useEffect(() => {
     const fetchSpas = async () => {
@@ -25,6 +26,7 @@ export function useSpas() {
         const response = await api.get('/api/public/spas');
 
         setSpas(response.data.data?.data ?? response.data.data ?? response.data ?? []);
+        setLastPage(response.data.last_page);
       } catch (error) {
         console.error(error);
         setError('No se pudieron cargar los spas.');
@@ -36,5 +38,5 @@ export function useSpas() {
     fetchSpas();
   }, []);
 
-  return { spas, loading, error };
+  return { spas, loading, error, lastPage };
 }

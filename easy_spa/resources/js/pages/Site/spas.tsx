@@ -3,11 +3,14 @@ import { useSpas } from '@/hooks/Public/Spa/useSpas';
 import Navbar from '@/components/layouts/Navbar';
 import SecondaryHero from '@/components/layouts/SecondaryHero';
 import spasHero from '@images/spasHero.jpg';
+import Pagination from '@/components/layouts/Pagination';
+import { useState } from 'react';
 
 export default function Spas() {
     const navigate = useNavigate();
+    const [page, setPage] = useState(1);
 
-    const { spas, loading, error } = useSpas();
+    const { spas, loading, error, lastPage } = useSpas();
 
     if (loading) {
         return (
@@ -176,6 +179,11 @@ export default function Spas() {
                             ))}
                         </div>
                     )}
+                    <Pagination
+                        currentPage={page}
+                        lastPage={lastPage}
+                        onPageChange={setPage}
+                    />
                 </div>
             </div>
         </>
