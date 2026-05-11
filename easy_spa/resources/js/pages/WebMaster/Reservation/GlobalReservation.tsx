@@ -1,6 +1,8 @@
 import { useNavigate } from 'react-router-dom';
 import DashboardLayout from "../../../components/layouts/WMLayout";
 import { useGlobalReservation } from '@/hooks/WebMaster/Reservation/useGlobalReservation';
+import Pagination from '@/components/layouts/Pagination';
+import { useState } from 'react';
 
 export default function GlobalReservations() {
   const navigate = useNavigate();
@@ -15,6 +17,9 @@ export default function GlobalReservations() {
     clearFilters,
     deleteReservation,
     fieldStatus,
+    setPage,
+    page,
+    lastPage,
     statusClass,
   } = useGlobalReservation();
 
@@ -277,6 +282,11 @@ export default function GlobalReservations() {
                   </table>
                 </div>
               )}
+              <Pagination
+                                      currentPage={page}
+                                      lastPage={lastPage}
+                                      onPageChange={setPage}
+                                  />
             </div>
           </div>
         </div>

@@ -51,6 +51,8 @@ export function useGlobalReservation() {
   const [filteredReservations, setFilteredReservations] = useState<Reservation[]>([]);
   const [loading, setLoading] = useState(true);
   const [errors, setErrors] = useState<Errors>({});
+  const [lastPage, setLastPage] = useState(1);
+   const [page, setPage] = useState(1);
 
   const [filters, setFilters] = useState({
     search: '',
@@ -64,9 +66,15 @@ export function useGlobalReservation() {
       setLoading(true);
       setErrors({});
 
-      const response = await axios.get('/api/webmaster/reservations');
+      const response = await axios.get('/api/webmaster/reservations',{
+
+        params: {
+          page,
+        },
+      });
 
       setReservations(response.data.data ?? response.data);
+      setLastPage(response.data.last_page);
     } catch (error) {
       setErrors({
         general: 'No se pudieron cargar las reservas.',
@@ -142,7 +150,7 @@ export function useGlobalReservation() {
 
   useEffect(() => {
     getReservations();
-  }, []);
+  }, [page]);
 
   useEffect(() => {
     let result = [...reservations];
@@ -226,5 +234,9 @@ const lastReservations = [...reservations]
     fieldStatus,
     statusClass,
     getReservations,
+    setLastPage,
+    lastPage,
+    setPage,
+    page,
   };
 }
