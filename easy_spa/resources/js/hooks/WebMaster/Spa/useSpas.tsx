@@ -34,5 +34,15 @@ export function useSpas() {
     fetchSpas();
   }, []);
 
-  return { spas, loading, error };
+  //para contar los spas en el dashboard
+  const totalSpas = spas.length;
+  const activeSpasCount = spas.filter(spa => spa.is_active).length;
+
+  //spa con mas reservas
+  const spaTop = [...spas].sort((a, b) => {
+    const countA = (a as any).reservations?.length ?? 0;
+    const countB = (b as any).reservations?.length ?? 0;
+    return countB - countA; 
+  })[0];
+  return { spas, loading, error, totalSpas, spaTop, activeSpasCount };
 }

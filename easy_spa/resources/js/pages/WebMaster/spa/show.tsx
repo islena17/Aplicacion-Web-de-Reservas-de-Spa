@@ -80,7 +80,7 @@ export default function ShowSpa() {
               >
                 Editar spa
               </button>
-      
+
               <button
                 type="button"
                 className="btn"
@@ -93,7 +93,7 @@ export default function ShowSpa() {
                   fontWeight: 600,
                 }}
               >
-               <i className="bi bi-calendar-week"></i> Calendario
+                <i className="bi bi-calendar-week"></i> Calendario
               </button>
 
               <button
@@ -222,7 +222,7 @@ export default function ShowSpa() {
                 <h5 className="mb-0 fw-bold">Datos del spa</h5>
               </div>
 
-              <div className="card-body p-4 bg-white">
+              <div className="card-body p-4 p-lg-5 bg-white">
                 <div className="row g-4">
                   <Info label="Nombre" value={spa.name} />
                   <Info label="Slug" value={spa.slug} />
@@ -246,8 +246,18 @@ export default function ShowSpa() {
 
                   <div className="col-12">
                     <label className="text-muted small">Descripción</label>
-                    <div className="fw-semibold">
-                      {spa.description || '-'}
+                    <div
+                      className="p-3"
+                      style={{
+                        backgroundColor: '#F7F7F7',
+                        borderRadius: '12px',
+                        border: '1px solid #eee',
+                        minHeight: '48px',
+                      }}
+                    >
+                      <div className="text-muted">
+                        {spa.description || '-'}
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -472,7 +482,7 @@ export default function ShowSpa() {
                               ><i className="bi bi-eye"></i>
                               </button>
 
-                               <button
+                              <button
                                 type="button"
                                 className="btn btn-sm btn-outline-danger"
                                 onClick={() =>
@@ -887,7 +897,16 @@ function Info({
   return (
     <div className="col-12 col-md-6 col-lg-4">
       <label className="text-muted small">{label}</label>
-      <div className="fw-semibold">{value || '-'}</div>
+      <div
+        className="p-3"
+        style={{
+          backgroundColor: '#F7F7F7',
+          borderRadius: '12px',
+          border: '1px solid #eee',
+          minHeight: '48px',
+        }}
+      >
+        <div className="text-muted">{value || '-'}</div></div>
     </div>
   );
 }

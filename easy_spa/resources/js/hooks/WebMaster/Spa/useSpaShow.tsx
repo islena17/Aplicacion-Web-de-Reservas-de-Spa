@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import api from '@/lib/axios';
+import clients from '@/routes/clients';
 
 export type SpaShow = {
   id: number;
@@ -218,6 +219,7 @@ const deleteCategory = async (categorySlug: string) => {
   useEffect(() => {
     fetchSpa();
   }, [slug]);
+
 
   return {
     spa,
