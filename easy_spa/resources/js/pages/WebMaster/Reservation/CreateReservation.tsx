@@ -22,6 +22,9 @@ export default function CreateReservation() {
     setShowClientForm,
     clientForm,
     handleClientChange,
+    loadingSlots,
+    availableSlots,
+    selectSlot
   } = useReservationForm(slug);
 
   if (loadingOptions) {
@@ -87,6 +90,9 @@ export default function CreateReservation() {
             setShowClientForm={setShowClientForm}
             clientForm={clientForm}
             handleClientChange={handleClientChange}
+            availableSlots={availableSlots}
+            loadingSlots={loadingSlots}
+            selectSlot={selectSlot}
           />
         </div>
       </div>

@@ -25,7 +25,10 @@ export default function CreateReservation() {
     setShowClientForm,
     clientForm,
     handleClientChange,
-  } = useReservationForm(slug);
+    availableSlots,
+    loadingSlots,
+    selectSlot
+  } = useReservationForm(slug, reservationId);
 
   if (loadingOptions) {
     return (
@@ -50,10 +53,10 @@ export default function CreateReservation() {
           <div className="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
             <div>
               <h1 className="fw-bold mb-1" style={{ color: '#2f2f2f' }}>
-                Crear reserva
+               Editar Reserva
               </h1>
               <p className="text-muted mb-0">
-                Añade una nueva reserva para este spa.
+                Edita una nueva reserva para este spa.
               </p>
             </div>
 
@@ -90,6 +93,10 @@ export default function CreateReservation() {
             setShowClientForm={setShowClientForm}
             clientForm={clientForm}
             handleClientChange={handleClientChange}
+            availableSlots={availableSlots}
+            loadingSlots={loadingSlots}
+            selectSlot={selectSlot}
+            
           />
         </div>
       </div>

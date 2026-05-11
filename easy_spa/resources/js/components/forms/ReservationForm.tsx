@@ -62,6 +62,7 @@ type ReservationFormProps = {
   handleClientChange: (e: ChangeEvent<HTMLInputElement>) => void;
   availableSlots: AvailableSlot[];
   loadingSlots: boolean;
+  selectSlot: (slot: AvailableSlot) => void;
 };
 
 export default function ReservationForm({
@@ -83,6 +84,7 @@ export default function ReservationForm({
   handleClientChange,
   availableSlots,
   loadingSlots,
+  selectSlot,
 }: ReservationFormProps) {
   return (
     <div
@@ -271,6 +273,54 @@ export default function ReservationForm({
                 value={form.reservation_date}
                 onChange={onChange}
               />
+            </div>
+
+            <div className="col-12">
+              <label className="form-label fw-semibold">Horarios disponibles</label>
+
+              {!form.reservation_date ? (
+                <div className="alert alert-light border">
+                  Selecciona una fecha para ver disponibilidad.
+                </div>
+              ) : loadingSlots ? (
+                <div className="text-muted">
+                  <div className="spinner-border spinner-border-sm me-2" role="status"></div>
+                  Buscando horarios...
+                </div>
+              ) : availableSlots.length === 0 ? (
+                <div className="alert alert-warning">
+                  No hay disponibilidad para esta fecha.
+                </div>
+              ) : (
+                <div className="d-flex flex-wrap gap-2">
+                  {availableSlots.map((slot, index) => {
+                    const selected =
+                      form.start_time === slot.start_time &&
+                      form.end_time === slot.end_time &&
+                      String(slot.employee_id ?? '') === form.employee_id;
+
+                    return (
+                      <button
+                        key={index}
+                        type="button"
+                        onClick={() => selectSlot(slot)}
+                        className="btn"
+                        style={{
+                          borderRadius: '999px',
+                          padding: '9px 16px',
+                          fontWeight: 600,
+                          backgroundColor: selected ? '#E0C38D' : '#fff',
+                          color: selected ? '#fff' : '#7a6440',
+                          border: '1px solid #E0C38D',
+                          transition: 'all 0.2s ease'
+                        }}
+                      >
+                        {slot.start_time} - {slot.end_time}
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
             </div>
 
             <div className="col-12 col-md-4">

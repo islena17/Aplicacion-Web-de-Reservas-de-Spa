@@ -23,6 +23,9 @@ export default function AdminEditReservation() {
     setShowClientForm,
     clientForm,
     handleClientChange,
+    availableSlots,
+    loadingSlots,
+    selectSlot
   } = useReservationForm(reservationId);
 
   if (loadingOptions) {
@@ -88,6 +91,9 @@ export default function AdminEditReservation() {
             setShowClientForm={setShowClientForm}
             clientForm={clientForm}
             handleClientChange={handleClientChange}
+            availableSlots={availableSlots}
+            loadingSlots={loadingSlots}
+            selectSlot={selectSlot}
           />
         </div>
       </div>

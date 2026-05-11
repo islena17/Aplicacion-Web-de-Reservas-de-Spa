@@ -21,6 +21,12 @@ type ReservationForm = {
     observations: string;
 };
 
+type AvailableSlot = {
+    employee_id: number | null;
+    start_time: string;
+    end_time: string;
+};
+
 type ReservationErrors = Partial<Record<keyof ReservationForm, string[]>> & {
     general?: string;
 };
@@ -71,7 +77,9 @@ export function useReservationForm(spaSlug?: string, reservationId?: string) {
     const [loading, setLoading] = useState(false);
     const [loadingOptions, setLoadingOptions] = useState(true);
     const [showClientForm, setShowClientForm] = useState(false);
-  
+    const [availableSlots, setAvailableSlots] = useState<AvailableSlot[]>([]); //para ver la disponibilidad
+    const [loadingSlots, setLoadingSlots] = useState(false);
+
 
 
     const [clientForm, setClientForm] = useState<ClientForm>({
@@ -94,7 +102,9 @@ export function useReservationForm(spaSlug?: string, reservationId?: string) {
         return date.toTimeString().slice(0, 5);
     };
 
+    //cargar los datos del update
     useEffect(() => {
+
         if (!spaSlug) {
             setLoadingOptions(false);
             return;
@@ -143,28 +153,27 @@ export function useReservationForm(spaSlug?: string, reservationId?: string) {
 
                 //  Cargar reserva SOLO si estamos en edit
                 if (reservationId) {
-                    const reservationRes = await api.get(
-                        `/api/webmaster/reservations/${reservationId}`
-                    );
+                    try {
+                        const reservationRes = await api.get(`/api/webmaster/reservations/${reservationId}`);
+                        const reservation = reservationRes.data.data ?? reservationRes.data;
 
-                    const reservation =
-                        reservationRes.data.data ?? reservationRes.data;
+                        console.log("Datos recibidos de la API:", reservation); // Mira la consola para ver qué llega
 
-                    setForm({
-                        client_id: String(reservation.client_id ?? ''),
-                        service_id: String(reservation.service_id ?? ''),
-                        employee_id: reservation.employee_id
-                            ? String(reservation.employee_id)
-                            : '',
-                        reservation_date: reservation.reservation_date ?? '',
-                        start_time: reservation.start_time?.slice(0, 5) ?? '',
-                        end_time: reservation.end_time?.slice(0, 5) ?? '',
-                        status: reservation.status ?? 'pending',
-                        final_price: reservation.final_price
-                            ? String(reservation.final_price)
-                            : '',
-                        observations: reservation.observations ?? '',
-                    });
+                        setForm({
+                            // Buscamos el ID en reservation.client_id O en reservation.client.id
+                            client_id: String(reservation.client_id ?? reservation.client?.id ?? ''),
+                            service_id: String(reservation.service_id ?? reservation.service?.id ?? ''),
+                            employee_id: String(reservation.employee_id ?? reservation.employee?.id ?? ''),
+                            reservation_date: reservation.reservation_date ?? '',
+                            start_time: reservation.start_time ? reservation.start_time.slice(0, 5) : '',
+                            end_time: reservation.end_time ? reservation.end_time.slice(0, 5) : '',
+                            status: reservation.status ?? 'pending',
+                            final_price: reservation.final_price ? String(reservation.final_price) : '',
+                            observations: reservation.observations ?? '',
+                        });
+                    } catch (err) {
+                        console.error("Error cargando la reserva específica:", err);
+                    }
                 }
             } catch (error) {
                 console.error(error);
@@ -176,7 +185,7 @@ export function useReservationForm(spaSlug?: string, reservationId?: string) {
             }
         };
         fetchOptions();
-    }, [spaSlug]);
+    }, [spaSlug, reservationId]);
 
     const handleChange = (
         e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
@@ -226,6 +235,50 @@ export function useReservationForm(spaSlug?: string, reservationId?: string) {
             return updatedForm;
         });
     };
+
+    //seleccionar slots libres
+    const selectSlot = (slot: AvailableSlot) => {
+        setForm((prev) => ({
+            ...prev,
+            start_time: slot.start_time,
+            end_time: slot.end_time,
+            // Si el slot trae un empleado, lo asignamos automáticamente
+            employee_id: slot.employee_id ? String(slot.employee_id) : prev.employee_id,
+        }));
+    };
+    useEffect(() => { //use effect para la disponibilidad
+        const fetchAvailableSlots = async () => {
+            if (!form.service_id || !form.reservation_date || !spaId) {
+                setAvailableSlots([]);
+                return;
+            }
+
+
+
+            try {
+
+                setLoadingSlots(true);
+                const res = await api.get('/api/webmaster/availability', {
+                    params: {
+                        service_id: form.service_id,
+                        date: form.reservation_date,
+                        employee_id: form.employee_id || undefined,
+                        spa_id: spaId,
+                    },
+                });
+
+                const slots = res.data.data ?? res.data ?? [];
+                setAvailableSlots(Array.isArray(slots) ? slots : []);
+            } catch (error) {
+                console.error(error);
+                setAvailableSlots([]);
+            } finally {
+                setLoadingSlots(false);
+            }
+        };
+
+        fetchAvailableSlots();
+    }, [form.service_id, form.reservation_date, form.employee_id, spaId]);
 
     const handleClientChange = (
         e: React.ChangeEvent<HTMLInputElement>
@@ -389,5 +442,8 @@ export function useReservationForm(spaSlug?: string, reservationId?: string) {
         setShowClientForm,
         clientForm,
         handleClientChange,
+        availableSlots,
+        loadingSlots,
+        selectSlot,
     };
 }

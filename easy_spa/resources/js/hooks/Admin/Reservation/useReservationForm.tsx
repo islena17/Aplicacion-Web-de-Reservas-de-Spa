@@ -72,11 +72,11 @@ export function useReservationForm(reservationId?: string) {
     return res.data.data?.data ?? res.data.data ?? res.data ?? [];
   };
 
+  // 1. Carga inicial de datos
   useEffect(() => {
     const fetchData = async () => {
       try {
         setLoadingOptions(true);
-
         const [clientsRes, servicesRes, employeesRes] = await Promise.all([
           api.get('/api/admin/clients'),
           api.get('/api/admin/services'),
@@ -88,18 +88,13 @@ export function useReservationForm(reservationId?: string) {
         setEmployees(getList(employeesRes));
 
         if (reservationId) {
-          const reservationRes = await api.get(
-            `/api/admin/reservations/${reservationId}`
-          );
-
+          const reservationRes = await api.get(`/api/admin/reservations/${reservationId}`);
           const reservation = reservationRes.data.data ?? reservationRes.data;
 
           setForm({
             client_id: String(reservation.client?.id ?? reservation.client_id ?? ''),
             service_id: String(reservation.service?.id ?? reservation.service_id ?? ''),
-            employee_id: String(
-              reservation.employee?.id ?? reservation.employee_id ?? ''
-            ),
+            employee_id: String(reservation.employee?.id ?? reservation.employee_id ?? ''),
             reservation_date: reservation.reservation_date ?? '',
             start_time: reservation.start_time?.slice(0, 5) ?? '',
             end_time: reservation.end_time?.slice(0, 5) ?? '',
@@ -110,17 +105,15 @@ export function useReservationForm(reservationId?: string) {
         }
       } catch (error) {
         console.error(error);
-        setErrors({
-          general: 'No se pudieron cargar los datos necesarios.',
-        });
+        setErrors({ general: 'No se pudieron cargar los datos necesarios.' });
       } finally {
         setLoadingOptions(false);
       }
     };
-
     fetchData();
   }, [reservationId]);
 
+  // 2. Efecto de disponibilidad (Actualizado con exclude_reservation_id)
   useEffect(() => {
     const fetchAvailableSlots = async () => {
       if (!form.service_id || !form.reservation_date) {
@@ -130,18 +123,18 @@ export function useReservationForm(reservationId?: string) {
 
       try {
         setLoadingSlots(true);
-
         const res = await api.get('/api/admin/availability', {
           params: {
             service_id: form.service_id,
             date: form.reservation_date,
             employee_id: form.employee_id || undefined,
+            // Importante para que en edición no se bloquee su propio horario
+            exclude_reservation_id: reservationId 
           },
         });
 
         const slots = res.data.data ?? res.data ?? [];
-
-        setAvailableSlots(slots);
+        setAvailableSlots(Array.isArray(slots) ? slots : []);
       } catch (error) {
         console.error(error);
         setAvailableSlots([]);
@@ -151,65 +144,33 @@ export function useReservationForm(reservationId?: string) {
     };
 
     fetchAvailableSlots();
-  }, [form.service_id, form.reservation_date, form.employee_id]);
+  }, [form.service_id, form.reservation_date, form.employee_id, reservationId]);
+
+  // 3. NUEVA FUNCIÓN: selectSlot
+  const selectSlot = (slot: AvailableSlot) => {
+    setForm((prev) => ({
+      ...prev,
+      start_time: slot.start_time,
+      end_time: slot.end_time,
+      employee_id: slot.employee_id ? String(slot.employee_id) : prev.employee_id,
+    }));
+  };
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
-
     setForm((prev) => {
-      const updatedForm: ReservationForm = {
-        ...prev,
-        [name]: value,
-      };
+      const updatedForm: ReservationForm = { ...prev, [name]: value };
 
-      if (name === 'service_id') {
-        const service = services.find((s) => String(s.id) === value);
-
+      if (['service_id', 'reservation_date', 'employee_id'].includes(name)) {
         updatedForm.start_time = '';
         updatedForm.end_time = '';
-
-        if (service) {
-          updatedForm.final_price = String(service.price ?? '');
+        if (name === 'service_id') {
+          const service = services.find((s) => String(s.id) === value);
+          if (service) updatedForm.final_price = String(service.price ?? '');
         }
       }
-
-      if (name === 'reservation_date') {
-        updatedForm.start_time = '';
-        updatedForm.end_time = '';
-      }
-
-      if (name === 'employee_id') {
-        updatedForm.start_time = '';
-        updatedForm.end_time = '';
-      }
-
-      if (name === 'start_time') {
-        const selectedSlot = availableSlots.find(
-          (slot) => slot.start_time === value
-        );
-
-        if (selectedSlot) {
-          updatedForm.end_time = selectedSlot.end_time;
-
-          if (selectedSlot.employee_id) {
-            updatedForm.employee_id = String(selectedSlot.employee_id);
-          }
-        } else {
-          const service = services.find(
-            (s) => String(s.id) === updatedForm.service_id
-          );
-
-          if (service?.length_minutes) {
-            updatedForm.end_time = calculateEndTime(
-              value,
-              Number(service.length_minutes)
-            );
-          }
-        }
-      }
-
       return updatedForm;
     });
   };
@@ -329,6 +290,7 @@ export function useReservationForm(reservationId?: string) {
     createReservation,
     updateReservation,
     fieldError,
+    selectSlot
   };
 }
 
