@@ -1,15 +1,18 @@
 import { useAuth } from "@/context/AuthContext";
 import "../../../css/home.css";
+import { Link } from "react-router-dom";
 
 export default function Navbar() {
-    const { user } = useAuth();
-    const role = user?.role.name;
+
+    const { user, logout } = useAuth();
+    const role = user?.role?.name;
     return (
+        
         <nav className="navbar navbar-expand-lg custom-navbar py-3">
             <div className="container-fluid px-5">
-                <a className="navbar-brand fw-bold" href="/">
+                <Link className="navbar-brand fw-bold" to="/">
                     EasySpa
-                </a>
+                </Link>
 
                 {/* Botón hamburguesa para móviles */}
                 <button
@@ -26,16 +29,16 @@ export default function Navbar() {
                 <div className="collapse navbar-collapse" id="navbarContent">
                     <ul className="navbar-nav mx-auto mb-2 mb-lg-0 gap-lg-3">
                         <li className="nav-item">
-                            <a className="nav-link active" href="/">Home</a>
+                            <Link className="nav-link active" to="/">Home</Link>
                         </li>
                         <li className="nav-item">
-                            <a className="nav-link" href="/spas">Spas</a>
+                            <Link className="nav-link" to="/spas">Spas</Link>
                         </li>
                         <li className="nav-item">
-                            <a className="nav-link" href="/services">Servicios</a>
+                            <Link className="nav-link" to="/services">Servicios</Link>
                         </li>
                         <li className="nav-item">
-                            <a className="nav-link" href="#">Nosotros</a>
+                            <Link className="nav-link" to="#">Nosotros</Link>
                         </li>
                     </ul>
 
@@ -43,35 +46,61 @@ export default function Navbar() {
 
                         {!user && (
                             <>
-                                <a className="btn btn-login" href="/login">
+                                <Link className="btn btn-login" to="/login">
                                     Login
-                                </a>
+                                </Link>
 
-                                <a className="btn btn-register" href="/register">
+                                <Link className="btn btn-register" to="/register">
                                     Registrarse
-                                </a>
+                                </Link>
                             </>
                         )}
 
                         {role === "Admin" && (
-                            <a className="btn btn-sm"
+                            <Link className="btn btn-sm"
                                 style={{
                                     backgroundColor: 'var(--color-secondary)',
                                     color: 'var(--color-text)'
                                 }}
-                                href="/admin">
+                                to="/admin">
                                 Panel de Administración
-                            </a>
+                            </Link>
                         )}
 
                         {role === "WebMaster" && (
-                            <a className="btn btn-sm btn-warning"
+                            <Link className="btn btn-sm btn-warning"
                                 style={{
                                     backgroundColor: 'var(--color-secondary)',
                                     color: 'var(--color-text)'
-                                }} href="/webmaster">
+                                }} to="/webmaster">
                                 Panel WebMaster
-                            </a>
+                            </Link>
+                        )}
+
+                        {role === "Client" && user?.client?.id && (
+                            <Link
+                                className="btn btn-sm px-3 py3"
+                                style={{
+                                    backgroundColor: 'var(--color-secondary)',
+                                    color: 'var(--color-text)'
+                                }}
+                                to={`/client/profile`}
+                            >
+                              <i className="bi bi-person-gear"></i>  Perfil
+                            </Link>
+                        )}
+                        {user && (
+                            <button
+                                className="btn btn-sm px-3 py3"
+                                onClick={logout}
+                                 style={{
+                                    backgroundColor: 'var(--color-main)',
+                                    color: 'var(--color-text)',
+                                    
+                                }}
+                            >
+                                <i className="bi bi-door-open"></i> Logout
+                            </button>
                         )}
 
                     </div>

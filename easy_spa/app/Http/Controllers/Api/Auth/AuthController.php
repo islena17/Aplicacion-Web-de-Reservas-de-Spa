@@ -48,26 +48,28 @@ class AuthController extends Controller
     ], 201);
 }
 
-    public function login(LoginRequest $request)
-    {
-        $credenciales = [
-            'email' => $request->email,
-            'password' => $request->password,
-        ];
+public function login(LoginRequest $request)
+{
+    $credenciales = [
+        'email' => $request->email,
+        'password' => $request->password,
+    ];
 
-        if (!Auth::attempt($credenciales, $request->boolean('remember'))) {
-            return response()->json([
-                'message' => 'Credenciales incorrectas'
-            ], 401);
-        }
-
-        $request->session()->regenerate();
-
+    if (!Auth::attempt($credenciales, $request->boolean('remember'))) {
         return response()->json([
-            'message' => 'Login correcto',
-            'user' => Auth::user(),
-        ]);
+            'message' => 'Credenciales incorrectas'
+        ], 401);
     }
+
+    $request->session()->regenerate();
+
+    $user = User::with(['role', 'client'])->find(Auth::id());
+
+    return response()->json([
+        'message' => 'Login correcto',
+        'user' => $user,
+    ]);
+}
 
     public function logout(Request $request)
     {

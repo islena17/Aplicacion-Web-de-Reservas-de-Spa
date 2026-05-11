@@ -14,7 +14,8 @@ class ProfileController extends Controller
      */
     public function show()
     {
-        $client = Client::where('user_id', Auth::id())->first();
+        $client = Client::with(['user', 'reservations.service', 'reservations.employee'])
+        ->where('user_id', Auth::id())->first();
 
         if (!$client) {
             return response()->json([
