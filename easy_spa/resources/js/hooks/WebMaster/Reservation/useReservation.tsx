@@ -52,13 +52,14 @@ export interface Reservation {
   client?: Client | null;
   service?: Service | null;
   employee?: Employee | null;
+  spa?: Spa |null;
 }
 
 interface ApiReservationResponse {
   data: Reservation;
 }
 
-export function useReservation(id?: string) {
+export function useReservation(id?: string, spaSlug?: string) {
   const [reservation, setReservation] = useState<Reservation | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -91,7 +92,7 @@ export function useReservation(id?: string) {
 
   useEffect(() => {
     getReservation();
-  }, [id]);
+  }, [id,spaSlug]);
 
   return {
     reservation,

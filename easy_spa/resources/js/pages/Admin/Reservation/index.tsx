@@ -144,6 +144,19 @@ export default function AdminReservationsIndex() {
                                 Editar
                               </button>
                               <button
+                                className="btn btn-sm"
+                                onClick={() =>
+                                  navigate(`/admin/reservations/${r.id}`)
+                                }
+                                style={{
+                                  backgroundColor: '#F2E6D0',
+                                  color: '#7a6440',
+                                  borderRadius: '10px',
+                                }}
+                              >
+                                Ver
+                              </button>
+                              <button
                                 type="button"
                                 className="btn btn-sm btn-danger"
                                 onClick={() => handleDelete(r.id)}

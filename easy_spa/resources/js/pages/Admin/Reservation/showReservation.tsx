@@ -1,33 +1,33 @@
 import { useNavigate, useParams } from 'react-router-dom';
-import DashboardLayout from "../../../components/layouts/WMLayout";
-import { useReservation } from '@/hooks/WebMaster/Reservation/useReservation';
+import AdminLayout from "../../../components/layouts/AdminLayout";
+import { useReservation } from '@/hooks/Admin/Reservation/useReservation';
 
-export default function ShowReservation() {
+export default function AdminShowReservation() {
   const navigate = useNavigate();
-  const { slug, reservationId} = useParams<{ reservationId: string, slug: string }>();
+  const { reservationId } = useParams<{ reservationId: string, slug: string }>();
 
-  const { reservation, loading, error } = useReservation(reservationId, slug);
+  const { reservation, loading, error } = useReservation(reservationId);
 
   if (loading) {
     return (
-      <DashboardLayout>
+      <AdminLayout>
         <div className="p-4">Cargando reserva...</div>
-      </DashboardLayout>
+      </AdminLayout>
     );
   }
 
   if (error || !reservation) {
     return (
-      <DashboardLayout>
+      <AdminLayout>
         <div className="p-4 text-danger">
           {error ?? 'Reserva no encontrada'}
         </div>
-      </DashboardLayout>
+      </AdminLayout>
     );
   }
 
   return (
-    <DashboardLayout>
+    <AdminLayout>
       <div className="container-fluid">
         <div className="container py-4 py-lg-5">
           <div className="d-flex justify-content-between align-items-center mb-4">
@@ -40,8 +40,7 @@ export default function ShowReservation() {
 
             <button
               className="btn"
-              // CORRECCIÓN: Volver a la lista de reservas del dashboard
-              onClick={() => navigate(`/dashboard/spas/${slug}/`)}
+              onClick={() => navigate('/Admin/reservations')}
               style={{
                 backgroundColor: '#F2E6D0',
                 color: '#7a6440',
@@ -50,7 +49,7 @@ export default function ShowReservation() {
                 padding: '6px 14px',
               }}
             >
-              <i className="bi bi-arrow-left"></i> Volver
+              <i className="bi bi-arrow-left"></i>  Volver
             </button>
           </div>
 
@@ -130,7 +129,7 @@ export default function ShowReservation() {
                       <button
                         className="btn btn-sm mt-2"
                         onClick={() =>
-                          navigate(`/dashboard/spas/${slug}/clients/${reservation.client?.id}`)
+                          navigate(`/Admin/clients/${reservation.client?.id}`)
                         }
                         style={{
                           backgroundColor: '#F2E6D0',
@@ -209,15 +208,20 @@ export default function ShowReservation() {
             </div>
 
             {/* ACCIONES */}
-         <div className="col-12 col-lg-6">
-              <div className="card border-0 shadow-sm h-100" style={{ borderRadius: '20px' }}>
+            <div className="col-12 col-lg-6">
+              <div
+                className="card border-0 shadow-sm h-100"
+                style={{ borderRadius: '20px' }}
+              >
                 <div className="card-body p-4">
                   <h5 className="fw-bold mb-4">Acciones</h5>
+
                   <div className="d-flex gap-2 flex-wrap">
                     <button
                       className="btn"
-                      // Navegar a la edición usando el slug y el ID
-                      onClick={() => navigate(`/dashboard/spas/${slug}/reservations/${reservation.id}/edit`)}
+                      onClick={() =>
+                        navigate(`/admin/reservations/${reservation.id}/edit`)
+                      }
                       style={{
                         backgroundColor: '#E0C38D',
                         color: '#fff',
@@ -230,7 +234,7 @@ export default function ShowReservation() {
 
                     <button
                       className="btn"
-                      onClick={() => navigate(`/dashboard/reservations`)}
+                      onClick={() => navigate('/admin/reservations')}
                       style={{
                         backgroundColor: '#F2E6D0',
                         color: '#7a6440',
@@ -238,7 +242,7 @@ export default function ShowReservation() {
                         fontWeight: 700,
                       }}
                     >
-                      Listado global
+                      Ir al listado
                     </button>
                   </div>
                 </div>
@@ -247,7 +251,7 @@ export default function ShowReservation() {
           </div>
         </div>
       </div>
-    </DashboardLayout>
+    </AdminLayout>
   );
 }
 
