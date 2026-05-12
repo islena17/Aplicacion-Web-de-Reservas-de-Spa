@@ -36,7 +36,6 @@ type Client={
     reservations?: Reservation[];
 }
 
-
 export function useProfile() {
     const [client, setClient] = useState<Client | null>(null);
     const [loading, setLoading] = useState(true);

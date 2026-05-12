@@ -58,6 +58,7 @@ import SpaCalendar from './pages/WebMaster/SpaCalendar';
 import AdminShowReservation from './pages/Admin/Reservation/showReservation';
 import ShowServices from './pages/Site/services';
 import Profile from './pages/Client/showProfile';
+import EditProfile from './pages/Client/editProfile';
 
 
 export default function MainApp() {
@@ -164,6 +165,7 @@ export default function MainApp() {
               <Routes>
                 <Route path="reservation-data/:spaSlug/:serviceSlug" element={<ClientReservation />} />
                 <Route path="profile" element={<Profile />} />
+                <Route path='profile/edit' element={<EditProfile />}/>
               </Routes>
             </ProtectedRoute>
           }/>

@@ -1,5 +1,6 @@
 import Navbar from "@/components/layouts/Navbar";
 import { useProfile } from "@/hooks/Client/useProfile";
+import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
 
 export default function Profile() {
@@ -74,7 +75,7 @@ export default function Profile() {
                                         width: "90px",
                                         height: "90px",
                                         borderRadius: "50%",
-                                        backgroundColor: "#E0C38D",
+                                        background: "linear-gradient(135deg, var(--color-main), var(--color-secondary))",
                                         color: "#fff",
                                         fontSize: "2rem",
                                         fontWeight: 800,
@@ -93,7 +94,19 @@ export default function Profile() {
                                         Cliente EasySpa
                                     </p>
                                 </div>
+                                <div className="ms-auto">
+                                    <Link 
+                                    to="edit" 
+                                    className="btn btn-sm text-white"
+                                    style={{
+                                        background: 'var(--color-secondary)',
+                                        borderRadius: '10px',
+                                        fontWeight: '600'
+
+                                    }} >Editar Perfil</Link>
+                                </div>
                             </div>
+
                         </div>
                     </div>
 
