@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\Client;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ReservationRequest;
+use App\Mail\ReservationMail;
 use App\Models\Client;
 use App\Models\Employee;
 use App\Models\EmployeeBlock;
@@ -14,6 +15,7 @@ use App\Services\AvailabilityService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 
 class ReservationController extends Controller
 {
@@ -86,15 +88,19 @@ class ReservationController extends Controller
 
             return $reservation;
         });
+        $reservation->load([
+            'client',
+            'spa',
+            'service',
+            'employee',
+        ]);
+
+        Mail::to($reservation->client->email)
+            ->send(new ReservationMail($reservation));
 
         return response()->json([
             'message' => 'Reserva creada correctamente',
-            'data' => $reservation->load([
-                'client',
-                'spa',
-                'service',
-                'employee',
-            ]),
+            'data' => $reservation,
         ], 201);
     }
 
