@@ -12,7 +12,6 @@ export default function useCalendar() {
             setError("");
 
             const res = await api.get("/api/admin/reservations/calendar");
-
             setEvents(res.data);
         } catch (err) {
             console.error(err);

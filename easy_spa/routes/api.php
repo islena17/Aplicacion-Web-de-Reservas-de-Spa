@@ -113,14 +113,6 @@ Route::middleware(['auth:sanctum', 'role:Admin'])
         Route::post('spa-schedules/bulk', [AdminSpaScheduleController::class, 'bulk']);
     });
 
-Route::middleware(['auth:sanctum', 'role:employee'])
-    ->prefix('employee')
-    ->group(function () {
-        Route::apiResource('reservations', EmployeeReservationController::class);
-        Route::apiResource('clients', EmployeeClientController::class)->except(['destroy']);
-        Route::apiResource('employee-blocks', EmployeeEmployeeBlockController::class);
-        Route::get('availability', [EmployeeAvailabilityController::class, 'index']);
-    });
 
 Route::middleware(['auth:sanctum', 'role:Client'])
     ->prefix('client')

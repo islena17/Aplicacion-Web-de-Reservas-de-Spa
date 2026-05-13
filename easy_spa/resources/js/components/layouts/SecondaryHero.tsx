@@ -17,6 +17,7 @@ export default function SecondaryHero({
       style={{
         height,
         overflow: 'hidden',
+        marginTop: '80px'
       }}
     >
       {/* Imagen fondo */}
