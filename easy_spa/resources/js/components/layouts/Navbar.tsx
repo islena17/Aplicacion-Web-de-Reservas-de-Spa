@@ -1,6 +1,7 @@
 import { useAuth } from "@/context/AuthContext";
 import "../../../css/home.css";
 import { Link } from "react-router-dom";
+import logo_easy_spa from "@images/logo_easy_spa.png";
 
 export default function Navbar() {
 
@@ -8,10 +9,10 @@ export default function Navbar() {
     const role = user?.role?.name;
     return (
         
-        <nav className="navbar navbar-expand-lg custom-navbar py-3">
+        <nav className="navbar navbar-expand-lg custom-navbar py-3 fixed-top">
             <div className="container-fluid px-5">
                 <Link className="navbar-brand fw-bold" to="/">
-                    EasySpa
+                    <img src={logo_easy_spa}/>
                 </Link>
 
                 {/* Botón hamburguesa para móviles */}

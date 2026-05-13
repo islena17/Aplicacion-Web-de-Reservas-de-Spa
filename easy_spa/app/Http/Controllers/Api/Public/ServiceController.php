@@ -8,9 +8,10 @@ use Illuminate\Http\Request;
 
 class ServiceController extends Controller
 {
-     public function index()
+    public function index()
     {
         $query = Service::with(['spa', 'category'])
+            ->withCount('reservations')
             ->where('is_active', true)
             ->whereHas('spa', function ($query) {
                 $query->where('is_active', true);
@@ -31,4 +32,14 @@ class ServiceController extends Controller
         return response()->json($services);
     }
 
+    public function latest()
+{
+    $services = Service::where('is_active', true)
+        ->with('spa:id,name') 
+        ->latest() 
+        ->take(4)
+        ->get();
+
+    return response()->json($services);
+}
 }

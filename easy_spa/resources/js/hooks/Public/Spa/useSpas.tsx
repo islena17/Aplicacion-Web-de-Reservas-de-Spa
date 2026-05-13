@@ -1,6 +1,8 @@
 // hooks/Site/useSpas.ts
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import api from '@/lib/axios';
+
+
 
 export type Spa = {
   id: number;
@@ -11,6 +13,7 @@ export type Spa = {
   logo: string;
   logo_url: string;
 };
+
 
 export function useSpas() {
   const [spas, setSpas] = useState<Spa[]>([]);
@@ -37,6 +40,7 @@ export function useSpas() {
 
     fetchSpas();
   }, []);
+
 
   return { spas, loading, error, lastPage };
 }
