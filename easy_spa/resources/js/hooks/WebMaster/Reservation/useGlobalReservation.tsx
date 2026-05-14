@@ -48,11 +48,11 @@ type Errors = {
 
 export function useGlobalReservation() {
   const [reservations, setReservations] = useState<Reservation[]>([]);
-  const [filteredReservations, setFilteredReservations] = useState<Reservation[]>([]);
   const [loading, setLoading] = useState(true);
   const [errors, setErrors] = useState<Errors>({});
   const [lastPage, setLastPage] = useState(1);
-   const [page, setPage] = useState(1);
+  const [page, setPage] = useState(1);
+  const [spas, setSpas] = useState<Spa[]>([]);
 
   const [filters, setFilters] = useState({
     search: '',
@@ -61,20 +61,34 @@ export function useGlobalReservation() {
     date: '',
   });
 
+ const getSpas = async () => {
+  try {
+    const response = await axios.get('/api/webmaster/reservations/spas');
+    setSpas(response.data);
+  } catch (error) {
+    setErrors({
+      general: 'No se pudieron cargar los spas.',
+    });
+  }
+};
+
   const getReservations = async () => {
     try {
       setLoading(true);
       setErrors({});
 
-      const response = await axios.get('/api/webmaster/reservations',{
-
+      const response = await axios.get('/api/webmaster/reservations/filter', {
         params: {
           page,
+          search: filters.search || undefined,
+          status: filters.status || undefined,
+          spa: filters.spa || undefined,
+          date: filters.date || undefined,
         },
       });
 
       setReservations(response.data.data ?? response.data);
-      setLastPage(response.data.last_page);
+      setLastPage(response.data.last_page ?? 1);
     } catch (error) {
       setErrors({
         general: 'No se pudieron cargar las reservas.',
@@ -109,6 +123,8 @@ export function useGlobalReservation() {
   ) => {
     const { name, value } = e.target;
 
+    setPage(1);
+
     setFilters((prev) => ({
       ...prev,
       [name]: value,
@@ -116,6 +132,8 @@ export function useGlobalReservation() {
   };
 
   const clearFilters = () => {
+    setPage(1);
+
     setFilters({
       search: '',
       status: '',
@@ -150,75 +168,28 @@ export function useGlobalReservation() {
 
   useEffect(() => {
     getReservations();
-  }, [page]);
+  }, [filters, page]);
+
 
   useEffect(() => {
-    let result = [...reservations];
+    getSpas();
+  }, []);
 
-    if (filters.search) {
-      const search = filters.search.toLowerCase();
 
-      result = result.filter((reservation) => {
-        const clientName = `${reservation.client?.name ?? ''} ${
-          reservation.client?.surname ?? ''
-        }`.toLowerCase();
+  //contar reservas para el home dashboard
+  const totalReservationP = reservations.filter(r => r.status === 'pending').length;
+  const totalReservationC = reservations.filter(r => r.status === 'confirmed').length;
+  const totalReservationCd = reservations.filter(r => r.status === 'cancelled').length;
+  const totalReservationNS = reservations.filter(r => r.status === 'no_show').length;
 
-        const serviceName = reservation.service?.name?.toLowerCase() ?? '';
-        const spaName = reservation.spa?.name?.toLowerCase() ?? '';
-
-        return (
-          clientName.includes(search) ||
-          serviceName.includes(search) ||
-          spaName.includes(search)
-        );
-      });
-    }
-
-    if (filters.status) {
-      result = result.filter(
-        (reservation) => reservation.status === filters.status
-      );
-    }
-
-    if (filters.spa) {
-      result = result.filter(
-        (reservation) => reservation.spa?.slug === filters.spa
-      );
-    }
-
-    if (filters.date) {
-      result = result.filter(
-        (reservation) => reservation.reservation_date === filters.date
-      );
-    }
-
-    setFilteredReservations(result);
-  }, [filters, reservations]);
-
-  const spas = Array.from(
-    new Map(
-      reservations
-        .filter((reservation) => reservation.spa)
-        .map((reservation) => [
-          reservation.spa!.slug,
-          reservation.spa!,
-        ])
-    ).values()
-  );
-//contar reservas para el home dashboard
-const totalReservationP = reservations.filter(r => r.status === 'pending').length;
-const totalReservationC = reservations.filter(r => r.status === 'confirmed').length;
-const totalReservationCd = reservations.filter(r=> r.status === 'cancelled').length;
-const totalReservationNS = reservations.filter(r=> r.status === 'no_show').length;
-
-//ultimas 5 reservas para home
-const lastReservations = [...reservations]
+  //ultimas 5 reservas para home
+  const lastReservations = [...reservations]
     .sort((a, b) => b.id - a.id) // Ordenamos por ID de mayor a menor
     .slice(0, 5); // Tomamos solo las primeras 5
 
   return {
     reservations,
-    filteredReservations,
+    filteredReservations: reservations,
     totalReservationP,
     totalReservationC,
     totalReservationCd,

@@ -63,4 +63,6 @@ class Spa extends Model
             ? asset('storage/' . $this->logo)
             : null;
     }
+
+
 }

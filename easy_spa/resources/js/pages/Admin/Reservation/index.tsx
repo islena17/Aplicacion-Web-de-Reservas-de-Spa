@@ -3,10 +3,19 @@ import AdminLayout from '@/components/layouts/AdminLayout';
 import useReservations from '@/hooks/Admin/Reservation/useReservations';
 import { useReservation } from '@/hooks/Admin/Reservation/useReservation';
 import api from '@/lib/axios';
+import Pagination from '@/components/layouts/Pagination';
 
 export default function AdminReservationsIndex() {
   const navigate = useNavigate();
-  const { reservations, loading, error, refetch } = useReservations();
+  const {
+    reservations,
+    loading,
+    error,
+    refetch,
+    setLastPage,
+    lastPage,
+    setPage,
+    page, } = useReservations();
 
   const handleDelete = async (id: number) => {
     if (!confirm('¿Seguro que quieres eliminar esta reserva?')) return;
@@ -20,7 +29,7 @@ export default function AdminReservationsIndex() {
     }
   };
 
-  if (loading) return  <AdminLayout><div>Cargando...</div></AdminLayout>;
+  if (loading) return <AdminLayout><div>Cargando...</div></AdminLayout>;
   if (error) return <AdminLayout><div>{error}</div></AdminLayout>;
   return (
     <AdminLayout>
@@ -179,6 +188,11 @@ export default function AdminReservationsIndex() {
               </div>
             </div>
           )}
+          <Pagination
+            currentPage={page}
+            lastPage={lastPage}
+            onPageChange={setPage}
+          />
         </div>
       </div>
     </AdminLayout>

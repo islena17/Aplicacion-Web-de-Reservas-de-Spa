@@ -82,14 +82,16 @@ Route::middleware(['auth:sanctum', 'role:WebMaster'])
         Route::apiResource('clients', ClientController::class)
             ->except(['show']);
         Route::apiResource('spa-schedules', SpaScheduleController::class);
+        Route::get('reservations/spas', [ReservationController::class, 'spas']);
+        Route::get('reservations/filter', [ReservationController::class, 'filter']);
         Route::apiResource('reservations', ReservationController::class);
+
         Route::apiResource('users', UserController::class);
         Route::get('availability', [AvailabilityController::class, 'index']);
         Route::get('roles', [RoleController::class, 'index']);
 
-        
-        Route::get('spas/{spa:slug}/calendar', [WebMasterCalendarController::class, 'index']);
 
+        Route::get('spas/{spa:slug}/calendar', [WebMasterCalendarController::class, 'index']);
     });
 
 Route::middleware(['auth:sanctum', 'role:Admin'])

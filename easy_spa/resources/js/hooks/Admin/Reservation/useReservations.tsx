@@ -1,23 +1,28 @@
 import { useEffect, useState } from 'react';
 import api from '@/lib/axios';
 
+
+
 export default function useReservations() {
   const [reservations, setReservations] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+
+  // Estados para la paginación
+  const [page, setPage] = useState(1);
+  const [lastPage, setLastPage] = useState(1);
 
   const fetchReservations = async () => {
     try {
       setLoading(true);
       setError('');
 
-      const res = await api.get('/api/admin/reservations');
+      const response = await api.get(`/api/admin/reservations?page=${page}`);
 
       //  manejar paginación de Laravel
-      const data = res.data.data?.data ?? res.data.data ?? res.data ?? [];
-      setReservations(data);
-    } catch (err) {
-      console.error(err);
+      setReservations(response.data.data ?? response.data);
+      setLastPage(response.data.last_page);
+    } catch (error) {
       setError('No se pudieron cargar las reservas.');
     } finally {
       setLoading(false);
@@ -26,7 +31,16 @@ export default function useReservations() {
 
   useEffect(() => {
     fetchReservations();
-  }, []);
+  }, [page]);
 
-  return { reservations, loading, error, refetch: fetchReservations };
+  return {
+    reservations,
+    loading,
+    error,
+    refetch: fetchReservations,
+    setLastPage,
+    lastPage,
+    setPage,
+    page,
+  };
 }

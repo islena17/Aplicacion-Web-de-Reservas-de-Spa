@@ -23,8 +23,14 @@ export function useEmployeeSchedule(employeeId?: string) {
         for (let i = 1; i <= totalDays; i++) {
           const date = new Date(year, month, i);
 
+          // Formato YYYY-MM-DD manual para evitar el desfase de ISOString
+          const yyyy = date.getFullYear();
+          const mm = String(date.getMonth() + 1).padStart(2, '0');
+          const dd = String(date.getDate()).padStart(2, '0');
+          const dateString = `${yyyy}-${mm}-${dd}`;
+
           generated.push({
-            date: date.toISOString().slice(0, 10),
+            date: dateString,
             day_of_week: date.getDay(),
             start_time: '09:00',
             end_time: '17:00',
@@ -43,11 +49,11 @@ export function useEmployeeSchedule(employeeId?: string) {
 
           return savedDay
             ? {
-                ...day,
-                start_time: savedDay.start_time?.slice(0, 5),
-                end_time: savedDay.end_time?.slice(0, 5),
-                is_working: Boolean(savedDay.is_working),
-              }
+              ...day,
+              start_time: savedDay.start_time?.slice(0, 5),
+              end_time: savedDay.end_time?.slice(0, 5),
+              is_working: Boolean(savedDay.is_working),
+            }
             : day;
         });
 
@@ -63,9 +69,11 @@ export function useEmployeeSchedule(employeeId?: string) {
   }, [employeeId]);
 
   const handleChange = (index: number, field: string, value: any) => {
-    const updated = [...days];
-    updated[index][field] = value;
-    setDays(updated);
+    setDays(prevDays => {
+      const newDays = [...prevDays];
+      newDays[index] = { ...newDays[index], [field]: value };
+      return newDays;
+    });
   };
 
   const saveSchedule = async () => {

@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\ReservationRequest;
 use App\Models\Client;
 use App\Models\Reservation;
+use App\Models\Spa;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class ReservationController extends Controller
@@ -104,5 +106,64 @@ class ReservationController extends Controller
         return response()->json([
             'message' => 'Reserva eliminada correctamente'
         ]);
+    }
+
+    public function filter(Request $request)
+    {
+        $query = Reservation::with([
+            'client',
+            'spa',
+            'service',
+            'employee'
+        ]);
+
+        if ($request->filled('search')) {
+            $search = $request->search;
+
+            $query->where(function ($q) use ($search) {
+                $q->whereHas('client', function ($q) use ($search) {
+                    $q->where('name', 'like', "%{$search}%")
+                        ->orWhere('surname', 'like', "%{$search}%")
+                        ->orWhere('email', 'like', "%{$search}%")
+                        ->orWhere('telephone', 'like', "%{$search}%");
+                })
+                    ->orWhereHas('service', function ($q) use ($search) {
+                        $q->where('name', 'like', "%{$search}%");
+                    })
+                    ->orWhereHas('spa', function ($q) use ($search) {
+                        $q->where('name', 'like', "%{$search}%");
+                    });
+            });
+        }
+
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+
+        if ($request->filled('spa')) {
+            $query->whereHas('spa', function ($q) use ($request) {
+                $q->where('slug', $request->spa);
+            });
+        }
+
+        if ($request->filled('date')) {
+            $query->whereDate('reservation_date', $request->date);
+        }
+
+        $reservations = $query
+            ->latest()
+            ->paginate(10);
+
+        return response()->json($reservations);
+    }
+
+    //metodo para sacar todos los spas para el filtro de reservas globales de wm
+    public function spas()
+    {
+        return response()->json(
+            Spa::select('id', 'name', 'slug')
+                ->orderBy('name')
+                ->get()
+        );
     }
 }
