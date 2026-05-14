@@ -61,6 +61,7 @@ import Profile from './pages/Client/showProfile';
 import EditProfile from './pages/Client/editProfile';
 import ReservationsIndex from './pages/WebMaster/Reservation';
 import WebmasterCategoriesIndex from './pages/WebMaster/Services/indexCategory';
+import WebmasterServicesIndex from './pages/WebMaster/Services/indexService';
 
 
 export default function MainApp() {
@@ -92,6 +93,7 @@ export default function MainApp() {
                 <Route path="reservations" element={<GlobalReservations />} />
 
                 <Route path="spas/:slug/services/create" element={<CreateService />} />
+                <Route path="spas/:slug/services" element={<WebmasterServicesIndex />} />
                 <Route path="spas/:slug/services/:serviceSlug/edit" element={<EditService />} />
 
                 <Route path="spas/:slug/categories/create" element={<CreateServiceCategory />} />

@@ -45,20 +45,38 @@ export default function CategoriesIndexLayout({
                         </h1>
                         <p className="text-muted mb-0">{description}</p>
                     </div>
+                    <div className="d-flex align-items-center gap-2">
+                        <button
+                            className="btn"
+                            onClick={() => navigate(createPath)}
+                            style={{
+                                backgroundColor: '#E0C38D',
+                                color: '#fff',
+                                borderRadius: '12px',
+                                padding: '10px 18px',
+                                fontWeight: 700,
+                            }}
+                        >
+                            <i className="bi bi-plus-lg"></i> Nueva categoría
+                        </button>
 
-                    <button
-                        className="btn"
-                        onClick={() => navigate(createPath)}
-                        style={{
-                            backgroundColor: '#E0C38D',
-                            color: '#fff',
-                            borderRadius: '12px',
-                            padding: '10px 18px',
-                            fontWeight: 700,
-                        }}
-                    >
-                        <i className="bi bi-plus-lg"></i> Nueva categoría
-                    </button>
+
+                        <button
+                            className="btn d-flex align-items-center gap-2"
+                            onClick={() => navigate(-1)}
+                            style={{
+                                backgroundColor: '#F2E6D0',
+                                color: '#7a6440',
+                                borderRadius: '12px',
+                                padding: '10px 16px',
+                                fontWeight: 600,
+                                border: 'none',
+                            }}
+                        >
+                            <i className="bi bi-arrow-left"></i>
+                            Volver
+                        </button>
+                    </div>
                 </div>
 
                 {error && <div className="alert alert-danger">{error}</div>}

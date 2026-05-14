@@ -1,10 +1,8 @@
-import { useNavigate } from 'react-router-dom';
 import AdminLayout from '@/components/layouts/AdminLayout';
 import useServices from '@/hooks/Admin/Services/useServices';
-import Pagination from '@/components/layouts/Pagination';
+import ServicesIndexLayout from '@/components/layouts/panel/serviceIndexLayout';
 
 export default function AdminServicesIndex() {
-  const navigate = useNavigate();
   const {
     services,
     loading,
@@ -16,132 +14,17 @@ export default function AdminServicesIndex() {
 
   return (
     <AdminLayout>
-      <div style={{ backgroundColor: '#F7F7F7', minHeight: '100vh' }}>
-        <div className="container py-4 py-lg-5">
-          <div className="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
-            <div>
-              <h1 className="fw-bold mb-1" style={{ color: '#2f2f2f' }}>
-                Servicios
-              </h1>
-              <p className="text-muted mb-0">
-                Gestiona los servicios de tu spa.
-              </p>
-            </div>
-
-            <button
-              className="btn"
-              onClick={() => navigate('/admin/services/create')}
-              style={{
-                backgroundColor: '#E0C38D',
-                color: '#fff',
-                borderRadius: '12px',
-                padding: '10px 18px',
-                fontWeight: 700,
-              }}
-            >
-              <i className="bi bi-plus-lg"></i> Nuevo servicio
-            </button>
-          </div>
-
-          {error && <div className="alert alert-danger">{error}</div>}
-
-          {loading ? (
-            <div className="text-center py-5">Cargando servicios...</div>
-          ) : services.length === 0 ? (
-            <div className="text-center py-5 text-muted">
-              No hay servicios registrados.
-            </div>
-          ) : (
-            <div className="card border-0 shadow-sm" style={{ borderRadius: '20px', overflow: 'hidden' }}>
-              <div className="card-body p-4">
-                <div className="table-responsive">
-                  <table className="table align-middle mb-0">
-                    <thead style={{ backgroundColor: '#F7F7F7' }}>
-                      <tr>
-                        <th className="px-4 py-3">Nombre</th>
-                        <th className="px-4 py-3">
-                          Categoría</th>
-                        <th className="px-4 py-3">
-                          Duración</th>
-                        <th className="px-4 py-3">
-                          Precio</th>
-                        <th className="px-4 py-3">
-                          Activo</th>
-                        <th className="text-end px-4">Acciones</th>
-                      </tr>
-                    </thead>
-
-                    <tbody>
-                      {services.map((service) => (
-                        <tr key={service.id}>
-                          <td className="px-4 fw-semibold">{service.name}</td>
-
-                          <td className="px-4 py-3">
-
-                            {service.category?.name ??
-                              service.service_category?.name ??
-                              '-'}
-                          </td>
-
-                          <td className="px-4 py-3">
-                            {service.length_minutes} min</td>
-                          <td className="px-4 py-3">
-                            {service.price} €</td>
-
-                          <td className="px-4 py-3">
-
-                            <span
-                              className={`badge ${service.is_active ? 'bg-success' : 'bg-secondary'
-                                }`}
-                            >
-                              {service.is_active ? 'Activo' : 'Inactivo'}
-                            </span>
-                          </td>
-
-                          <td className="text-end px-4">
-                            <div className="d-flex justify-content-end gap-2">
-                              <button
-                                className="btn btn-sm"
-                                onClick={() => navigate(`/admin/services/${service.slug}`)}
-                                style={{
-                                  backgroundColor: '#F2E6D0',
-                                  color: '#7a6440',
-                                  borderRadius: '10px',
-                                }}
-                              >
-                                Ver
-                              </button>
-
-                              <button
-                                className="btn btn-sm"
-                                onClick={() =>
-                                  navigate(`/admin/services/${service.slug}/edit`)
-                                }
-                                style={{
-                                  backgroundColor: '#E0C38D',
-                                  color: '#fff',
-                                  borderRadius: '10px',
-                                }}
-                              >
-                                Editar
-                              </button>
-                            </div>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
-          )}
-          <Pagination
-            currentPage={page}
-            lastPage={lastPage}
-            onPageChange={setPage}
-          />
-        </div>
-      </div>
+      <ServicesIndexLayout
+        services={services}
+        loading={loading}
+        error={error}
+        page={page}
+        lastPage={lastPage}
+        setPage={setPage}
+        createPath="/admin/services/create"
+        getShowPath={(service) => `/admin/services/${service.slug}`}
+        getEditPath={(service) => `/admin/services/${service.slug}/edit`}
+      />
     </AdminLayout>
   );
 }

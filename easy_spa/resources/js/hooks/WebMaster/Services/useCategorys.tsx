@@ -30,8 +30,6 @@ export function useServiceCategory(slug?: string) {
             : [];
 
       setCategories(categoriesArray);
-      console.log('Respuesta API WM:', response.data);
-      console.log('CategoriesIndexLayout recibe:', categories);
       setLastPage(data.last_page ?? 1);
     } catch {
       setError('No se han podido cargar las categorías.');
