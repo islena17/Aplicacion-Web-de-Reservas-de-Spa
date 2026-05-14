@@ -62,6 +62,9 @@ import EditProfile from './pages/Client/editProfile';
 import ReservationsIndex from './pages/WebMaster/Reservation';
 import WebmasterCategoriesIndex from './pages/WebMaster/Services/indexCategory';
 import WebmasterServicesIndex from './pages/WebMaster/Services/indexService';
+import WebmasterEmployeesIndex from './pages/WebMaster/Employees/indexEmployee';
+import ClientsIndexLayout from './components/layouts/panel/clientsIndexLayout';
+import WebmasterClientsIndex from './pages/WebMaster/Clients/indexClient';
 
 
 export default function MainApp() {
@@ -103,9 +106,11 @@ export default function MainApp() {
 
                 <Route path="spas/:slug/employees/create" element={<CreateEmployee />} />
                 <Route path="spas/:slug/employees/:employeeId/edit" element={<EditEmployee />} />
+                <Route path="spas/:slug/employees" element={<WebmasterEmployeesIndex />} />
 
                 <Route path="spas/:slug/clients/:clientId/edit" element={<EditClient />} />
                 <Route path="spas/:slug/clients/:clientId" element={<ShowClient />} />
+                 <Route path="spas/:slug/clients" element={<WebmasterClientsIndex />} />
 
                 <Route path="users" element={<UsersIndex />} />
                 <Route path="users/create" element={<CreateUser />} />

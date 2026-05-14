@@ -6,17 +6,24 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\ClientRequest;
 use App\Models\Client;
 use App\Models\Spa;
+use Illuminate\Http\Request;
 
 class ClientController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $clients = Client::with('user')
-            ->latest()
-            ->paginate(10);
+        $query = Client::query();
+
+        if ($request->filled('spa')) {
+            $query->whereHas('reservations.service.spa', function ($q) use ($request) {
+                $q->where('slug', $request->spa);
+            });
+        }
+
+        $clients = $query->paginate(10);
 
         return response()->json($clients);
     }

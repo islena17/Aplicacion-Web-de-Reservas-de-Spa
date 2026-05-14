@@ -1,18 +1,6 @@
 import { useEffect, useState, useCallback } from "react";
 import api from "@/lib/axios";
-
-export type Service = {
-    id: number;
-    name: string;
-    slug: string;
-    description?: string | null;
-    image_url?: string | null;
-    length_minutes: number;
-    price: string | number;
-    capacity: number;
-    category?: { id: number; name: string } | null;
-    spa?: { id: number; name: string; slug: string };
-};
+import { Service } from "@/types";
 
 export default function useServices(spaSlug?: string, page: number = 1) {
     const [services, setServices] = useState<Service[]>([]);

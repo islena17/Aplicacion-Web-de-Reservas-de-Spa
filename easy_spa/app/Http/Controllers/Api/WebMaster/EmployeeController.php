@@ -5,15 +5,24 @@ namespace App\Http\Controllers\Api\WebMaster;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\EmployeeRequest;
 use App\Models\Employee;
+use Illuminate\Http\Request;
 
 class EmployeeController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $employees = Employee::with(['spa', 'user'])->paginate(10);
+        $query = Employee::with(['spa', 'user']);
+
+        if ($request->filled('spa')) {
+            $query->whereHas('spa', function ($q) use ($request) {
+                $q->where('slug', $request->spa);
+            });
+        }
+
+        $employees = $query->paginate(10);
 
         return response()->json($employees);
     }

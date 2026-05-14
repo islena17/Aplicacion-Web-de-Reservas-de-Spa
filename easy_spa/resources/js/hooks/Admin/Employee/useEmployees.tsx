@@ -1,15 +1,6 @@
 import { useEffect, useState } from 'react';
 import api from '@/lib/axios';
-
-export interface Employee {
-  id: number;
-  name: string;
-  surname: string;
-  gender?: string;
-  email?: string;
-  telephone?: string;
-  is_active: boolean;
-}
+import { Employee } from '@/types';
 
 export default function useEmployees() {
   const [employees, setEmployees] = useState<Employee[]>([]);

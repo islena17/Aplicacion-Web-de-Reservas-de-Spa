@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Api\WebMaster;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ServiceRequest;
 use App\Models\Service;
+use App\Models\Spa;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
 class ServiceController extends Controller
@@ -12,15 +14,20 @@ class ServiceController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $services = Service::with(['spa', 'category'])
-            ->latest()
-            ->paginate(10);
+        $query = Service::with(['spa', 'category'])->latest();
+
+        if ($request->filled('spa')) {
+            $spa = Spa::where('slug', $request->spa)->firstOrFail();
+
+            $query->where('spa_id', $spa->id);
+        }
+
+        $services = $query->paginate(10);
 
         return response()->json($services);
     }
-
     /**
      * Store a newly created resource in storage.
      */

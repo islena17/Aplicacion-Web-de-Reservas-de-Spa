@@ -16,6 +16,11 @@ class ServiceController extends Controller
             ->whereHas('spa', function ($query) {
                 $query->where('is_active', true);
             });
+        if (request('spa_slug')) {
+            $query->whereHas('spa', function ($q) {
+                $q->where('slug', request('spa_slug'));
+            });
+        }
 
         if (request('spa_id')) {
             $query->where('spa_id', request('spa_id'));
@@ -33,13 +38,13 @@ class ServiceController extends Controller
     }
 
     public function latest()
-{
-    $services = Service::where('is_active', true)
-        ->with('spa:id,name') 
-        ->latest() 
-        ->take(4)
-        ->get();
+    {
+        $services = Service::where('is_active', true)
+            ->with('spa:id,name')
+            ->latest()
+            ->take(4)
+            ->get();
 
-    return response()->json($services);
-}
+        return response()->json($services);
+    }
 }

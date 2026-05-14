@@ -144,8 +144,8 @@ Route::prefix('public')->group(function () {
     Route::get('availability', [PublicAvailabilityController::class, 'index']);
     Route::get('spas', [PublicSpaController::class, 'index']);
     Route::get('spas/{spa}', [PublicSpaController::class, 'show']);
-    Route::get('services', [PublicServiceController::class, 'index']);
     Route::get('services/latest', [PublicServiceController::class, 'latest']);
+    Route::get('services', [PublicServiceController::class, 'index']);
 });
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {

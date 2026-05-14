@@ -18,17 +18,18 @@ class SpaController extends Controller
 
     public function show(Spa $spa)
     {
-
-        if (!$spa->is_active) {
-            abort(404);
-        }
         $spa->load([
+            'categories' => function ($query) {
+                $query->where('is_active', 1)
+                    ->orderBy('order');
+            },
+            'services' => function ($query) {
+                $query->where('is_active', 1)
+                    ->orderBy('order');
+            },
             'services.category',
-            'categories',
         ]);
 
-        return response()->json([
-            'data' => $spa
-        ]);
+        return response()->json($spa);
     }
 }
