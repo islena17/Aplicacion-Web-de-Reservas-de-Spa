@@ -15,15 +15,24 @@ export function useServiceCategory(slug?: string) {
       setLoading(true);
       setError('');
 
-      const response = await api.get('/api/webmaster/serviceCategory', {
-        params: {
-          page,
-          spa: slug || undefined,
-        },
+      const response = await api.get(`/api/webmaster/spas/${slug}/categories`, {
+        params: { page },
       });
 
-      setCategories(response.data.data ?? []);
-      setLastPage(response.data.last_page ?? 1);
+      const data = response.data;
+
+      const categoriesArray = Array.isArray(data)
+        ? data
+        : Array.isArray(data.data)
+          ? data.data
+          : Array.isArray(data.categories)
+            ? data.categories
+            : [];
+
+      setCategories(categoriesArray);
+      console.log('Respuesta API WM:', response.data);
+      console.log('CategoriesIndexLayout recibe:', categories);
+      setLastPage(data.last_page ?? 1);
     } catch {
       setError('No se han podido cargar las categorías.');
     } finally {

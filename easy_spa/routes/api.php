@@ -71,12 +71,14 @@ Route::middleware(['auth:sanctum', 'role:WebMaster'])
 
         Route::put('/services/{service:slug}', [ServiceController::class, 'update']);
         Route::post('/spas/{spa:slug}/categories', [ServiceCategoryController::class, 'store']);
+        Route::get('/spas/{spa:slug}/categories', [ServiceCategoryController::class, 'index']);
+        Route::post('/spas/{spa:slug}/categories', [ServiceCategoryController::class, 'store']);
+
+        Route::get('/spas/{spa:slug}/categories', [ServiceCategoryController::class, 'index']);
         Route::get('/spas/{spa:slug}/categories/{category:slug}', [ServiceCategoryController::class, 'show']);
         Route::put('/spas/{spa:slug}/categories/{category:slug}', [ServiceCategoryController::class, 'update']);
-        Route::delete('/spas/{spa:slug}/categories/{category:slug}', [
-            ServiceCategoryController::class,
-            'destroy'
-        ]);
+        Route::delete('/spas/{spa:slug}/categories/{category:slug}', [ServiceCategoryController::class, 'destroy']);
+
         Route::get('/spas/{spa:slug}/clients/{client}', [ClientController::class, 'show']);
 
         Route::apiResource('clients', ClientController::class)

@@ -60,6 +60,7 @@ import ShowServices from './pages/Site/services';
 import Profile from './pages/Client/showProfile';
 import EditProfile from './pages/Client/editProfile';
 import ReservationsIndex from './pages/WebMaster/Reservation';
+import WebmasterCategoriesIndex from './pages/WebMaster/Services/indexCategory';
 
 
 export default function MainApp() {
@@ -94,6 +95,7 @@ export default function MainApp() {
                 <Route path="spas/:slug/services/:serviceSlug/edit" element={<EditService />} />
 
                 <Route path="spas/:slug/categories/create" element={<CreateServiceCategory />} />
+                <Route path='spas/:slug/categories' element={<WebmasterCategoriesIndex />} />
                 <Route path="spas/:slug/categories/:categorySlug" element={<ShowCategory />} />
                 <Route path="spas/:slug/categories/:categorySlug/edit" element={<EditServiceCategory />} />
 

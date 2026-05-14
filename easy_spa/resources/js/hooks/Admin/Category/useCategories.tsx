@@ -1,16 +1,6 @@
 import { useEffect, useState } from 'react';
 import api from '@/lib/axios';
-
-export interface ServiceCategory {
-  id: number;
-  name: string;
-  slug: string;
-  description?: string | null;
-  is_active: boolean;
-  order: number;
-  services_count?: number;
-  services?: any[];
-}
+import { ServiceCategory } from '@/types';
 
 export default function useCategories() {
   const [categories, setCategories] = useState<ServiceCategory[]>([]);

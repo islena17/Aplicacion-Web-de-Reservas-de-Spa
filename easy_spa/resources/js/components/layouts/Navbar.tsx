@@ -73,7 +73,7 @@ export default function Navbar() {
                                 style={{
                                     backgroundColor: 'var(--color-secondary)',
                                     color: 'var(--color-text)'
-                                }} to="/webmaster">
+                                }} to="/dashboard">
                                 Panel WebMaster
                             </Link>
                         )}

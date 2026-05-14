@@ -12,4 +12,5 @@ export type ServiceCategory = {
 
   spa?: Spa;
   services?: Service[];
+  services_count?: number;
 };
