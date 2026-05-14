@@ -17,6 +17,10 @@ export default function useCategories() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
+  // Estados para la paginación
+  const [page, setPage] = useState(1);
+  const [lastPage, setLastPage] = useState(1);
+
   const fetchCategories = async () => {
     try {
       setLoading(true);
@@ -25,9 +29,9 @@ export default function useCategories() {
       const res = await api.get('/api/admin/categories');
 
       setCategories(res.data.data ?? res.data);
-    } catch (err) {
-      console.error(err);
-      setError('No se pudieron cargar las categorías.');
+      setLastPage(res.data.last_page ?? 1);
+    } catch (error) {
+      setError('No se pudieron cargar las reservas.');
     } finally {
       setLoading(false);
     }
@@ -35,12 +39,15 @@ export default function useCategories() {
 
   useEffect(() => {
     fetchCategories();
-  }, []);
+  }, [page]);
 
   return {
     categories,
     loading,
     error,
     refetch: fetchCategories,
+    lastPage,
+    setPage,
+    page,
   };
 }

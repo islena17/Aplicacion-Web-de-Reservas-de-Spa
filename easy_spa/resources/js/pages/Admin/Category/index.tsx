@@ -1,10 +1,17 @@
 import { useNavigate } from 'react-router-dom';
 import DashboardLayout from '@/components/layouts/AdminLayout';
 import useCategories from '@/hooks/Admin/Category/useCategories';
+import Pagination from '@/components/layouts/Pagination';
 
 export default function AdminCategoriesIndex() {
   const navigate = useNavigate();
-  const { categories, loading, error } = useCategories();
+  const {
+    categories,
+    loading,
+    error,
+    lastPage,
+    setPage,
+    page, } = useCategories();
 
   return (
     <DashboardLayout>
@@ -44,7 +51,7 @@ export default function AdminCategoriesIndex() {
               No hay categorías registradas.
             </div>
           ) : (
-            <div className="card border-0 shadow-sm" style={{ borderRadius: '20px', overflow: 'hidden'}}>
+            <div className="card border-0 shadow-sm" style={{ borderRadius: '20px', overflow: 'hidden' }}>
               <div className="card-body p-4">
                 <div className="table-responsive">
                   <table className="table align-middle mb-0">
@@ -68,9 +75,8 @@ export default function AdminCategoriesIndex() {
 
                           <td>
                             <span
-                              className={`badge ${
-                                category.is_active ? 'bg-success' : 'bg-secondary'
-                              }`}
+                              className={`badge ${category.is_active ? 'bg-success' : 'bg-secondary'
+                                }`}
                             >
                               {category.is_active ? 'Activa' : 'Inactiva'}
                             </span>
@@ -121,6 +127,11 @@ export default function AdminCategoriesIndex() {
               </div>
             </div>
           )}
+          <Pagination
+            currentPage={page}
+            lastPage={lastPage}
+            onPageChange={setPage}
+          />
         </div>
       </div>
     </DashboardLayout>

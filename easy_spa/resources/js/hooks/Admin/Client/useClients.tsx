@@ -15,17 +15,21 @@ export default function useClients() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
 
+    // Estados para la paginación
+    const [page, setPage] = useState(1);
+    const [lastPage, setLastPage] = useState(1);
+
     const fetchClients = async () => {
         try {
             setLoading(true);
             setError("");
 
-            const res = await api.get("/api/admin/clients");
+            const res = await api.get(`/api/admin/clients?page=${page}`);
 
             setClients(res.data.data ?? res.data);
-        } catch (err) {
-            console.error(err);
-            setError("No se pudieron cargar los clientes.");
+            setLastPage(res.data.last_page ?? 1);
+        } catch (error) {
+            setError('No se pudieron cargar las reservas.');
         } finally {
             setLoading(false);
         }
@@ -33,7 +37,16 @@ export default function useClients() {
 
     useEffect(() => {
         fetchClients();
-    }, []);
+    }, [page]);
 
-    return { clients, loading, error, refetch: fetchClients };
+    return {
+        clients,
+        loading,
+        error,
+        refetch: fetchClients,
+        setLastPage,
+        lastPage,
+        setPage,
+        page,
+    };
 }

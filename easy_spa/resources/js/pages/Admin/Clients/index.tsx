@@ -1,9 +1,17 @@
 import useClients from "@/hooks/Admin/Client/useClients";
 import { Link, useNavigate } from "react-router-dom";
 import AdminLayout from "@/components/layouts/AdminLayout";
+import Pagination from "@/components/layouts/Pagination";
 
 export default function AdminClientsIndex() {
-    const { clients, loading, error } = useClients();
+    const {
+        clients,
+        loading,
+        error,
+        lastPage,
+        setPage,
+        page, } = useClients();
+
     const navigate = useNavigate();
 
     if (loading) return <AdminLayout><p>Cargando clientes...</p></AdminLayout>;
@@ -25,7 +33,7 @@ export default function AdminClientsIndex() {
                         </div>
                     </div>
 
-                    {clients.length === 0 ? (
+                    {!loading && clients.length === 0 ?   (
                         <div className="text-center py-5 text-muted">
                             No hay clientes registrados.
                         </div>
@@ -51,34 +59,34 @@ export default function AdminClientsIndex() {
                                                 <td className="px-4 py-3">{client.telephone || "-"}</td>
                                                 <td className="px-4 py-3">{client.reservations_count ?? 0}</td>
                                                 <td className="text-end">
-                                                      <div className="d-flex justify-content-end gap-2">
-                                                    <button
-                                                        className="btn btn-sm"
-                                                        onClick={() =>
-                                                            navigate(`/admin/clients/${client.id}`)
-                                                        }
-                                                        style={{
-                                                            backgroundColor: '#F2E6D0',
-                                                            color: '#7a6440',
-                                                            borderRadius: '10px',
-                                                        }}
-                                                    >
-                                                        Ver
-                                                    </button>
+                                                    <div className="d-flex justify-content-end gap-2">
+                                                        <button
+                                                            className="btn btn-sm"
+                                                            onClick={() =>
+                                                                navigate(`/admin/clients/${client.id}`)
+                                                            }
+                                                            style={{
+                                                                backgroundColor: '#F2E6D0',
+                                                                color: '#7a6440',
+                                                                borderRadius: '10px',
+                                                            }}
+                                                        >
+                                                            Ver
+                                                        </button>
 
-                                                    <button
-                                                        className="btn btn-sm"
-                                                        onClick={() =>
-                                                            navigate(`/admin/clients/${client.id}/edit`)
-                                                        }
-                                                        style={{
-                                                            backgroundColor: '#E0C38D',
-                                                            color: '#fff',
-                                                            borderRadius: '10px',
-                                                        }}
-                                                    >
-                                                        Editar
-                                                    </button>
+                                                        <button
+                                                            className="btn btn-sm"
+                                                            onClick={() =>
+                                                                navigate(`/admin/clients/${client.id}/edit`)
+                                                            }
+                                                            style={{
+                                                                backgroundColor: '#E0C38D',
+                                                                color: '#fff',
+                                                                borderRadius: '10px',
+                                                            }}
+                                                        >
+                                                            Editar
+                                                        </button>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -88,7 +96,11 @@ export default function AdminClientsIndex() {
                             </div>
                         </div>
                     )}
-
+                    <Pagination
+                        currentPage={page}
+                        lastPage={lastPage}
+                        onPageChange={setPage}
+                    />
                 </div>
             </div>
         </AdminLayout >

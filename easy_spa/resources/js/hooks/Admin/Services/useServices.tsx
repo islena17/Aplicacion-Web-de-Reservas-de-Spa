@@ -6,6 +6,10 @@ export default function useServices() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
+  // Estados para la paginación
+  const [page, setPage] = useState(1);
+  const [lastPage, setLastPage] = useState(1);
+
   const fetchServices = async () => {
     try {
       setLoading(true);
@@ -13,9 +17,9 @@ export default function useServices() {
 
       const res = await api.get('/api/admin/services');
       setServices(res.data.data ?? res.data);
-    } catch (err) {
-      console.error(err);
-      setError('No se pudieron cargar los servicios.');
+      setLastPage(res.data.last_page ?? 1);
+    } catch (error) {
+      setError('No se pudieron cargar las reservas.');
     } finally {
       setLoading(false);
     }
@@ -23,7 +27,15 @@ export default function useServices() {
 
   useEffect(() => {
     fetchServices();
-  }, []);
+  }, [page]);
 
-  return { services, loading, error, refetch: fetchServices };
+  return {
+    services,
+    loading,
+    error,
+    refetch: fetchServices,
+    lastPage,
+    setPage,
+    page,
+  };
 }

@@ -1,10 +1,18 @@
 import { useNavigate } from 'react-router-dom';
 import AdminLayout from '@/components/layouts/AdminLayout';
 import useServices from '@/hooks/Admin/Services/useServices';
+import Pagination from '@/components/layouts/Pagination';
 
 export default function AdminServicesIndex() {
   const navigate = useNavigate();
-  const { services, loading, error } = useServices();
+  const {
+    services,
+    loading,
+    error,
+    lastPage,
+    setPage,
+    page,
+  } = useServices();
 
   return (
     <AdminLayout>
@@ -127,6 +135,11 @@ export default function AdminServicesIndex() {
               </div>
             </div>
           )}
+          <Pagination
+            currentPage={page}
+            lastPage={lastPage}
+            onPageChange={setPage}
+          />
         </div>
       </div>
     </AdminLayout>

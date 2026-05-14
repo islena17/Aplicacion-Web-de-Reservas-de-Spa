@@ -16,16 +16,20 @@ export default function useEmployees() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
+  // Estados para la paginación
+  const [page, setPage] = useState(1);
+  const [lastPage, setLastPage] = useState(1);
+
   const fetchEmployees = async () => {
     try {
       setLoading(true);
       setError('');
 
-      const res = await api.get('/api/admin/employees');
+      const res = await api.get(`/api/admin/employees?page=${page}`);
       setEmployees(res.data.data ?? res.data);
-    } catch (err) {
-      console.error(err);
-      setError('No se pudieron cargar los empleados.');
+      setLastPage(res.data.last_page);
+    } catch (error) {
+      setError('No se pudieron cargar las reservas.');
     } finally {
       setLoading(false);
     }
@@ -33,12 +37,16 @@ export default function useEmployees() {
 
   useEffect(() => {
     fetchEmployees();
-  }, []);
+  }, [page]);
 
   return {
     employees,
     loading,
     error,
     refetch: fetchEmployees,
+    setLastPage,
+    lastPage,
+    setPage,
+    page,
   };
 }

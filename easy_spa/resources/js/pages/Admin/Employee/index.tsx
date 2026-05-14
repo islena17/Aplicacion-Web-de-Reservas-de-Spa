@@ -1,10 +1,17 @@
 import { useNavigate } from 'react-router-dom';
 import AdminLayout from '@/components/layouts/AdminLayout';
 import useEmployees from '@/hooks/Admin/Employee/useEmployees';
+import Pagination from '@/components/layouts/Pagination';
 
 export default function AdminEmployeesIndex() {
   const navigate = useNavigate();
-  const { employees, loading, error } = useEmployees();
+  const {
+    employees,
+    loading,
+    error,
+    lastPage,
+    setPage,
+    page, } = useEmployees();
 
   return (
     <AdminLayout>
@@ -129,6 +136,11 @@ export default function AdminEmployeesIndex() {
               </div>
             </div>
           )}
+          <Pagination
+            currentPage={page}
+            lastPage={lastPage}
+            onPageChange={setPage}
+          />
         </div>
       </div>
     </AdminLayout>
