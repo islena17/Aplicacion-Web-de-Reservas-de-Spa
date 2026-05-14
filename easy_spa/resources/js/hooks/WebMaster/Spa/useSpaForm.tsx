@@ -2,7 +2,7 @@
 import { FormEvent, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '@/lib/axios';
-import { SpaResponse } from './useSpa';
+import { Spa } from '@/types';
 
 export type SpaFormData = {
   name: string;
@@ -50,7 +50,7 @@ const initialForm: SpaFormData = {
   is_active: true,
 };
 
-export function useSpaForm(spa?: SpaResponse | null) {
+export function useSpaForm(spa?: Spa | null) {
   const navigate = useNavigate();
 
   const [form, setForm] = useState<SpaFormData>(initialForm);
@@ -70,8 +70,8 @@ export function useSpaForm(spa?: SpaResponse | null) {
       postal_code: spa.postal_code ?? '',
       phone: spa.phone ?? '',
       email: spa.email ?? '',
-      opening_time: spa.opening_time ?? '',
-      closing_time: spa.closing_time ?? '',
+      opening_time: spa.opening_time?.slice(0, 5) ?? '',
+closing_time: spa.closing_time?.slice(0, 5) ?? '',
       logo: null,
       is_active: Boolean(spa.is_active),
     });

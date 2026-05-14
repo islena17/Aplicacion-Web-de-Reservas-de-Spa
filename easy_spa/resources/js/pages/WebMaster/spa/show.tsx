@@ -9,17 +9,8 @@ export default function ShowSpa() {
 
   const {
     spa,
-    activeTab,
-    setActiveTab,
     loading,
     error,
-    deleteReservation,
-    selectedCategory,
-    setSelectedCategory,
-    filteredServices,
-    categories,
-    deleteCategory,
-    deleteService
   } = useSpaShow(slug);
 
   if (loading) {
@@ -129,10 +120,10 @@ export default function ShowSpa() {
                 <button
                   type="button"
                   className="btn"
-                  onClick={() => setActiveTab('datos')}
+                  onClick={() => navigate(`/dashboard/spas/${spa.slug}`)}
                   style={{
-                    backgroundColor: activeTab === 'datos' ? '#E0C38D' : '#F2E6D0',
-                    color: activeTab === 'datos' ? '#fff' : '#7a6440',
+                    backgroundColor: '#E0C38D',
+                    color: '#fff',
                     borderRadius: '12px',
                     fontWeight: 700,
                   }}
@@ -143,10 +134,10 @@ export default function ShowSpa() {
                 <button
                   type="button"
                   className="btn"
-                  onClick={() => setActiveTab('reservas')}
+                  onClick={() => navigate(`/dashboard/spas/${spa.slug}/reservations`)}
                   style={{
-                    backgroundColor: activeTab === 'reservas' ? '#E0C38D' : '#F2E6D0',
-                    color: activeTab === 'reservas' ? '#fff' : '#7a6440',
+                    backgroundColor: '#F2E6D0',
+                    color: '#7a6440',
                     borderRadius: '12px',
                     fontWeight: 700,
                   }}
@@ -157,24 +148,24 @@ export default function ShowSpa() {
                 <button
                   type="button"
                   className="btn"
-                  onClick={() => setActiveTab('categorias')}
+                  onClick={() => navigate(`/dashboard/spas/${spa.slug}/categories`)}
                   style={{
-                    backgroundColor: activeTab === 'categorias' ? '#E0C38D' : '#F2E6D0',
-                    color: activeTab === 'categorias' ? '#fff' : '#7a6440',
+                    backgroundColor: '#F2E6D0',
+                    color: '#7a6440',
                     borderRadius: '12px',
                     fontWeight: 700,
                   }}
                 >
-                  Categorias
+                  Categorías
                 </button>
 
                 <button
                   type="button"
                   className="btn"
-                  onClick={() => setActiveTab('servicios')}
+                  onClick={() => navigate(`/dashboard/spas/${spa.slug}/services`)}
                   style={{
-                    backgroundColor: activeTab === 'servicios' ? '#E0C38D' : '#F2E6D0',
-                    color: activeTab === 'servicios' ? '#fff' : '#7a6440',
+                    backgroundColor: '#F2E6D0',
+                    color: '#7a6440',
                     borderRadius: '12px',
                     fontWeight: 700,
                   }}
@@ -185,10 +176,10 @@ export default function ShowSpa() {
                 <button
                   type="button"
                   className="btn"
-                  onClick={() => setActiveTab('empleados')}
+                  onClick={() => navigate(`/dashboard/spas/${spa.slug}/employees`)}
                   style={{
-                    backgroundColor: activeTab === 'empleados' ? '#E0C38D' : '#F2E6D0',
-                    color: activeTab === 'empleados' ? '#fff' : '#7a6440',
+                    backgroundColor: '#F2E6D0',
+                    color: '#7a6440',
                     borderRadius: '12px',
                     fontWeight: 700,
                   }}
@@ -199,10 +190,10 @@ export default function ShowSpa() {
                 <button
                   type="button"
                   className="btn"
-                  onClick={() => setActiveTab('clientes')}
+                  onClick={() => navigate(`/dashboard/spas/${spa.slug}/clients`)}
                   style={{
-                    backgroundColor: activeTab === 'clientes' ? '#E0C38D' : '#F2E6D0',
-                    color: activeTab === 'clientes' ? '#fff' : '#7a6440',
+                    backgroundColor: '#F2E6D0',
+                    color: '#7a6440',
                     borderRadius: '12px',
                     fontWeight: 700,
                   }}
@@ -213,7 +204,6 @@ export default function ShowSpa() {
             </div>
           </div>
 
-          {activeTab === 'datos' && (
             <div
               className="card border-0 shadow-sm"
               style={{ borderRadius: '20px', overflow: 'hidden' }}
@@ -263,624 +253,7 @@ export default function ShowSpa() {
                 </div>
               </div>
             </div>
-          )}
 
-          {activeTab === 'reservas' && (
-            <div
-              className="card border-0 shadow-sm"
-              style={{ borderRadius: '20px', overflow: 'hidden' }}
-            >
-              <div className="card-header border-0 py-3 px-4 bg-white d-flex justify-content-between align-items-center">
-                <h5 className="mb-0 fw-bold">Reservas</h5>
-
-                <button
-                  type="button"
-                  className="btn"
-                  onClick={() => navigate(`/dashboard/spas/${spa.slug}/reservations/create`)}
-                  style={{
-                    backgroundColor: '#E0C38D',
-                    color: '#fff',
-                    borderRadius: '12px',
-                    fontWeight: 700,
-                    border: 'none',
-                  }}
-                >
-                  Crear reserva
-                </button>
-              </div>
-
-              <div className="card-body p-0 bg-white">
-                {spa.reservations.length === 0 ? (
-                  <div className="p-4 text-muted">
-                    No hay reservas registradas.
-                  </div>
-                ) : (
-                  <div className="table-responsive">
-                    <table className="table align-middle mb-0">
-                      <thead style={{ backgroundColor: '#F7F7F7' }}>
-                        <tr>
-                          <th className="px-4 py-3">Cliente</th>
-                          <th className="px-4 py-3">Servicio</th>
-                          <th className="px-4 py-3">Empleado</th>
-                          <th className="px-4 py-3">Fecha</th>
-                          <th className="px-4 py-3">Hora</th>
-                          <th className="px-4 py-3">Estado</th>
-                          <th className="px-4 py-3 text-end">Acciones</th>
-                        </tr>
-                      </thead>
-
-                      <tbody>
-                        {spa.reservations.map((reservation) => (
-                          <tr key={reservation.id}>
-                            <td className="px-4 py-3">
-                              {reservation.client?.name || '-'}
-                            </td>
-
-                            <td className="px-4 py-3">
-                              {reservation.service?.name || '-'}
-                            </td>
-
-                            <td className="px-4 py-3">
-                              {reservation.employee?.name || 'Sin empleado'}
-                            </td>
-
-                            <td className="px-4 py-3">
-                              {reservation.reservation_date}
-                            </td>
-
-                            <td className="px-4 py-3">
-                              {reservation.start_time} - {reservation.end_time}
-                            </td>
-
-                            <td className="px-4 py-3">
-                              <span className="badge bg-secondary">
-                                {reservation.status}
-                              </span>
-                            </td>
-
-                            <td className="px-4 py-3 text-end">
-                              <button
-                                type="button"
-                                className="btn btn-sm me-2"
-                                onClick={() =>
-                                  navigate(`/dashboard/spas/${spa.slug}/reservations/${reservation.id}/edit`)
-                                }
-                                style={{
-                                  backgroundColor: '#F2E6D0',
-                                  color: '#7a6440',
-                                  borderRadius: '10px',
-                                  fontWeight: 600,
-                                }}
-                              >
-                                <i className="bi bi-pencil-square"></i>
-                              </button>
-
-                              <button
-                                type="button"
-                                className="btn btn-sm me-2"
-                                onClick={() =>
-                                  navigate(`/dashboard/spas/${spa.slug}/reservations/${reservation.id}`)
-                                }
-                                style={{
-                                  backgroundColor: '#F2E6D0',
-                                  color: '#7a6440',
-                                  borderRadius: '10px',
-                                  fontWeight: 600,
-                                }}
-                              >
-                                <i className="bi bi-eye"></i>
-                              </button>
-
-                              <button
-                                type="button"
-                                className="btn btn-sm btn-outline-danger"
-                                onClick={() => deleteReservation(reservation.id)
-                                }
-                              >
-                                <i className="bi bi-x-square"></i>
-                              </button>
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                )}
-              </div>
-            </div>
-          )}
-
-          {activeTab === 'categorias' && (
-            <div
-              className="card border-0 shadow-sm"
-              style={{ borderRadius: '20px', overflow: 'hidden' }}
-            >
-              <div className="card-header border-0 py-3 px-4 bg-white d-flex justify-content-between align-items-center">
-                <h5 className="mb-0 fw-bold">Categorías</h5>
-
-                <button
-                  type="button"
-                  className="btn"
-                  onClick={() => navigate(`/dashboard/spas/${spa.slug}/categories/create`)}
-                  style={{
-                    backgroundColor: '#E0C38D',
-                    color: '#fff',
-                    borderRadius: '12px',
-                    fontWeight: 700,
-                    border: 'none',
-                  }}
-                >
-                  Crear categoría
-                </button>
-              </div>
-
-              <div className="card-body p-0 bg-white">
-                {(spa.categories ?? []).length === 0 ? (
-                  <div className="p-4 text-muted">
-                    No hay categorías registradas.
-                  </div>
-                ) : (
-                  <div className="table-responsive">
-                    <table className="table align-middle mb-0">
-                      <thead style={{ backgroundColor: '#F7F7F7' }}>
-                        <tr>
-                          <th className="px-4 py-3">Nombre</th>
-                          <th className="px-4 py-3">Slug</th>
-                          <th className="px-4 py-3">Descripción</th>
-                          <th className="px-4 py-3">Estado</th>
-                          <th className="px-4 py-3 text-end" style={{ minWidth: '200px' }}>Acciones</th>
-                        </tr>
-                      </thead>
-
-                      <tbody>
-                        {(spa.categories ?? []).map((cat) => (
-                          <tr key={cat.id}>
-                            <td className="px-4 py-3 fw-semibold">{cat.name}</td>
-
-                            <td className="px-4 py-3">
-                              <span className="text-muted small">{cat.slug || '-'}</span>
-                            </td>
-
-                            <td className="px-4 py-3">
-                              {cat.description || '-'}
-                            </td>
-
-                            <td className="px-4 py-3">
-                              <span className={`badge ${cat.is_active ? 'bg-success' : 'bg-secondary'}`}>
-                                {cat.is_active ? 'Activa' : 'Inactiva'}
-                              </span>
-                            </td>
-
-                            <td className="px-4 py-3 text-end">
-                              <button
-                                type="button"
-                                className="btn btn-sm me-2"
-                                onClick={() =>
-                                  navigate(`/dashboard/spas/${spa.slug}/categories/${cat.slug}/edit`)
-                                }
-                                style={{
-                                  backgroundColor: '#F2E6D0',
-                                  color: '#7a6440',
-                                  borderRadius: '10px',
-                                  fontWeight: 600,
-                                }}
-                              >
-                                <i className="bi bi-pencil-square"></i>
-                              </button>
-                              <button
-                                type="button"
-                                className="btn btn-sm me-2"
-                                onClick={() =>
-                                  navigate(`/dashboard/spas/${spa.slug}/categories/${cat.slug}`)
-                                }
-                                style={{
-                                  backgroundColor: '#F2E6D0',
-                                  color: '#7a6440',
-                                  borderRadius: '10px',
-                                  fontWeight: 600,
-                                }}
-                              ><i className="bi bi-eye"></i>
-                              </button>
-
-                              <button
-                                type="button"
-                                className="btn btn-sm btn-outline-danger"
-                                onClick={() =>
-                                  deleteCategory(cat.slug)
-                                }
-                              >
-                                <i className="bi bi-x-square"></i>
-                              </button>
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                )}
-              </div>
-            </div>
-          )}
-          {activeTab === 'servicios' && (
-            <div
-              className="card border-0 shadow-sm"
-              style={{ borderRadius: '20px', overflow: 'hidden' }}
-            >
-              <div className="card-header border-0 py-3 px-4 bg-white d-flex justify-content-between align-items-center">
-                <h5 className="mb-0 fw-bold">Servicios</h5>
-
-                <div className="d-flex gap-2">
-
-                  {/* CREAR SERVICIO */}
-                  <button
-                    className="btn btn-sm"
-                    onClick={() =>
-                      navigate(`/dashboard/spas/${slug}/services/create`)
-                    }
-                    style={{
-                      backgroundColor: '#E0C38D',
-                      color: '#fff',
-                      borderRadius: '10px',
-                      fontWeight: 600,
-                    }}
-                  >
-                    + Servicio
-                  </button>
-
-                  {/* CREAR CATEGORÍA */}
-                  <button
-                    className="btn btn-sm"
-                    onClick={() =>
-                      navigate(`/dashboard/spas/${slug}/categories/create`)
-                    }
-                    style={{
-                      backgroundColor: '#F2E6D0',
-                      color: '#7a6440',
-                      borderRadius: '10px',
-                      fontWeight: 600,
-                    }}
-                  >
-                    + Categoría
-                  </button>
-                </div>
-              </div>
-
-              <div className="card-body p-0 bg-white">
-                <div className="p-4 border-bottom">
-                  <div className="row g-3 align-items-end">
-                    <div className="col-12 col-md-4">
-                      <label className="form-label fw-semibold">Filtrar por categoría</label>
-                      <select
-                        className="form-select"
-                        value={selectedCategory}
-                        onChange={(e) => setSelectedCategory(e.target.value)}
-                      >
-                        <option value="">Todas las categorías</option>
-
-                        {categories.map((category) => (
-                          <option key={category.id} value={category.id}>
-                            {category.name}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-                  </div>
-                </div>
-                {filteredServices.length === 0 ? (
-                  <div className="p-4 text-muted">
-                    No hay servicios registrados.
-                  </div>
-                ) : (
-                  <div className="table-responsive">
-                    <table className="table align-middle mb-0">
-                      <thead style={{ backgroundColor: '#F7F7F7' }}>
-                        <tr>
-                          <th className="px-4 py-3">Nombre</th>
-                          <th className="px-4 py-3">Categoría</th>
-                          <th className="px-4 py-3">Duración</th>
-                          <th className="px-4 py-3">Precio</th>
-                          <th className="px-4 py-3">Capacidad</th>
-                          <th className="px-4 py-3">Estado</th>
-                          <th className="px-4 py-3 text-end">Acciones</th>
-                        </tr>
-                      </thead>
-
-                      <tbody>
-                        {filteredServices.map((service) => (
-                          <tr key={service.id}>
-                            <td className="px-4 py-3 fw-semibold">
-                              {service.name}
-                              {service.slug && (
-                                <div className="text-muted small">
-                                  {service.slug}
-                                </div>
-                              )}
-                            </td>
-
-                            <td className="px-4 py-3">
-                              {service.category?.name || '-'}
-                            </td>
-
-                            <td className="px-4 py-3">
-                              {service.length_minutes} min
-                            </td>
-
-                            <td className="px-4 py-3">
-                              {service.price} €
-                            </td>
-
-                            <td className="px-4 py-3">
-                              {service.capacity}
-                            </td>
-
-                            <td className="px-4 py-3">
-                              <span
-                                className={`badge ${service.is_active ? 'bg-success' : 'bg-secondary'
-                                  }`}
-                              >
-                                {service.is_active ? 'Activo' : 'Inactivo'}
-                              </span>
-                            </td>
-
-                            <td className="px-4 py-3 text-end">
-                              <button
-                                type="button"
-                                className="btn btn-sm me-2"
-                                onClick={() =>
-                                  navigate(`/dashboard/spas/${slug}/services/${service.slug}/edit`)
-                                }
-                                style={{
-                                  backgroundColor: '#F2E6D0',
-                                  color: '#7a6440',
-                                  borderRadius: '10px',
-                                  fontWeight: 600,
-                                }}
-                              >
-                                <i className="bi bi-pencil-square"></i>
-                              </button>
-
-                              <button
-                                type="button"
-                                className="btn btn-sm btn-outline-danger"
-                                onClick={() =>
-                                  deleteService(service.slug)
-                                }
-                              >
-                                <i className="bi bi-x-square"></i>
-                              </button>
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                )}
-              </div>
-            </div>
-          )}
-
-          {activeTab === 'empleados' && (
-            <div
-              className="card border-0 shadow-sm"
-              style={{ borderRadius: '20px', overflow: 'hidden' }}
-            >
-              <div className="card-header border-0 py-3 px-4 bg-white d-flex justify-content-between align-items-center">
-                <h5 className="mb-0 fw-bold">Empleados</h5>
-
-                <button
-                  type="button"
-                  className="btn"
-                  onClick={() => navigate(`/dashboard/spas/${spa.slug}/employees/create`)}
-                  style={{
-                    backgroundColor: '#E0C38D',
-                    color: '#fff',
-                    borderRadius: '12px',
-                    fontWeight: 700,
-                    border: 'none',
-                  }}
-                >
-                  Crear Empleado
-                </button>
-              </div>
-
-              <div className="card-body p-0 bg-white">
-                {spa.employees.length === 0 ? (
-                  <div className="p-4 text-muted">
-                    No hay servicios registrados.
-                  </div>
-                ) : (
-                  <div className="table-responsive">
-                    <table className="table align-middle mb-0">
-                      <thead style={{ backgroundColor: '#F7F7F7' }}>
-                        <tr>
-                          <th className="px-4 py-3">Nombre</th>
-                          <th className="px-4 py-3">Apellido</th>
-                          <th className="px-4 py-3">Usuario</th>
-                          <th className="px-4 py-3">Email</th>
-                          <th className="px-4 py-3">Teléfono</th>
-                          <th className="px-4 py-3">Estado</th>
-                          <th className="px-4 py-3 text-end">Acciones</th>
-                        </tr>
-                      </thead>
-
-                      <tbody>
-                        {spa.employees.map((employee) => (
-                          <tr key={employee.id}>
-                            <td className="px-4 py-3 fw-semibold">
-                              {employee.name}
-                              {employee.id && (
-                                <div className="text-muted small">
-                                  {employee.id}
-                                </div>
-                              )}
-                            </td>
-
-                            <td className="px-4 py-3">
-                              {employee.surname}
-                            </td>
-
-                            <td className="px-4 py-3">
-                              {employee.user?.id || '-'}
-                            </td>
-
-                            <td className="px-4 py-3">
-                              {employee.email || '-'}
-                            </td>
-
-                            <td className="px-4 py-3">
-                              {employee.telephone || '-'}
-                            </td>
-
-                            <td className="px-4 py-3">
-                              <span
-                                className={`badge ${employee.is_active ? 'bg-success' : 'bg-secondary'
-                                  }`}
-                              >
-                                {employee.is_active ? 'Activo' : 'Inactivo'}
-                              </span>
-                            </td>
-
-                            <td className="px-4 py-3 text-end">
-                              <button
-                                type="button"
-                                className="btn btn-sm me-2"
-                                onClick={() =>
-                                  navigate(`/dashboard/spas/${slug}/employees/${employee.id}/edit`)
-                                }
-                                style={{
-                                  backgroundColor: '#F2E6D0',
-                                  color: '#7a6440',
-                                  borderRadius: '10px',
-                                  fontWeight: 600,
-                                }}
-                              >
-                                <i className="bi bi-pencil-square"></i>
-                              </button>
-
-                              <button
-                                type="button"
-                                className="btn btn-sm btn-outline-danger"
-                                onClick={() =>
-                                  navigate(`/dashboard/employees/${employee.id}/delete`)
-                                }
-                              >
-                                <i className="bi bi-x-square"></i>
-                              </button>
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                )}
-              </div>
-            </div>
-          )}
-
-          {activeTab === 'clientes' && (
-            <div
-              className="card border-0 shadow-sm"
-              style={{ borderRadius: '20px', overflow: 'hidden' }}
-            >
-              <div className="card-header border-0 py-3 px-4 bg-white d-flex justify-content-between align-items-center">
-                <h5 className="mb-0 fw-bold">clientes</h5>
-              </div>
-
-              <div className="card-body p-0 bg-white">
-                {spa.clients.length === 0 ? (
-                  <div className="p-4 text-muted">
-                    No hay clientes registrados.
-                  </div>
-                ) : (
-                  <div className="table-responsive">
-                    <table className="table align-middle mb-0">
-                      <thead style={{ backgroundColor: '#F7F7F7' }}>
-                        <tr>
-                          <th className="px-4 py-3">Nombre</th>
-                          <th className="px-4 py-3">Apellido</th>
-                          <th className="px-4 py-3">Email</th>
-                          <th className="px-4 py-3">Usuario</th>
-                          <th className="px-4 py-3">Teléfono</th>
-                          <th className="px-4 py-3">Ultima Reserva</th>
-                          <th className="px-4 py-3 text-end">Acciones</th>
-                        </tr>
-                      </thead>
-
-                      <tbody>
-                        {spa.clients.map((client) => (
-                          <tr key={client.id}>
-                            <td className="px-4 py-3 fw-semibold">
-                              {client.name}
-                              {client.id && (
-                                <div className="text-muted small">
-                                  {client.id}
-                                </div>
-                              )}
-                            </td>
-
-                            <td className="px-4 py-3">
-                              {client.surname}
-                            </td>
-
-                            <td className="px-4 py-3">
-                              {client.email || '-'}
-                            </td>
-
-
-                            <td className="px-4 py-3">
-                              {client.user?.id || '-'}
-                            </td>
-
-                            <td className="px-4 py-3">
-                              {client.telephone || '-'}
-                            </td>
-
-                            <td className="px-4 py-3">
-                              {client.last_reservation_date || '-'}
-
-                            </td>
-
-                            <td className="px-4 py-3 text-end">
-                              <button
-                                type="button"
-                                className="btn btn-sm me-2"
-                                onClick={() =>
-                                  navigate(`/dashboard/spas/${slug}/clients/${client.id}/edit`)
-                                }
-                                style={{
-                                  backgroundColor: '#F2E6D0',
-                                  color: '#7a6440',
-                                  borderRadius: '10px',
-                                  fontWeight: 600,
-                                }}
-                              >
-                                <i className="bi bi-pencil-square"></i>
-                              </button>
-
-                              <button
-                                type="button"
-                                className="btn btn-sm me-2"
-                                onClick={() =>
-                                  navigate(`/dashboard/spas/${spa.slug}/clients/${client.id}`)
-                                }
-                                style={{
-                                  backgroundColor: '#F2E6D0',
-                                  color: '#7a6440',
-                                  borderRadius: '10px',
-                                  fontWeight: 600,
-                                }}
-                              ><i className="bi bi-eye"></i>
-                              </button>
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                )}
-              </div>
-            </div>
-          )}
         </div>
       </div>
     </DashboardLayout>

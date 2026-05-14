@@ -1,13 +1,17 @@
 import { useNavigate, useParams } from 'react-router-dom';
 import DashboardLayout from "../../../components/layouts/WMLayout";
-import { useSpa } from '@/hooks/WebMaster/Spa/useSpa';
+import { useSpaShow } from '@/hooks/WebMaster/Spa/useSpaShow';
 import { useSpaForm } from '@/hooks/WebMaster/Spa/useSpaForm';
 
 export default function EditSpa() {
   const navigate = useNavigate();
   const { slug } = useParams<{ slug: string }>();
 
-  const { spa, loadingData, error } = useSpa(slug);
+  const {
+    spa,
+    loading: loadingData,
+    error,
+  } = useSpaShow(slug);
 
   const {
     form,

@@ -15,14 +15,23 @@ class ReservationController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $reservations = Reservation::with([
+        $query = Reservation::with([
             'client',
             'spa',
             'service',
             'employee'
-        ])
+        ]);
+
+        // filtrar por spa
+        if ($request->filled('spa')) {
+            $query->whereHas('spa', function ($q) use ($request) {
+                $q->where('slug', $request->spa);
+            });
+        }
+
+        $reservations = $query
             ->latest()
             ->paginate(10);
 

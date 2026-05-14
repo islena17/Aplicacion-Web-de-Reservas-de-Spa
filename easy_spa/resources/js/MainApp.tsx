@@ -59,6 +59,7 @@ import AdminShowReservation from './pages/Admin/Reservation/showReservation';
 import ShowServices from './pages/Site/services';
 import Profile from './pages/Client/showProfile';
 import EditProfile from './pages/Client/editProfile';
+import ReservationsIndex from './pages/WebMaster/Reservation';
 
 
 export default function MainApp() {
@@ -84,6 +85,7 @@ export default function MainApp() {
 
                 <Route path="spas/:slug/reservations/create" element={<CreateReservation />} />
                 <Route path="spas/:slug/reservations/:reservationId" element={<ShowReservation />} />
+                <Route path="spas/:slug/reservations" element={<ReservationsIndex />} />
                 <Route path="spas/:slug/reservations/:reservationId/edit" element={<EditReservation />} />
 
                 <Route path="reservations" element={<GlobalReservations />} />

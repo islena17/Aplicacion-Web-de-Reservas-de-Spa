@@ -16,10 +16,12 @@ class SpaRequest extends FormRequest
 
     public function rules(): array
     {
-        $spaId = Spa::where('user_id', Auth::id())->value('id');
+        $spa = $this->route('spa');
+
+        $spaId = $spa?->id ?? Spa::where('user_id', Auth::id())->value('id');
         return [
 
-        
+
 
             'name' => 'required|string|max:255',
 

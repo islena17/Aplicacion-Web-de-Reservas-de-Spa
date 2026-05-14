@@ -1,18 +1,8 @@
 // src/hooks/useSpas.ts
 import { useEffect, useState } from 'react';
 import api from '@/lib/axios';
+import {Spa} from '@/types';
 
-export type Spa = {
-  id: number;
-  name: string;
-  slug: string;
-  city?: string;
-  phone?: string;
-  email?: string;
-  opening_time?: string;
-  closing_time?: string;
-  is_active: boolean;
-};
 
 export function useSpas() {
   const [spas, setSpas] = useState<Spa[]>([]);
