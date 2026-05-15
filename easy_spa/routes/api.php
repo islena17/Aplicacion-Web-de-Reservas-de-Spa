@@ -63,6 +63,7 @@ Route::middleware(['auth:sanctum', 'role:WebMaster'])
     ->group(function () {
         Route::apiResource('spas', SpaController::class);
         Route::apiResource('employees', EmployeeController::class);
+        Route::post('employee-schedules/bulk', [EmployeeScheduleController::class, 'bulk']);
         Route::apiResource('employee-schedules', EmployeeScheduleController::class);
         Route::apiResource('employee-blocks', EmployeeBlockController::class);
         Route::apiResource('services', ServiceController::class)
