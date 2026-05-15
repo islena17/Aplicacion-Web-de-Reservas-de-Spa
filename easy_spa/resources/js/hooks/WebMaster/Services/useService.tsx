@@ -1,40 +1,42 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import api from '@/lib/axios';
+import type { Service } from '@/types';
 
 export default function useService() {
-  const { slug, serviceSlug } = useParams<{
-    slug: string;
+  const { serviceSlug } = useParams<{
     serviceSlug: string;
   }>();
 
-  const [service, setService] = useState<any>(null);
+  const [service, setService] = useState<Service | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
   useEffect(() => {
     const fetchService = async () => {
+      if (!serviceSlug) {
+        setLoading(false);
+        return;
+      }
+
       try {
         setLoading(true);
         setError('');
 
         const res = await api.get(
-          `/api/webmaster//services/${slug}`
+          `/api/webmaster/services/${serviceSlug}`
         );
 
         setService(res.data.data ?? res.data);
-      } catch (error) {
-        console.error(error);
+      } catch {
         setError('No se pudo cargar el servicio.');
       } finally {
         setLoading(false);
       }
     };
 
-    if (slug && serviceSlug) {
-      fetchService();
-    }
-  }, [slug, serviceSlug]);
+    fetchService();
+  }, [serviceSlug]);
 
   return { service, loading, error };
 }

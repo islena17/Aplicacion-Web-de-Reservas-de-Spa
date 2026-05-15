@@ -67,6 +67,7 @@ import ClientsIndexLayout from './components/layouts/panel/clientsIndexLayout';
 import WebmasterClientsIndex from './pages/WebMaster/Clients/indexClient';
 import WebMasterShowEmployee from './pages/WebMaster/Employees/showEmployee';
 import WebMasterEmployeeSchedule from './pages/WebMaster/Employees/employeeSchedule';
+import WebmasterShowService from './pages/WebMaster/Services/showService';
 
 
 export default function MainApp() {
@@ -99,6 +100,7 @@ export default function MainApp() {
 
                 <Route path="spas/:slug/services/create" element={<CreateService />} />
                 <Route path="spas/:slug/services" element={<WebmasterServicesIndex />} />
+                <Route path="spas/:slug/services/:serviceSlug" element={<WebmasterShowService />} />
                 <Route path="spas/:slug/services/:serviceSlug/edit" element={<EditService />} />
 
                 <Route path="spas/:slug/categories/create" element={<CreateServiceCategory />} />
