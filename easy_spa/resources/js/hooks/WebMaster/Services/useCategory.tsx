@@ -1,31 +1,6 @@
 import { useEffect, useState } from 'react';
 import api from '@/lib/axios';
-
-interface Spa {
-  id: number;
-  name: string;
-  slug: string;
-}
-
-interface Service {
-  id: number;
-  name: string;
-  slug: string;
-  price: number;
-  length_minutes: number;
-  is_active?: boolean;
-}
-
-export interface ServiceCategory {
-  id: number;
-  name: string;
-  slug: string;
-  description?: string | null;
-  is_active: boolean;
-  order: number;
-  spa?: Spa;
-  services?: Service[];
-}
+import { ServiceCategory } from '@/types';
 
 interface ApiCategoryResponse {
   data: ServiceCategory;

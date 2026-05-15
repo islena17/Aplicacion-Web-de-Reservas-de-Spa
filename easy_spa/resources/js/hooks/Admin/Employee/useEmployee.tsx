@@ -1,16 +1,6 @@
 import { useEffect, useState } from 'react';
 import api from '@/lib/axios';
-
-type Employee = {
-  id: number;
-  name: string;
-  surname: string;
-  email?: string;
-  telephone?: string;
-  gender?: string;
-  is_active: boolean;
-};
-
+import { Employee } from '@/types';
 export default function useEmployee(employeeId?: string) {
 
   const [employee, setEmployee] = useState<Employee | null>(null);

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\WebMaster;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\EmployeeRequest;
 use App\Models\Employee;
+use App\Models\Spa;
 use Illuminate\Http\Request;
 
 class EmployeeController extends Controller
@@ -44,7 +45,6 @@ class EmployeeController extends Controller
     {
         return response()->json($employee->load(['spa', 'user']));
     }
-
     /**
      * Update the specified resource in storage.
      */

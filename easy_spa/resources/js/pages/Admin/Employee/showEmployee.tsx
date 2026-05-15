@@ -106,7 +106,7 @@ export default function AdminShowEmployee() {
   );
 }
 
-function Info({ label, value }: { label: string; value?: string }) {
+function Info({ label, value }: { label: string; value?: string | null }) {
   return (
     <div className="col-12 col-md-6">
       <label className="form-label fw-semibold">{label}</label>
