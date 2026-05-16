@@ -20,16 +20,6 @@ export default function Hero() {
               en los mejores spas cerca de ti.
             </p>
 
-            <div className="d-flex flex-wrap gap-3 mt-4">
-              <a href="#" className="btn hero-btn-primary">
-                Reservar ahora
-              </a>
-
-              <a href="#" className="btn hero-btn-secondary">
-                Ver spas
-              </a>
-            </div>
-
             <div className="hero-stats">
               <div>
                 <strong>50+</strong>

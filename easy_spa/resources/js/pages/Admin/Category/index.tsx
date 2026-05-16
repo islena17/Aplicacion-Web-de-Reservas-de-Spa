@@ -23,6 +23,7 @@ export default function AdminCategoriesIndex() {
         lastPage={lastPage}
         setPage={setPage}
         createPath="/admin/categories/create"
+        showBackButton={false}
         getShowPath={(category) => `/admin/categories/${category.slug}`}
         getEditPath={(category) => `/admin/categories/${category.slug}/edit`}
       />

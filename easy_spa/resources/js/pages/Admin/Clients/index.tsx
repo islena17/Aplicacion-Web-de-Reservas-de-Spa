@@ -21,6 +21,7 @@ export default function AdminClientsIndex() {
         page={page}
         lastPage={lastPage}
         setPage={setPage}
+        showBackButton={false}
         getShowPath={(client) => `/admin/clients/${client.id}`}
         getEditPath={(client) => `/admin/clients/${client.id}/edit`}
       />

@@ -17,6 +17,7 @@ interface Props {
   getShowPath: (employee: Employee) => string;
   getEditPath: (employee: Employee) => string;
   onDelete?: (employeeId: number) => void;
+  showBackButton?: boolean;
 
 }
 
@@ -32,7 +33,8 @@ export default function EmployeesIndexLayout({
   createPath,
   getShowPath,
   getEditPath,
-  onDelete
+  onDelete,
+  showBackButton = true,
 }: Props) {
   const navigate = useNavigate();
 
@@ -64,21 +66,23 @@ export default function EmployeesIndexLayout({
               <i className="bi bi-plus-lg"></i> Nuevo empleado
             </button>
 
-            <button
-              className="btn d-flex align-items-center gap-2"
-              onClick={() => navigate(-1)}
-              style={{
-                backgroundColor: '#F2E6D0',
-                color: '#7a6440',
-                borderRadius: '12px',
-                padding: '10px 16px',
-                fontWeight: 600,
-                border: 'none',
-              }}
-            >
-              <i className="bi bi-arrow-left"></i>
-              Volver
-            </button>
+            {showBackButton && (
+              <button
+                className="btn d-flex align-items-center gap-2"
+                onClick={() => navigate(-1)}
+                style={{
+                  backgroundColor: "#F2E6D0",
+                  color: "#7a6440",
+                  borderRadius: "12px",
+                  padding: "10px 16px",
+                  fontWeight: 600,
+                  border: "none",
+                }}
+              >
+                <i className="bi bi-arrow-left"></i>
+                Volver
+              </button>
+            )}
           </div>
         </div>
 

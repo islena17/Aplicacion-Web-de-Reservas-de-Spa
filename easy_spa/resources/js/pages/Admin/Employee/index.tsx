@@ -22,6 +22,7 @@ export default function AdminEmployeesIndex() {
         lastPage={lastPage}
         setPage={setPage}
         createPath="/admin/employees/create"
+        showBackButton={false}
         getShowPath={(emp) => `/admin/employees/${emp.id}`}
         getEditPath={(emp) => `/admin/employees/${emp.id}/edit`}
       />

@@ -2,21 +2,7 @@
 
 import { useNavigate } from 'react-router-dom';
 import Pagination from '@/components/layouts/Pagination';
-
-interface Service {
-    id: number;
-    name: string;
-    slug: string;
-    length_minutes: number;
-    price: number;
-    is_active: boolean;
-    category?: {
-        name: string;
-    };
-    service_category?: {
-        name: string;
-    };
-}
+import { Service } from '@/types';
 
 interface Props {
     title?: string;
@@ -31,6 +17,7 @@ interface Props {
     getShowPath: (service: Service) => string;
     getEditPath: (service: Service) => string;
     onDelete?: (serviceSlug: string) => void;
+    showBackButton?: boolean;
 }
 
 export default function ServicesIndexLayout({
@@ -46,6 +33,7 @@ export default function ServicesIndexLayout({
     getShowPath,
     getEditPath,
     onDelete,
+    showBackButton = true,
 }: Props) {
     const navigate = useNavigate();
 
@@ -78,21 +66,23 @@ export default function ServicesIndexLayout({
                             <i className="bi bi-plus-lg"></i> Nuevo servicio
                         </button>
 
-                        <button
-                            className="btn d-flex align-items-center gap-2"
-                            onClick={() => navigate(-1)}
-                            style={{
-                                backgroundColor: '#F2E6D0',
-                                color: '#7a6440',
-                                borderRadius: '12px',
-                                padding: '10px 16px',
-                                fontWeight: 600,
-                                border: 'none',
-                            }}
-                        >
-                            <i className="bi bi-arrow-left"></i>
-                            Volver
-                        </button>
+                        {showBackButton && (
+                            <button
+                                className="btn d-flex align-items-center gap-2"
+                                onClick={() => navigate(-1)}
+                                style={{
+                                    backgroundColor: "#F2E6D0",
+                                    color: "#7a6440",
+                                    borderRadius: "12px",
+                                    padding: "10px 16px",
+                                    fontWeight: 600,
+                                    border: "none",
+                                }}
+                            >
+                                <i className="bi bi-arrow-left"></i>
+                                Volver
+                            </button>
+                        )}
                     </div>
                 </div>
                 {error && <div className="alert alert-danger">{error}</div>}
@@ -129,7 +119,6 @@ export default function ServicesIndexLayout({
 
                                                 <td className="px-4 py-3">
                                                     {service.category?.name ??
-                                                        service.service_category?.name ??
                                                         '-'}
                                                 </td>
 

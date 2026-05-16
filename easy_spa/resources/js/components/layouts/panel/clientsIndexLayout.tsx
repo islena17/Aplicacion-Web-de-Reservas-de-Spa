@@ -16,6 +16,7 @@ interface Props {
   getShowPath: (client: Client) => string;
   getEditPath?: (client: Client) => string;
   onDelete?: (clientId: number) => void;
+  showBackButton?: boolean;
 }
 
 export default function ClientsIndexLayout({
@@ -29,7 +30,8 @@ export default function ClientsIndexLayout({
   setPage,
   getShowPath,
   getEditPath,
-  onDelete
+  onDelete,
+  showBackButton = true,
 }: Props) {
   const navigate = useNavigate();
   const safeClients = Array.isArray(clients) ? clients : [];
@@ -45,21 +47,23 @@ export default function ClientsIndexLayout({
             <p className="text-muted mb-0">{description}</p>
           </div>
 
-          <button
-            className="btn d-flex align-items-center gap-2"
-            onClick={() => navigate(-1)}
-            style={{
-              backgroundColor: "#F2E6D0",
-              color: "#7a6440",
-              borderRadius: "12px",
-              padding: "10px 16px",
-              fontWeight: 600,
-              border: "none",
-            }}
-          >
-            <i className="bi bi-arrow-left"></i>
-            Volver
-          </button>
+          {showBackButton && (
+            <button
+              className="btn d-flex align-items-center gap-2"
+              onClick={() => navigate(-1)}
+              style={{
+                backgroundColor: "#F2E6D0",
+                color: "#7a6440",
+                borderRadius: "12px",
+                padding: "10px 16px",
+                fontWeight: 600,
+                border: "none",
+              }}
+            >
+              <i className="bi bi-arrow-left"></i>
+              Volver
+            </button>
+          )}
         </div>
 
         {error && <div className="alert alert-danger">{error}</div>}

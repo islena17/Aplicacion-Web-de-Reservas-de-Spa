@@ -22,6 +22,7 @@ export default function AdminServicesIndex() {
         lastPage={lastPage}
         setPage={setPage}
         createPath="/admin/services/create"
+        showBackButton={false}
         getShowPath={(service) => `/admin/services/${service.slug}`}
         getEditPath={(service) => `/admin/services/${service.slug}/edit`}
       />

@@ -12,6 +12,7 @@ interface Props {
     lastPage: number;
     setPage: (page: number) => void;
     createPath: string;
+    showBackButton?: boolean;
     getShowPath: (category: ServiceCategory) => string;
     getEditPath: (category: ServiceCategory) => string;
     onDelete?: (categorySlug: string) => void;
@@ -30,6 +31,7 @@ export default function CategoriesIndexLayout({
     getShowPath,
     getEditPath,
     onDelete,
+    showBackButton = true,
 }: Props) {
     const navigate = useNavigate();
 
@@ -61,21 +63,23 @@ export default function CategoriesIndexLayout({
                         </button>
 
 
-                        <button
-                            className="btn d-flex align-items-center gap-2"
-                            onClick={() => navigate(-1)}
-                            style={{
-                                backgroundColor: '#F2E6D0',
-                                color: '#7a6440',
-                                borderRadius: '12px',
-                                padding: '10px 16px',
-                                fontWeight: 600,
-                                border: 'none',
-                            }}
-                        >
-                            <i className="bi bi-arrow-left"></i>
-                            Volver
-                        </button>
+                        {showBackButton && (
+                            <button
+                                className="btn d-flex align-items-center gap-2"
+                                onClick={() => navigate(-1)}
+                                style={{
+                                    backgroundColor: "#F2E6D0",
+                                    color: "#7a6440",
+                                    borderRadius: "12px",
+                                    padding: "10px 16px",
+                                    fontWeight: 600,
+                                    border: "none",
+                                }}
+                            >
+                                <i className="bi bi-arrow-left"></i>
+                                Volver
+                            </button>
+                        )}
                     </div>
                 </div>
 
