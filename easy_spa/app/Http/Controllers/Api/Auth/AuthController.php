@@ -14,68 +14,72 @@ use Illuminate\Support\Facades\DB;
 class AuthController extends Controller
 {
 
-//solo sirve para clientes, no sabia donde mas hacer que se creara el "cliente" junto a la cuenta
+    //solo sirve para clientes, no sabia donde mas hacer que se creara el "cliente" junto a la cuenta
     public function register(RegisterRequest $request)
-{
-    $data = DB::transaction(function () use ($request) {
-        $user = User::create([
-            'email' => $request->email,
-            'password' => $request->password,
-            'role_id' => 4 //para que siempre sean clientes los que se registren
-        ]);
+    {
+        $data = DB::transaction(function () use ($request) {
+            $user = User::create([
+                'email' => $request->email,
+                'password' => $request->password,
+                'role_id' => 4 //para que siempre sean clientes los que se registren
+            ]);
 
-        $client = Client::create([
-            'user_id' => $user->id,
-            'name' => $request->name,
-            'surname' => $request->surname,
-            'telephone' => $request->telephone,
-            'email' => $user->email,
-        ]);
+            $client = Client::create([
+                'user_id' => $user->id,
+                'name' => $request->name,
+                'surname' => $request->surname,
+                'telephone' => $request->telephone,
+                'email' => $user->email,
+            ]);
 
-        return [
-            'user' => $user,
-            'client' => $client,
-        ];
-    });
+            return [
+                'user' => $user,
+                'client' => $client,
+            ];
+        });
 
-    $token = $data['user']->createToken('api-token')->plainTextToken;
+        $token = $data['user']->createToken('api-token')->plainTextToken;
 
-    return response()->json([
-        'message' => 'Usuario registrado correctamente',
-        'token' => $token,
-        'user' => $data['user'],
-        'client' => $data['client'],
-    ], 201);
-}
-
-public function login(LoginRequest $request)
-{
-    $credenciales = [
-        'email' => $request->email,
-        'password' => $request->password,
-    ];
-
-    if (!Auth::attempt($credenciales, $request->boolean('remember'))) {
         return response()->json([
-            'message' => 'Credenciales incorrectas'
-        ], 401);
+            'message' => 'Usuario registrado correctamente',
+            'token' => $token,
+            'user' => $data['user'],
+            'client' => $data['client'],
+        ], 201);
     }
 
-    $request->session()->regenerate();
+    public function login(LoginRequest $request)
+    {
+        $credenciales = [
+            'email' => $request->email,
+            'password' => $request->password,
+        ];
 
-    $user = User::with(['role', 'client'])->find(Auth::id());
+        if (!Auth::attempt($credenciales, $request->boolean('remember'))) {
+            return response()->json([
+                'message' => 'Credenciales incorrectas'
+            ], 401);
+        }
 
-    return response()->json([
-        'message' => 'Login correcto',
-        'user' => $user,
-    ]);
-}
+        $request->session()->regenerate();
+
+        $user = User::with(['role', 'client'])->find(Auth::id());
+
+        return response()->json([
+            'message' => 'Login correcto',
+            'user' => $user,
+        ]);
+    }
 
     public function logout(Request $request)
     {
-        $request->user()->currentAccessToken()->delete();
+        Auth::guard('web')->logout();
+
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
         return response()->json([
-            'message' => 'Token revocado correctamente',
+            'message' => 'Sesión cerrada correctamente',
         ]);
     }
 

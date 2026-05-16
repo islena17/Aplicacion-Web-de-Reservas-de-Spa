@@ -2,6 +2,7 @@ import Navbar from '@/components/layouts/Navbar';
 import SecondaryHero from '@/components/layouts/SecondaryHero';
 import registerHero from '@images/registerHero.jpg'
 import { useRegister } from '@/hooks/Auth/useRegister';
+import Footer from '@/components/layouts/Footer';
 
 export default function Register() {
   const {
@@ -228,6 +229,7 @@ export default function Register() {
             </div>
           </div>
         </div>
+        <Footer />
       </div>
     </>
   );

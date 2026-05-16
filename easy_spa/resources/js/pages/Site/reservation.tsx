@@ -1,6 +1,7 @@
 import { useParams } from 'react-router-dom';
 import Navbar from '@/components/layouts/Navbar';
 import { useClientReservation } from '@/hooks/Client/useClientReservation';
+import Footer from '@/components/layouts/Footer';
 
 
 export default function ClientReservation() {
@@ -53,7 +54,7 @@ export default function ClientReservation() {
         <>
             <Navbar />
 
-            <div style={{ backgroundColor: '#F7F7F7', minHeight: '100vh' }}>
+            <div style={{ backgroundColor: '#F7F7F7', minHeight: '100vh', marginTop: '80px' }}>
                 <div className="container py-5">
                     <div className="row g-4">
                         <div className="col-12 col-lg-4">
@@ -213,7 +214,9 @@ export default function ClientReservation() {
                         </div>
                     </div>
                 </div>
+                <Footer />
             </div>
+
         </>
     );
 }

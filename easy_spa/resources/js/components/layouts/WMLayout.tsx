@@ -1,7 +1,9 @@
 import { ReactNode, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "../../../css/admin.css";
 import api from "@/lib/axios";
+import { useAuth } from "@/context/AuthContext";
+import { useLogout } from "@/hooks/Auth/useLogout";
 
 type DashboardLayoutProps = {
   children: ReactNode;
@@ -17,6 +19,7 @@ type User = {
 export default function DashboardLayout({ children }: DashboardLayoutProps) {
   const [user, setUser] = useState<User | null>(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const { logout } = useLogout();
 
   useEffect(() => {
     api
@@ -43,7 +46,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
           </div>
         </div>
 
-        <nav className="mt-4">
+        <nav className="opacidad mt-4">
           <p className="sidebar-section">Principal</p>
 
           <Link to="/dashboard" className="sidebar-link" onClick={() => setSidebarOpen(false)}>
@@ -67,6 +70,13 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
             <i className="bi bi-person-badge"></i>
             <span>Usuarios</span>
           </Link>
+          <button
+            className="sidebar-link"
+            onClick={logout}
+          >
+            <i className="bi bi-door-open"></i> Logout
+          </button>
+
         </nav>
       </aside>
 

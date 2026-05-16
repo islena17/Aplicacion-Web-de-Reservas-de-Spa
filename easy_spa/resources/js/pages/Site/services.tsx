@@ -1,3 +1,4 @@
+import Footer from "@/components/layouts/Footer";
 import Navbar from "@/components/layouts/Navbar";
 import Pagination from "@/components/layouts/Pagination";
 import SecondaryHero from "@/components/layouts/SecondaryHero";
@@ -70,7 +71,7 @@ const {
                 image={spasHero}
             />
             <div className="col-12 d-flex justify-content-center">
-        <div className="col-12 col-lg-8">
+        <div className="col-12 col-lg-8 py-5">
             
             <div
                 className="card border-0 shadow-sm p-4"
@@ -233,6 +234,7 @@ const {
             </div>
             </div>
         </div>
+        <Footer />
          </>
     )
 }

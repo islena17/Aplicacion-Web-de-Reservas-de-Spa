@@ -3,6 +3,7 @@ import Navbar from '@/components/layouts/Navbar';
 import { useSpaShow } from '@/hooks/Public/Spa/useSpaShow';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
+import Footer from '@/components/layouts/Footer';
 
 export default function SpaShow() {
   const { slug } = useParams<{ slug: string }>();
@@ -48,7 +49,7 @@ export default function SpaShow() {
     <>
       <Navbar />
 
-      <div style={{ backgroundColor: '#F7F7F7', minHeight: '100vh' }}>
+      <div style={{ backgroundColor: '#F7F7F7', minHeight: '100vh', marginTop: '80px' }}>
         <div className="container py-5">
           <div className="row g-4">
 
@@ -309,6 +310,7 @@ export default function SpaShow() {
           </div>
         </div>
       </div>
+      <Footer />
     </>
   );
 }

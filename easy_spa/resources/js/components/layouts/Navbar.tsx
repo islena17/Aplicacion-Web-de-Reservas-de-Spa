@@ -2,10 +2,11 @@ import { useAuth } from "@/context/AuthContext";
 import "../../../css/home.css";
 import { Link } from "react-router-dom";
 import logo_easy_spa from "@images/logo_easy_spa.png";
+import { useLogout } from '@/hooks/Auth/useLogout';
 
 export default function Navbar() {
-
-    const { user, logout } = useAuth();
+      const { logout } = useLogout();
+    const { user } = useAuth();
     const role = user?.role?.name;
     return (
         
@@ -38,9 +39,6 @@ export default function Navbar() {
                         <li className="nav-item">
                             <Link className="nav-link" to="/services">Servicios</Link>
                         </li>
-                        <li className="nav-item">
-                            <Link className="nav-link" to="#">Nosotros</Link>
-                        </li>
                     </ul>
 
                     <div className="d-flex gap-2">
@@ -58,7 +56,7 @@ export default function Navbar() {
                         )}
 
                         {role === "Admin" && (
-                            <Link className="btn btn-sm"
+                            <Link className="btn btn-login"
                                 style={{
                                     backgroundColor: 'var(--color-secondary)',
                                     color: 'var(--color-text)'
@@ -69,7 +67,7 @@ export default function Navbar() {
                         )}
 
                         {role === "WebMaster" && (
-                            <Link className="btn btn-sm btn-warning"
+                            <Link className="btn btn-login"
                                 style={{
                                     backgroundColor: 'var(--color-secondary)',
                                     color: 'var(--color-text)'
@@ -80,7 +78,7 @@ export default function Navbar() {
 
                         {role === "Client" && user?.client?.id && (
                             <Link
-                                className="btn btn-sm px-3 py3"
+                                className="btn btn-login"
                                 style={{
                                     backgroundColor: 'var(--color-secondary)',
                                     color: 'var(--color-text)'

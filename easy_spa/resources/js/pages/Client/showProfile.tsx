@@ -1,3 +1,4 @@
+import Footer from "@/components/layouts/Footer";
 import Navbar from "@/components/layouts/Navbar";
 import { useProfile } from "@/hooks/Client/useProfile";
 import { Link } from "react-router-dom";
@@ -60,7 +61,7 @@ export default function Profile() {
         <>
             <Navbar />
 
-            <main className="container py-5">
+            <main className="container py-5 mt-5">
                 <div className="row g-4">
 
                     <div className="col-12">
@@ -252,6 +253,7 @@ export default function Profile() {
 
                 </div>
             </main>
+            <Footer />
         </>
     );
 }

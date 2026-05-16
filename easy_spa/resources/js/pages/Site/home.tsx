@@ -11,8 +11,9 @@ return(
     <Navbar/>
     <Hero/>
     <TopServices/>
-    <LatestServices />
     <HomeSections />
+    <LatestServices />
+    
     <Footer />
     
    </> 

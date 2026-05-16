@@ -2,6 +2,7 @@ import { ReactNode, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "../../../css/admin.css"
 import api from "@/lib/axios";
+import { useLogout } from "@/hooks/Auth/useLogout";
 
 type DashboardLayoutProps = {
   children: ReactNode;
@@ -17,6 +18,8 @@ type User = {
 export default function AdminLayout({ children }: DashboardLayoutProps) {
   const [user, setUser] = useState<User | null>(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const { logout } = useLogout();
+  
 
   useEffect(() => {
     api
@@ -39,7 +42,7 @@ export default function AdminLayout({ children }: DashboardLayoutProps) {
           <div className="brand-icon">S</div>
           <div>
             <h5 className="mb-0 fw-bold">Easy Spa</h5>
-            <small>Admin Panel</small>
+            <small>Panel de Administración</small>
           </div>
         </div>
 
@@ -82,10 +85,14 @@ export default function AdminLayout({ children }: DashboardLayoutProps) {
             <i className="bi bi-shop"></i>
             <span>Spa</span>
           </Link>
-            <Link to="/admin/report" className="sidebar-link" onClick={() => setSidebarOpen(false)}>
-            <i className="bi bi-shop"></i>
-            <span>Informes</span>
-          </Link>
+
+          <button
+            className="sidebar-link"
+            onClick={logout}
+          >
+            <i className="bi bi-door-open"></i> Logout
+          </button>
+
 
         </nav>
       </aside>

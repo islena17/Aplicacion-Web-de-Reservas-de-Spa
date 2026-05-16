@@ -24,4 +24,5 @@ export type Service = {
   employees?: Employee[];
   category?: ServiceCategory | null;
   reservations?: Reservation[];
+  reservations_count: number;
 };

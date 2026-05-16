@@ -1,14 +1,6 @@
 import { useEffect, useState, useMemo } from 'react';
 import api from '@/lib/axios';
-
-export type Service = {
-  id: number;
-  name: string;
-  price: number;
-  duration: string;
-  image_url: string;
-  reservations_count: number;
-};
+import { Service } from '@/types';
 
 export function useTopServices() {
   const [services, setServices] = useState<Service[]>([]);

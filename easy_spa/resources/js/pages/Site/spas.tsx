@@ -5,6 +5,7 @@ import SecondaryHero from '@/components/layouts/SecondaryHero';
 import spasHero from '@images/spasHero.jpg';
 import Pagination from '@/components/layouts/Pagination';
 import { useState } from 'react';
+import Footer from '@/components/layouts/Footer';
 
 export default function Spas() {
     const navigate = useNavigate();
@@ -186,6 +187,8 @@ export default function Spas() {
                     />
                 </div>
             </div>
+
+            <Footer />
         </>
     );
 }

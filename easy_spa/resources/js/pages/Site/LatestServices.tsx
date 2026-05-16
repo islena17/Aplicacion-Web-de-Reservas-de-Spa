@@ -1,7 +1,11 @@
+import { useAuth } from "@/context/AuthContext";
 import { useLatestServices } from "@/hooks/Public/useLatestServices";
+import { useNavigate } from "react-router-dom";
 
 export default function LatestServices() {
+  const { user } = useAuth();
   const { latestServices, loading } = useLatestServices();
+  const navigate = useNavigate();
 
   if (loading) return <div className="text-center py-5">Cargando novedades...</div>;
 
@@ -41,9 +45,23 @@ export default function LatestServices() {
                   <span className="h5 mb-0" style={{ color: '#94beac', fontWeight: 'bold' }}>
                     {service.price}€
                   </span>
-                  <button className="btn btn-outline-dark btn-sm rounded-pill px-3">
-                    Explorar
-                  </button>
+                   <button
+                  className="btn btn-outline-dark btn-sm rounded-pill px-3"
+                  onClick={() => {
+                    const reservationUrl = `/client/reservation-data/${service.spa?.slug}/${service.slug}`;
+
+                    if (!user) {
+                      navigate("/login", {
+                        state: { from: reservationUrl },
+                      });
+                      return;
+                    }
+
+                    navigate(reservationUrl);
+                  }}
+                >
+                  Reservar Ahora
+                </button>
                 </div>
               </div>
             </div>
