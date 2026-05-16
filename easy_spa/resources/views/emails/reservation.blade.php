@@ -1,3 +1,22 @@
+@php
+$start = \Carbon\Carbon::parse(
+    $reservation->reservation_date . ' ' . $reservation->start_time
+)->format('Ymd\THis');
+
+$end = \Carbon\Carbon::parse(
+    $reservation->reservation_date . ' ' . $reservation->end_time
+)->format('Ymd\THis');
+
+$googleCalendarUrl =
+    'https://calendar.google.com/calendar/render?action=TEMPLATE'
+    . '&text=' . urlencode('Reserva Spa - ' . $reservation->service->name)
+    . '&dates=' . $start . '/' . $end
+    . '&details=' . urlencode(
+        'Reserva en ' . $reservation->spa->name
+    )
+    . '&location=' . urlencode($reservation->spa->address ?? '')
+    . '&sf=true&output=xml';
+@endphp
 <h1>Reserva confirmada</h1>
 
 <p>Hola {{ $reservation->client->name }},</p>
@@ -14,4 +33,18 @@
     <li><strong>Estado:</strong> {{ $reservation->status }}</li>
 </ul>
 
+<a
+    href="{{ $googleCalendarUrl }}"
+    style="
+        display:inline-block;
+        padding:12px 20px;
+        background:#0d6efd;
+        color:white;
+        text-decoration:none;
+        border-radius:8px;
+        font-weight:bold;
+    "
+>
+    Añadir a Google Calendar
+</a>
 <p>Gracias por reservar con nosotros.</p>

@@ -107,14 +107,6 @@ export default function AdminLayout({ children }: DashboardLayoutProps) {
           </button>
 
           <div className="topbar-actions">
-            <button className="icon-btn">
-              <i className="bi bi-bell"></i>
-            </button>
-
-            <button className="icon-btn">
-              <i className="bi bi-envelope"></i>
-            </button>
-
             <div className="user-box">
               <div className="user-info text-end">
                 <div className="fw-semibold">{user?.email || "Usuario"}</div>

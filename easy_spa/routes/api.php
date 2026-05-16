@@ -158,3 +158,6 @@ Route::prefix('public')->group(function () {
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user()->load('role', 'client');
 });
+
+
+/*rutas google calendar api */
