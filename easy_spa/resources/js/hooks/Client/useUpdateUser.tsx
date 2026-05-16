@@ -53,15 +53,14 @@ export function useUpdateUser() {
                 const user = userRes.data.data ?? userRes.data;
 
                 setForm({
-                    email: user.email ?? '',
+                    email: user.user?.email ?? user.email ?? '',
                     password: '',
 
                     client: {
-                        name: user.client?.name ?? '',
-                        surname: user.client?.surname ?? '',
-                        telephone: user.client?.telephone ?? '',
+                        name: user.name ?? '',
+                        surname: user.surname ?? '',
+                        telephone: user.telephone ?? '',
                     },
-
                 });
 
                 setErrors({});

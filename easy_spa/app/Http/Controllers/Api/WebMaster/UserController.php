@@ -92,6 +92,7 @@ class UserController extends Controller
                 'name' => $request->input('client.name'),
                 'surname' => $request->input('client.surname'),
                 'telephone' => $request->input('client.telephone'),
+                'email' =>$user->email
             ]);
         }
 

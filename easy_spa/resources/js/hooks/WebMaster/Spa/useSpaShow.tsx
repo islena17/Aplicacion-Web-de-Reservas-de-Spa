@@ -31,7 +31,28 @@ export function useSpaShow(slug?: string) {
     fetchSpa();
   }, [slug]);
 
+  //borrar spa
+  const deleteSpa = async () => {
+  if (!slug) return false;
+
+  const confirmDelete = window.confirm(
+    '¿Seguro que quieres eliminar este spa? Se eliminarán también sus servicios, empleados, reservas y demás datos relacionados.'
+  );
+
+  if (!confirmDelete) return false;
+
+  try {
+    await api.delete(`/api/webmaster/spas/${slug}`);
+
+    return true;
+  } catch {
+    setError('No se pudo eliminar el spa.');
+    return false;
+  }
+};
+
   return {
+    deleteSpa,
     spa,
     loading,
     error,

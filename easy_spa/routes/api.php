@@ -66,10 +66,10 @@ Route::middleware(['auth:sanctum', 'role:WebMaster'])
         Route::post('employee-schedules/bulk', [EmployeeScheduleController::class, 'bulk']);
         Route::apiResource('employee-schedules', EmployeeScheduleController::class);
         Route::apiResource('employee-blocks', EmployeeBlockController::class);
+
         Route::apiResource('services', ServiceController::class)
             ->except(['update', 'show']);
         Route::get('/services/{service:slug}', [ServiceController::class, 'show']);
-
         Route::put('/services/{service:slug}', [ServiceController::class, 'update']);
         Route::post('/spas/{spa:slug}/categories', [ServiceCategoryController::class, 'store']);
         Route::get('/spas/{spa:slug}/categories', [ServiceCategoryController::class, 'index']);
@@ -81,10 +81,16 @@ Route::middleware(['auth:sanctum', 'role:WebMaster'])
         Route::delete('/spas/{spa:slug}/categories/{category:slug}', [ServiceCategoryController::class, 'destroy']);
 
         Route::get('/spas/{spa:slug}/clients/{client}', [ClientController::class, 'show']);
-
         Route::apiResource('clients', ClientController::class)
             ->except(['show']);
-        Route::apiResource('spa-schedules', SpaScheduleController::class);
+
+        Route::get('/spas/{spa:slug}/spa-schedules', [SpaScheduleController::class, 'index']);
+        Route::post('/spas/{spa:slug}/spa-schedules', [SpaScheduleController::class, 'store']);
+        Route::post('/spas/{spa:slug}/spa-schedules/bulk', [SpaScheduleController::class, 'bulk']);
+        Route::get('/spas/{spa:slug}/spa-schedules/{spaSchedule}', [SpaScheduleController::class, 'show']);
+        Route::put('/spas/{spa:slug}/spa-schedules/{spaSchedule}', [SpaScheduleController::class, 'update']);
+        Route::delete('/spas/{spa:slug}/spa-schedules/{spaSchedule}', [SpaScheduleController::class, 'destroy']);
+
         Route::get('reservations/spas', [ReservationController::class, 'spas']);
         Route::get('reservations/filter', [ReservationController::class, 'filter']);
         Route::apiResource('reservations', ReservationController::class);

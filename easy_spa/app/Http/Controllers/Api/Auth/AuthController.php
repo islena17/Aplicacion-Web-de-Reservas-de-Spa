@@ -29,7 +29,7 @@ class AuthController extends Controller
             'name' => $request->name,
             'surname' => $request->surname,
             'telephone' => $request->telephone,
-            'email' => $request->email,
+            'email' => $user->email,
         ]);
 
         return [

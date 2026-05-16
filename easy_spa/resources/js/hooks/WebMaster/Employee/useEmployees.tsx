@@ -39,6 +39,27 @@ export default function useEmployees(slug?: string) {
         fetchEmployees();
     }, [page, slug]);
 
+    const deleteEmployee = async (employeeId: number) => {
+  const confirmDelete = window.confirm(
+    '¿Seguro que quieres eliminar este empleado?'
+  );
+
+  if (!confirmDelete) return false;
+
+  try {
+    await api.delete(`/api/webmaster/employees/${employeeId}`);
+
+    setEmployees((prev) =>
+      prev.filter((employee) => employee.id !== employeeId)
+    );
+
+    return true;
+  } catch {
+    setError('No se ha podido eliminar el empleado.');
+    return false;
+  }
+};
+
     return {
         employees,
         loading,
@@ -47,5 +68,6 @@ export default function useEmployees(slug?: string) {
         lastPage,
         setPage,
         page,
+        deleteEmployee
     };
 }

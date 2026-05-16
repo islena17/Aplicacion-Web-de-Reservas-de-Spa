@@ -15,6 +15,7 @@ interface Props {
   setPage: (page: number) => void;
   getShowPath: (client: Client) => string;
   getEditPath?: (client: Client) => string;
+  onDelete?: (clientId: number) => void;
 }
 
 export default function ClientsIndexLayout({
@@ -28,6 +29,7 @@ export default function ClientsIndexLayout({
   setPage,
   getShowPath,
   getEditPath,
+  onDelete
 }: Props) {
   const navigate = useNavigate();
   const safeClients = Array.isArray(clients) ? clients : [];
@@ -120,6 +122,16 @@ export default function ClientsIndexLayout({
                                 }}
                               >
                                 Editar
+                              </button>
+                            )}
+
+                            {onDelete && (
+                              <button
+                                className="btn btn-sm btn-danger"
+                                onClick={() => onDelete(client.id)}
+                                style={{ borderRadius: '10px' }}
+                              >
+                                Eliminar
                               </button>
                             )}
                           </div>

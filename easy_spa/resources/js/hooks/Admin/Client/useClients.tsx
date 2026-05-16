@@ -31,6 +31,27 @@ export default function useClients() {
         fetchClients();
     }, [page]);
 
+    const deleteClient = async (clientId: number) => {
+        const confirmDelete = window.confirm(
+            '¿Seguro que quieres eliminar este cliente?'
+        );
+
+        if (!confirmDelete) return false;
+
+        try {
+            await api.delete(`/api/webmaster/clients/${clientId}`);
+
+            setClients((prev) =>
+                prev.filter((client) => client.id !== clientId)
+            );
+
+            return true;
+        } catch {
+            setError('No se pudo eliminar el cliente.');
+            return false;
+        }
+    };
+
     return {
         clients,
         loading,
@@ -40,5 +61,6 @@ export default function useClients() {
         lastPage,
         setPage,
         page,
+        deleteClient
     };
 }

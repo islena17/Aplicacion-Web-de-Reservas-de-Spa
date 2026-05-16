@@ -3,6 +3,7 @@ import AdminLayout from "@/components/layouts/AdminLayout";
 import { useClient } from "@/hooks/Admin/Client/useClient";
 
 
+
 export default function AdminClientShow() {
     const navigate = useNavigate();
     const { clientId } = useParams<{ clientId: string }>();

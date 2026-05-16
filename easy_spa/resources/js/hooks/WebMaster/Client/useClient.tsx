@@ -1,44 +1,8 @@
 import { useEffect, useState } from "react";
 import axios from "@/lib/axios";
+import { Client, User, Reservation } from "@/types";
 
-type User = {
-    id: number;
-    email: string;
-    role_id?: number;
-    is_active?: boolean;
-};
 
-type Reservation = {
-    id: number;
-    reservation_date: string;
-    start_time?: string;
-    end_time?: string;
-    status?: string;
-    service?: {
-        id: number;
-        name: string;
-        price?: number;
-        length_minutes?: number;
-    };
-    employee?: {
-        id: number;
-        name?: string;
-        surname?: string;
-        user?: User;
-    };
-};
-
-type Client = {
-    id: number;
-    user_id?: number;
-    name: string;
-    surname: string;
-    email: string;
-    telephone?: string;
-    is_active?: boolean;
-    user?: User | null;
-    reservations?: Reservation[];
-};
 
 export function useClient(slug?: string, clientId?: string) {
     const [client, setClient] = useState<Client | null>(null);

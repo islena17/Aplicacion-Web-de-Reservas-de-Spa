@@ -68,6 +68,7 @@ import WebmasterClientsIndex from './pages/WebMaster/Clients/indexClient';
 import WebMasterShowEmployee from './pages/WebMaster/Employees/showEmployee';
 import WebMasterEmployeeSchedule from './pages/WebMaster/Employees/employeeSchedule';
 import WebmasterShowService from './pages/WebMaster/Services/showService';
+import WebmasterSpaSchedule from './pages/WebMaster/spa/spaSchedule';
 
 
 export default function MainApp() {
@@ -90,6 +91,7 @@ export default function MainApp() {
                 <Route path="spas/:slug" element={<ShowSpa />} />
                 <Route path="spas/:slug/edit" element={<EditSpa />} />
                 <Route path="spas/:slug/calendar" element={<SpaCalendar />} />
+                <Route path='spas/:slug/schedule' element={<WebmasterSpaSchedule />} />
 
                 <Route path="spas/:slug/reservations/create" element={<CreateReservation />} />
                 <Route path="spas/:slug/reservations/:reservationId" element={<ShowReservation />} />

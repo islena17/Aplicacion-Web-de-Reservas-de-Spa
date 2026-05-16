@@ -7,6 +7,8 @@ use App\Http\Requests\SpaRequest;
 use App\Models\Spa;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class SpaController extends Controller
 {
@@ -31,6 +33,17 @@ class SpaController extends Controller
 
         if (empty($data['slug'])) {
             $data['slug'] = Str::slug($data['name']);
+        }
+
+
+        // GUARDAR LOGO
+        if ($request->hasFile('logo')) {
+
+            // guardar nuevo logo
+            $path = $request->file('logo')->store('spas', 'public');
+
+            // guardar string en BD
+            $data['logo'] = $path;
         }
 
         $spa = Spa::create($data);
@@ -100,6 +113,21 @@ class SpaController extends Controller
             $data['slug'] = Str::slug($data['name']);
         }
 
+        // GUARDAR LOGO
+        if ($request->hasFile('logo')) {
+
+            // borrar logo anterior
+            if ($spa->logo) {
+                Storage::disk('public')->delete($spa->logo);
+            }
+
+            // guardar nuevo logo
+            $path = $request->file('logo')->store('spas', 'public');
+
+            // guardar string en BD
+            $data['logo'] = $path;
+        }
+
         $spa->update($data);
 
         return response()->json($spa);
@@ -110,8 +138,23 @@ class SpaController extends Controller
      */
     public function destroy(Spa $spa)
     {
-        $spa->delete();
+        DB::transaction(function () use ($spa) {
 
-        return response()->json(null, 204);
+            $spa->reservations()->delete();
+
+            $spa->services()->delete();
+
+            $spa->employees()->delete();
+
+            $spa->categories()->delete();
+
+            $spa->spaSchedules()->delete();
+
+            $spa->delete();
+        });
+
+        return response()->json([
+            'message' => 'Spa eliminado correctamente.'
+        ]);
     }
 }

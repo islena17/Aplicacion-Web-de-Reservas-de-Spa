@@ -7,6 +7,7 @@ use App\Http\Requests\ClientRequest;
 use App\Models\Client;
 use App\Models\Spa;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ClientController extends Controller
 {
@@ -80,10 +81,34 @@ class ClientController extends Controller
      */
     public function destroy(Client $client)
     {
-        $client->delete();
+        try {
+        DB::transaction(function () use ($client) {
+
+            // guardar usuario antes de borrar cliente
+            $user = $client->user;
+
+            // borrar reservas
+            $client->reservations()->delete();
+
+            // borrar cliente
+            $client->delete();
+
+            // borrar usuario asociado si existe
+            if ($user) {
+                $user->delete();
+            }
+        });
 
         return response()->json([
-            'message' => 'Cliente eliminado correctamente'
+            'message' => 'Cliente eliminado correctamente.'
         ]);
+
+    } catch (\Throwable $e) {
+
+        return response()->json([
+            'message' => 'No se pudo eliminar el cliente.',
+            'error' => $e->getMessage(),
+        ], 500);
+    }
     }
 }

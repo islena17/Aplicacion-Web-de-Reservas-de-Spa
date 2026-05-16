@@ -13,6 +13,7 @@ export default function WebmasterEmployeesIndex() {
     lastPage,
     setPage,
     page,
+    deleteEmployee
   } = useEmployees(slug);
 
   return (
@@ -29,7 +30,7 @@ export default function WebmasterEmployeesIndex() {
         createPath="/webmaster/employees/create"
         getShowPath={(emp) => `/dashboard/spas/${slug}/employees/${emp.id}`}
         getEditPath={(emp) => `/dashboard/spas/${slug}/employees/${emp.id}/edit`}
-      />
+        onDelete={deleteEmployee}      />
     </WMLayout>
   );
 }

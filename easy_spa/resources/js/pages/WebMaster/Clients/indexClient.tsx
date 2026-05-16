@@ -13,6 +13,7 @@ export default function WebmasterClientsIndex() {
     lastPage,
     setPage,
     page,
+    deleteClient
   } = useClients(slug);
 
   return (
@@ -27,6 +28,8 @@ export default function WebmasterClientsIndex() {
         lastPage={lastPage}
         setPage={setPage}
         getShowPath={(client) => `/dashboard/spas/${slug}/clients/${client.id}`}
+        getEditPath={(client) => `/dashboard/spas/${slug}/clients/${client.id}/edit`}
+        onDelete={deleteClient}
       />
     </WMLayout>
   );

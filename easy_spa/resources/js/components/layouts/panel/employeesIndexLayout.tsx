@@ -16,6 +16,8 @@ interface Props {
   createPath: string;
   getShowPath: (employee: Employee) => string;
   getEditPath: (employee: Employee) => string;
+  onDelete?: (employeeId: number) => void;
+
 }
 
 export default function EmployeesIndexLayout({
@@ -30,6 +32,7 @@ export default function EmployeesIndexLayout({
   createPath,
   getShowPath,
   getEditPath,
+  onDelete
 }: Props) {
   const navigate = useNavigate();
 
@@ -117,9 +120,8 @@ export default function EmployeesIndexLayout({
 
                         <td className="px-4 py-3">
                           <span
-                            className={`badge ${
-                              emp.is_active ? 'bg-success' : 'bg-secondary'
-                            }`}
+                            className={`badge ${emp.is_active ? 'bg-success' : 'bg-secondary'
+                              }`}
                           >
                             {emp.is_active ? 'Activo' : 'Inactivo'}
                           </span>
@@ -150,6 +152,18 @@ export default function EmployeesIndexLayout({
                             >
                               Editar
                             </button>
+
+                            {onDelete && (
+                              <button
+                                className="btn btn-sm btn-danger"
+                                onClick={() => onDelete(emp.id)}
+                                style={{
+                                  borderRadius: '10px',
+                                }}
+                              >
+                                Eliminar
+                              </button>
+                            )}
                           </div>
                         </td>
                       </tr>
