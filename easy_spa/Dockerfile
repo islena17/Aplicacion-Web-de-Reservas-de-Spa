@@ -36,7 +36,10 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install gd pdo pdo_mysql
 
-RUN a2dismod mpm_event mpm_worker || true \
+RUN rm -f /etc/apache2/mods-enabled/mpm_event.load \
+    /etc/apache2/mods-enabled/mpm_worker.load \
+    /etc/apache2/mods-enabled/mpm_event.conf \
+    /etc/apache2/mods-enabled/mpm_worker.conf \
     && a2enmod mpm_prefork rewrite
 
 ENV APACHE_DOCUMENT_ROOT /var/www/html/public
