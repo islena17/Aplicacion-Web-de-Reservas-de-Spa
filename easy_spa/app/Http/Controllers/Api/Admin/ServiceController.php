@@ -124,21 +124,4 @@ public function update(ServiceRequest $request, Service $service)
     ]);
 }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Service $service)
-    {
-        $spaId = $this->getAdminSpaId();
-
-        if ($service->spa_id !== $spaId) {
-            abort(404);
-        }
-
-        $service->delete();
-
-        return response()->json([
-            'message' => 'Servicio eliminado correctamente'
-        ]);
-    }
 }

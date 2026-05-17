@@ -95,19 +95,4 @@ class EmployeeBlockController extends Controller
             'data' => $employeeBlock->load('employee'),
         ]);
     }
-
-    public function destroy(EmployeeBlock $employeeBlock)
-    {
-        $spaId = $this->getAdminSpaId();
-
-        if ($employeeBlock->employee->spa_id !== $spaId) {
-            abort(404);
-        }
-
-        $employeeBlock->delete();
-
-        return response()->json([
-            'message' => 'Bloqueo eliminado correctamente',
-        ]);
-    }
 }

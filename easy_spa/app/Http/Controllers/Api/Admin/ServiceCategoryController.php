@@ -91,22 +91,4 @@ class ServiceCategoryController extends Controller
             'data' => $category
         ]);
     }
-
-    /**
-     * Eliminar categoría
-     */
-    public function destroy(ServiceCategory $serviceCategory)
-    {
-        $spaId = $this->getAdminSpaId();
-
-        if ($serviceCategory->spa_id !== $spaId) {
-            abort(404);
-        }
-
-        $serviceCategory->delete();
-
-        return response()->json([
-            'message' => 'Categoría eliminada correctamente'
-        ]);
-    }
 }

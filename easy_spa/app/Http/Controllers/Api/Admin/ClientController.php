@@ -91,16 +91,4 @@ class ClientController extends Controller
         ]);
     }
 
-    public function destroy(Client $client)
-    {
-        if (!$this->clientBelongsToAdminSpa($client)) {
-            abort(404);
-        }
-
-        $client->delete();
-
-        return response()->json([
-            'message' => 'Cliente eliminado correctamente',
-        ]);
-    }
 }

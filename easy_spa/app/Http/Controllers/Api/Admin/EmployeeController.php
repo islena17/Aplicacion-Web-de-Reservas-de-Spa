@@ -97,22 +97,4 @@ class EmployeeController extends Controller
         ]);
     }
 
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Employee $employee)
-    {
-        $spaId = $this->getAdminSpaId();
-
-        if ($employee->spa_id !== $spaId) {
-            abort(404);
-        }
-
-        $employee->delete();
-
-        return response()->json([
-            'message' => 'Empleado eliminado correctamente',
-        ]);
-    }
 }
