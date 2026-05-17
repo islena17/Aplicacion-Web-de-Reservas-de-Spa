@@ -311,7 +311,7 @@ Cada reserva genera un PDF descargable con los detalles de la cita.
 
 # 👨‍💻 Autor
 
-Desarrollado por Tu Nombre  
+Desarrollado por Islena Polo Franco 
 Trabajo de Fin de Grado – Desarrollo de Aplicaciones Web
 
 ---
