@@ -26,15 +26,8 @@ RUN npm run build
 # === CONFIGURAR SERVIDOR DE PRODUCCIÓN (PHP + Apache) ===
 FROM php:8.2-apache
 
-RUN apt-get update && apt-get install -y \
-    libpng-dev \
-    libjpeg-dev \
-    libfreetype6-dev \
-    zip \
-    unzip \
-    git \
-    && docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install gd pdo pdo_mysql
+RUN rm -f /etc/apache2/mods-enabled/mpm_* \
+    && a2enmod mpm_prefork rewrite
 
 RUN a2dismod mpm_event mpm_worker mpm_prefork || true \
     && rm -f /etc/apache2/mods-enabled/mpm_* \
