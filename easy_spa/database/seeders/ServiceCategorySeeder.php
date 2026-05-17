@@ -15,7 +15,7 @@ class ServiceCategorySeeder extends Seeder
     public function run(): void
     {
         ServiceCategory::create([
-            'spa_id' => 1, // debe existir
+            'spa_id' => 1,
             'name' => 'Masajes',
             'slug' => Str::slug('Masajes'),
             'description' => 'Servicios de masajes relajantes y terapéuticos',
@@ -23,7 +23,7 @@ class ServiceCategorySeeder extends Seeder
             'order' => 1,
         ]);
         ServiceCategory::create([
-            'spa_id' => 2, // debe existir
+            'spa_id' => 2, 
             'name' => 'Masajes',
             'slug' => Str::slug('Masajes'),
             'description' => 'Servicios de masajes relajantes y terapéuticos',
@@ -31,7 +31,7 @@ class ServiceCategorySeeder extends Seeder
             'order' => 1,
         ]);
         ServiceCategory::create([
-            'spa_id' => 3, // debe existir
+            'spa_id' => 3, 
             'name' => 'Masajes',
             'slug' => Str::slug('Masajes'),
             'description' => 'Servicios de masajes relajantes y terapéuticos',

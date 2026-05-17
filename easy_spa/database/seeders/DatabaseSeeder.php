@@ -19,8 +19,8 @@ class DatabaseSeeder extends Seeder
             SpaSeeder::class,
             ServiceCategorySeeder::class,
             ServiceSeeder::class,
-
-
+            EmployeeSeeder::class,
+            ClientSeeder::class,
         ]
         );
 
