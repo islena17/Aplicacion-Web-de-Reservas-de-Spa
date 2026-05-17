@@ -2,11 +2,14 @@
 FROM php:8.2-cli AS frontend-stage
 
 RUN apt-get update && apt-get install -y \
-    curl \
+    libpng-dev \
+    libjpeg-dev \
+    libfreetype6-dev \
+    zip \
     unzip \
     git \
-    nodejs \
-    npm
+    && docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install gd pdo pdo_mysql
 
 WORKDIR /app
 
