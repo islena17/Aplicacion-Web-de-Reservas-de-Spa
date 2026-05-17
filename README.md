@@ -278,34 +278,25 @@ Gracias a esta funcionalidad:
 Cada reserva genera un PDF descargable con los detalles de la cita.
 
 ---
+## 🔔 Sistema de recordatorios
 
-# 📸 Capturas
+La aplicación envía automáticamente recordatorios por email un día antes de la reserva programada.
 
-## 🏠 Homepage
+Esta funcionalidad se implementa mediante tareas programadas en Laravel, permitiendo:
 
-![Homepage](./screenshots/home.png)
-
----
-
-## 🧑‍💼 Dashboard
-
-![Dashboard](./screenshots/dashboard.png)
-
----
-
-## 📅 Calendario
-
-![Calendar](./screenshots/calendar.png)
+- Reducir ausencias y olvidos
+- Mejorar la organización de los clientes
+- Facilitar la gestión de citas
+- Automatizar la comunicación con los usuarios
 
 ---
 
 # 🔮 Mejoras futuras
 
 - Sistema de pagos online
-- Recordatorios automáticos
 - Valoraciones y reseñas
-- Panel de estadísticas
-- Notificaciones en tiempo real
+- Chat de soporte en tiempo real
+- Multiidioma y soporte internacional
 
 ---
 
