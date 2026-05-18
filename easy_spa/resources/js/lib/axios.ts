@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "https://easyspa.onrender.com/api", 
+  baseURL: "https://easyspa.onrender.com", 
   withCredentials: true,
   withXSRFToken: true,
   headers: {
