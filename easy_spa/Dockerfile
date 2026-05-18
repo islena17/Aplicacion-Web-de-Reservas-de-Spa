@@ -30,15 +30,18 @@ FROM php:8.2-apache
 
 ENV COMPOSER_ALLOW_SUPERUSER=1
 
+# Modificado: Añadimos libpq-dev (necesario para Postgres) junto a las demás librerías
 RUN apt-get update && apt-get install -y \
     libpng-dev \
     libjpeg-dev \
     libfreetype6-dev \
+    libpq-dev \
     zip \
     unzip \
     git \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install gd pdo pdo_mysql
+    # Modificado: Añadimos pdo_pgsql y pgsql al instalador de extensiones de PHP
+    && docker-php-ext-install gd pdo pdo_mysql pdo_pgsql pgsql
 
 RUN rm -f /etc/apache2/mods-enabled/mpm_* \
     && a2enmod mpm_prefork rewrite
