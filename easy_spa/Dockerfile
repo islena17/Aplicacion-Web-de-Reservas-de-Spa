@@ -61,7 +61,11 @@ COPY --from=frontend-stage /app/public/build /var/www/html/public/build
 
 RUN composer install --no-dev --optimize-autoloader
 
-RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
+RUN php artisan storage:link || true
+
+RUN chown -R www-data:www-data /var/www/html/storage \
+    /var/www/html/bootstrap/cache \
+    /var/www/html/public/storage
 
 EXPOSE 80
 
