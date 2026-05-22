@@ -1,110 +1,72 @@
+import { useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 import "../../../css/home.css";
 import { Link } from "react-router-dom";
 import logo_easy_spa from "@images/logo_easy_spa.png";
-import { useLogout } from '@/hooks/Auth/useLogout';
+import { useLogout } from "@/hooks/Auth/useLogout";
 
 export default function Navbar() {
-      const { logout } = useLogout();
-    const { user } = useAuth();
-    const role = user?.role?.name;
-    return (
-        
-        <nav className="navbar navbar-expand-lg custom-navbar py-3 fixed-top">
-            <div className="container-fluid px-5">
-                <Link className="navbar-brand fw-bold" to="/">
-                    <img src={logo_easy_spa}/>
-                </Link>
+  const { logout } = useLogout();
+  const { user } = useAuth();
+  const role = user?.role?.name;
+  const [open, setOpen] = useState(false);
 
-                {/* Botón hamburguesa para móviles */}
-                <button
-                    className="navbar-toggler"
-                    type="button"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#navbarContent"
-                >
+  return (
+    <nav className="navbar custom-navbar py-3 fixed-top">
+      <div className="container-fluid px-5">
+        <Link className="navbar-brand fw-bold" to="/">
+          <img src={logo_easy_spa} />
+        </Link>
 
-                    <span className="navbar-toggler-icon"></span>
-                </button>
+        <button
+          className="navbar-toggler d-lg-none"
+          type="button"
+          onClick={() => setOpen(!open)}
+        >
+          <span className="navbar-toggler-icon"></span>
+        </button>
 
-                {/* Quitamos la clase 'show' para que no rompa el flujo normal */}
-                <div className="collapse navbar-collapse" id="navbarContent">
-                    <ul className="navbar-nav mx-auto mb-2 mb-lg-0 gap-lg-3">
-                        <li className="nav-item">
-                            <Link className="nav-link active" to="/">Home</Link>
-                        </li>
-                        <li className="nav-item">
-                            <Link className="nav-link" to="/spas">Spas</Link>
-                        </li>
-                        <li className="nav-item">
-                            <Link className="nav-link" to="/services">Servicios</Link>
-                        </li>
-                    </ul>
+        <div className={`navbar-content ${open ? "open" : ""}`}>
+          <ul className="navbar-nav-custom">
+            <li><Link className="nav-link active" to="/">Home</Link></li>
+            <li><Link className="nav-link" to="/spas">Spas</Link></li>
+            <li><Link className="nav-link" to="/services">Servicios</Link></li>
+          </ul>
 
-                    <div className="d-flex gap-2">
+          <div className="navbar-buttons">
+            {!user && (
+              <>
+                <Link className="btn btn-login" to="/login">Login</Link>
+                <Link className="btn btn-register" to="/register">Registrarse</Link>
+              </>
+            )}
 
-                        {!user && (
-                            <>
-                                <Link className="btn btn-login" to="/login">
-                                    Login
-                                </Link>
+            {role === "Admin" && (
+              <Link className="btn btn-login btn-panel" to="/admin">
+                Panel de Administración
+              </Link>
+            )}
 
-                                <Link className="btn btn-register" to="/register">
-                                    Registrarse
-                                </Link>
-                            </>
-                        )}
+            {role === "WebMaster" && (
+              <Link className="btn btn-login btn-panel" to="/dashboard">
+                Panel WebMaster
+              </Link>
+            )}
 
-                        {role === "Admin" && (
-                            <Link className="btn btn-login"
-                                style={{
-                                    backgroundColor: 'var(--color-secondary)',
-                                    color: 'var(--color-text)'
-                                }}
-                                to="/admin">
-                                Panel de Administración
-                            </Link>
-                        )}
+            {role === "Client" && user?.client?.id && (
+              <Link className="btn btn-login btn-panel" to="/client/profile">
+                <i className="bi bi-person-gear"></i> Perfil
+              </Link>
+            )}
 
-                        {role === "WebMaster" && (
-                            <Link className="btn btn-login"
-                                style={{
-                                    backgroundColor: 'var(--color-secondary)',
-                                    color: 'var(--color-text)'
-                                }} to="/dashboard">
-                                Panel WebMaster
-                            </Link>
-                        )}
-
-                        {role === "Client" && user?.client?.id && (
-                            <Link
-                                className="btn btn-login"
-                                style={{
-                                    backgroundColor: 'var(--color-secondary)',
-                                    color: 'var(--color-text)'
-                                }}
-                                to={`/client/profile`}
-                            >
-                              <i className="bi bi-person-gear"></i>  Perfil
-                            </Link>
-                        )}
-                        {user && (
-                            <button
-                                className="btn btn-sm px-3 py3"
-                                onClick={logout}
-                                 style={{
-                                    backgroundColor: 'var(--color-main)',
-                                    color: 'var(--color-text)',
-                                    
-                                }}
-                            >
-                                <i className="bi bi-door-open"></i> Logout
-                            </button>
-                        )}
-
-                    </div>
-                </div>
-            </div>
-        </nav>
-    );
+            {user && (
+              <button className="btn btn-logout" onClick={logout}>
+                <i className="bi bi-door-open"></i> Logout
+              </button>
+            )}
+          </div>
+        </div>
+      </div>
+    </nav>
+  );
 }

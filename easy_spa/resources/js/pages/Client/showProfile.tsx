@@ -141,20 +141,6 @@ export default function Profile() {
                                 </div>
                             </div>
 
-                            <div>
-                                <small className="text-muted">Estado de cuenta</small>
-                                <div>
-                                    {client.user?.is_active ? (
-                                        <span className="badge bg-success">
-                                            Activa
-                                        </span>
-                                    ) : (
-                                        <span className="badge bg-secondary">
-                                            Inactiva
-                                        </span>
-                                    )}
-                                </div>
-                            </div>
                         </div>
                     </div>
 

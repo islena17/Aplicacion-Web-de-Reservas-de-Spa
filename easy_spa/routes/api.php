@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\Admin\ClientController as AdminClientController;
 use App\Http\Controllers\Api\Admin\EmployeeBlockController as AdminEmployeeBlockController;
 use App\Http\Controllers\Api\Admin\EmployeeController as AdminEmployeeController;
 use App\Http\Controllers\Api\Admin\EmployeeScheduleController as AdminEmployeeScheduleController;
+use App\Http\Controllers\Api\Admin\ProfileController as AdminProfileController;
 use App\Http\Controllers\Api\Admin\ReservationController as AdminReservationController;
 use App\Http\Controllers\Api\Admin\ServiceCategoryController as AdminServiceCategoryController;
 use App\Http\Controllers\Api\Admin\ServiceController as AdminServiceController;
@@ -109,6 +110,8 @@ Route::middleware(['auth:sanctum', 'role:Admin'])
         Route::get('/reservations/calendar', [CalendarController::class, 'index']);
         Route::get('spa-profile', [SpaProfileController::class, 'show']);
         Route::put('spa-profile', [SpaProfileController::class, 'update']);
+        Route::get('/profile', [AdminProfileController::class, 'show']);
+        Route::put('/profile', [AdminProfileController::class, 'update']);
 
         Route::apiResource('reservations', AdminReservationController::class);
         Route::apiResource('services', AdminServiceController::class);

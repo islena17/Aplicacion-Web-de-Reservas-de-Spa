@@ -33,8 +33,24 @@ export default function useReservations() {
     fetchReservations();
   }, [page]);
 
+  
+  //contar reservas para el home dashboard
+  const totalReservationP = reservations.filter(r => r.status === 'pending').length;
+  const totalReservationC = reservations.filter(r => r.status === 'confirmed').length;
+  const totalReservationCd = reservations.filter(r => r.status === 'cancelled').length;
+  const totalReservationNS = reservations.filter(r => r.status === 'no_show').length;
+
+  //ultimas 5 reservas para home
+  const lastReservations = [...reservations]
+    .sort((a, b) => b.id - a.id) // Ordenamos por ID de mayor a menor
+    .slice(0, 5); // Tomamos solo las primeras 5
   return {
     reservations,
+    lastReservations,
+    totalReservationP,
+    totalReservationC,
+    totalReservationCd,
+    totalReservationNS,
     loading,
     error,
     refetch: fetchReservations,

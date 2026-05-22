@@ -1,46 +1,6 @@
 import { useEffect, useState } from 'react';
 import axios from '@/lib/axios';
-
-type Spa = {
-  id: number;
-  name: string;
-  slug: string;
-};
-
-type Client = {
-  id: number;
-  name: string;
-  surname?: string;
-  email?: string;
-  telephone?: string;
-};
-
-type Service = {
-  id: number;
-  name: string;
-};
-
-type Employee = {
-  id: number;
-  name?: string;
-  user?: {
-    name: string;
-  };
-};
-
-export type Reservation = {
-  id: number;
-  spa?: Spa;
-  client?: Client;
-  service?: Service;
-  employee?: Employee | null;
-  reservation_date: string;
-  start_time: string;
-  end_time: string;
-  status: string;
-  final_price?: string | number | null;
-  observations?: string | null;
-};
+import { Reservation, Spa } from '@/types';
 
 type Errors = {
   general?: string;

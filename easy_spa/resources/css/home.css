@@ -4,88 +4,73 @@
   background: white;
   box-shadow: var(--color-shadow);
   border-bottom: 1px solid var(--color-border);
+  z-index: 3000;
 }
 
-.navbar-nav {
-  display: flex !important;
+.custom-navbar .container-fluid {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
-/* LOGO */
-.navbar-brand {
-  color: var(--color-main);
-  font-size: 1.5rem;
-  letter-spacing: 0.5px;
+.navbar-brand img {
+  max-height: 52px;
 }
 
-.navbar-brand:hover {
-  color: var(--color-main-hover);
+.navbar-content {
+  display: flex;
+  align-items: center;
+  flex: 1;
 }
 
-/* LINKS */
-.nav-link {
-  color: var(--color-main-hover) !important;
-  font-weight: 500;
-  transition: all 0.25s ease;
-  position: relative;
-  display: block;
-  padding: 0.5rem 1rem;
+.navbar-nav-custom {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  list-style: none;
+  margin: 0 auto;
+  padding: 0;
 }
 
-
-.nav-link.active {
-  color: var(--color-main) !important;
+.navbar-buttons {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
-/* UNDERLINE EFFECT */
-.nav-link::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: -4px;
-
-  width: 0%;
-  height: 2px;
-
-  background-color: var(--color-main);
-  transition: width 0.3s ease;
+.btn-login,
+.btn-register,
+.btn-logout {
+  border-radius: 12px;
+  padding: 0.55rem 1rem;
+  font-weight: 600;
+  text-align: center;
 }
 
-.nav-link:hover::after {
-  width: 100%;
-}
-
-/* LOGIN BUTTON */
 .btn-login {
   border: 1px solid var(--color-button);
   color: var(--color-text);
   background-color: white;
-  padding: 0.55rem 1rem;
-  border-radius: 12px;
-  transition: all 0.25s ease;
 }
 
-.btn-login:hover {
-  background-color: var(--color-bg-soft);
-  border-color: var(--color-main);
-}
-
-/* REGISTER BUTTON */
 .btn-register {
   background-color: var(--color-button);
   color: var(--color-text);
-  border-radius: 12px;
-  padding: 0.55rem 1.2rem;
-  font-weight: 600;
-  transition: all 0.25s ease;
   border: none;
 }
 
-.btn-register:hover {
-  background-color: var(--color-secondary);
-  transform: translateY(-1px);
+.btn-panel {
+  background-color: var(--color-secondary) !important;
+  color: var(--color-text) !important;
 }
 
-/* MOBILE */
+.btn-logout {
+  background-color: var(--color-main);
+  color: var(--color-text);
+  border: none;
+}
+
 .navbar-toggler {
   border: none;
 }
@@ -94,13 +79,47 @@
   box-shadow: none;
 }
 
-@media (min-width: 992px) {
-  .navbar-collapse.collapse {
-    display: flex !important;
-    height: auto !important;
-    visibility: visible !important;
+@media (max-width: 991px) {
+  .custom-navbar .container-fluid {
+    flex-wrap: wrap;
+    padding-left: 1.5rem !important;
+    padding-right: 1.5rem !important;
   }
 
+  .navbar-content {
+    display: none;
+    width: 100%;
+    flex-direction: column;
+    align-items: stretch;
+    padding-top: 1rem;
+  }
+
+  .navbar-content.open {
+    display: flex;
+  }
+
+  .navbar-nav-custom {
+    width: 100%;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.5rem;
+  }
+
+  .navbar-nav-custom .nav-link {
+    width: 100%;
+    padding: 0.7rem 0;
+  }
+
+  .navbar-buttons {
+    width: 100%;
+    flex-direction: column;
+    align-items: stretch;
+    margin-top: 1rem;
+  }
+
+  .navbar-buttons .btn {
+    width: 100%;
+  }
 }
 
 /********HERO********/

@@ -1,6 +1,7 @@
 import { useNavigate, useParams } from 'react-router-dom';
 import DashboardLayout from '@/components/layouts/AdminLayout';
 import { useSpa } from '@/hooks/Admin/Spa/useSpa';
+import EditAdminProfile from '../Profile/EditAdminProfile';
 
 export default function AdminShowSpa() {
   const navigate = useNavigate();
@@ -35,81 +36,107 @@ export default function AdminShowSpa() {
               </h1>
               <p className="text-muted mb-0">Consulta la información de tu spa.</p>
             </div>
-<div className="d-flex gap-2">
-            <button
-              type="button"
-              className="btn"
-              onClick={() => navigate(`/admin/spa/edit`)}
-              style={{
-                backgroundColor: '#E0C38D',
-                color: '#fff',
-                borderRadius: '12px',
-                padding: '10px 18px',
-                fontWeight: 700,
-              }}
-            >
-              <i className="bi bi-pencil-square"></i> Editar spa
-            </button>
+            <div className="d-flex gap-2">
+              <button
+                type="button"
+                className="btn"
+                onClick={() => navigate(`/admin/spa/edit`)}
+                style={{
+                  backgroundColor: '#E0C38D',
+                  color: '#fff',
+                  borderRadius: '12px',
+                  padding: '10px 18px',
+                  fontWeight: 700,
+                }}
+              >
+                <i className="bi bi-pencil-square"></i> Editar spa
+              </button>
 
-            <button
-              type="button"
-              className="btn"
-              onClick={() => navigate(`/admin/spa/spa-schedule`)}
-              style={{
-                backgroundColor: '#7a9e9f',
-                color: '#fff',
-                borderRadius: '12px',
-                padding: '10px 18px',
-                fontWeight: 700,
-              }}
-            >
-              <i className="bi bi-calendar-week"></i> Horario
-            </button>
+              <button
+                type="button"
+                className="btn"
+                onClick={() => navigate(`/admin/spa/spa-schedule`)}
+                style={{
+                  backgroundColor: '#7a9e9f',
+                  color: '#fff',
+                  borderRadius: '12px',
+                  padding: '10px 18px',
+                  fontWeight: 700,
+                }}
+              >
+                <i className="bi bi-calendar-week"></i> Horario
+              </button>
+            </div>
           </div>
-          </div>
+
 
           {error && <div className="alert alert-danger">{error}</div>}
 
-          {spa && (
-            <div className="card border-0 shadow-sm" style={{ borderRadius: '20px' }}>
-              <div className="card-header border-0 py-3 px-4 bg-white">
-                <h5 className="mb-0 fw-bold">Datos del spa</h5>
-              </div>
+            {spa && (
 
-              <div className="card-body p-4 p-lg-5 bg-white">
-                <div className="row g-4">
-                  <Info label="Nombre" value={spa.name} />
-                  <Info label="Slug" value={spa.slug} />
-                  <Info label="Descripción" value={spa.description} full />
-                  <Info label="Dirección" value={spa.address} full />
-                  <Info label="Ciudad" value={spa.city} />
-                  <Info label="Código postal" value={spa.postal_code} />
-                  <Info label="Teléfono" value={spa.phone} />
-                  <Info label="Email" value={spa.email} />
-                  <Info label="Hora apertura" value={spa.opening_time?.slice(0, 5)} />
-                  <Info label="Hora cierre" value={spa.closing_time?.slice(0, 5)} />
+              <div className="card border-0 shadow-sm" style={{ borderRadius: '20px', overflow: 'hidden' }}>
 
-                  {spa.logo && (
-                    <div className="col-12">
-                      <label className="form-label fw-semibold">Logo</label>
-                      <div
-                        className="p-3"
-                        style={{
-                          backgroundColor: '#F7F7F7',
-                          borderRadius: '12px',
-                          border: '1px solid #eee',
-                        }}
-                      >
-                        <span className="text-muted small">{spa.logo}</span>
+
+                <div className="card-body p-4 p-lg-5 bg-white">
+                  
+                <div className="d-flex align-items-center mb-4">   <div
+                  className="d-flex align-items-center justify-content-center me-3"
+                  style={{
+                    width: '54px',
+                    height: '54px',
+                    borderRadius: '16px',
+                    backgroundColor: 'var(--color-main)',
+                    color: 'var(--color-text)',
+                    fontSize: '24px',
+                  }}
+                >
+                  <i className="bi bi-pencil-square"></i>
+                </div>
+
+                  <div>
+                    <h5 className="fw-bold mb-0">
+                      Datos del spa
+                    </h5>
+                  </div>
+                </div>
+                  <div className="row g-4">
+                    <Info label="Nombre" value={spa.name} />
+                    <Info label="Slug" value={spa.slug} />
+                    <Info label="Descripción" value={spa.description} full />
+                    <Info label="Dirección" value={spa.address} full />
+                    <Info label="Ciudad" value={spa.city} />
+                    <Info label="Código postal" value={spa.postal_code} />
+                    <Info label="Teléfono" value={spa.phone} />
+                    <Info label="Email" value={spa.email} />
+                    <Info label="Hora apertura" value={spa.opening_time?.slice(0, 5)} />
+                    <Info label="Hora cierre" value={spa.closing_time?.slice(0, 5)} />
+
+                    {spa.logo && (
+                      <div className="col-12">
+                        <label className="form-label fw-semibold">Logo</label>
+                        <div
+                          className="p-3"
+                          style={{
+                            backgroundColor: '#F7F7F7',
+                            borderRadius: '12px',
+                            border: '1px solid #eee',
+                          }}
+                        >
+                          <span className="text-muted small">{spa.logo}</span>
+                        </div>
                       </div>
-                    </div>
-                  )}
+                    )}
+                  </div>
                 </div>
               </div>
+            )}
+
+            <div className='mt-4'>
+            <EditAdminProfile />
             </div>
-          )}
+
+          </div>
         </div>
-      </div>
     </DashboardLayout>
   );
 }

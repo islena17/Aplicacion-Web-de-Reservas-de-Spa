@@ -1,40 +1,7 @@
 import api from "@/lib/axios";
 
 import { useEffect, useState } from "react";
-
-type User = {
-    id: number;
-    email: string;
-    role_id?: number;
-    is_active?: boolean;
-};
-type Reservation = {
-    id: number;
-    reservation_date: string;
-    start_time?: string;
-    end_time?: string;
-    status?: string;
-    service?: {
-        id: number;
-        name: string;
-        price?: number;
-        length_minutes?: number;
-    };
-    employee?: {
-        id: number;
-        name?: string;
-    };
-};
-
-type Client={
-    id: number;
-    name: string;
-    surname: string;
-    telephone?: string | null;
-    email: string | null;
-    user?: User;
-    reservations?: Reservation[];
-}
+import  {User, Reservation, Client} from "@/types";
 
 export function useProfile() {
     const [client, setClient] = useState<Client | null>(null);

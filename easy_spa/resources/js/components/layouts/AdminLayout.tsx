@@ -49,7 +49,7 @@ export default function AdminLayout({ children }: DashboardLayoutProps) {
         <nav className="opacidad mt-4">
           <p className="sidebar-section">Principal</p>
 
-          <Link to="/" className="sidebar-link" onClick={() => setSidebarOpen(false)}>
+          <Link to="/admin/" className="sidebar-link" onClick={() => setSidebarOpen(false)}>
             <i className="bi bi-grid"></i>
             <span>Dashboard</span>
           </Link>

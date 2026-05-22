@@ -30,7 +30,7 @@ export function useEmployeeSchedule(employeeId?: string) {
 
           generated.push({
             date: dateString,
-            day_of_week: date.getDay(),
+            day_of_week: String(date.getDay()),
             start_time: '09:00',
             end_time: '17:00',
             is_working: true,
@@ -48,11 +48,11 @@ export function useEmployeeSchedule(employeeId?: string) {
 
           return savedDay
             ? {
-                ...day,
-                start_time: savedDay.start_time?.slice(0, 5),
-                end_time: savedDay.end_time?.slice(0, 5),
-                is_working: Boolean(savedDay.is_working),
-              }
+              ...day,
+              start_time: savedDay.start_time?.slice(0, 5),
+              end_time: savedDay.end_time?.slice(0, 5),
+              is_working: Boolean(savedDay.is_working),
+            }
             : day;
         });
 
@@ -82,13 +82,19 @@ export function useEmployeeSchedule(employeeId?: string) {
 
     try {
       await api.post('/api/webmaster/employee-schedules/bulk', {
-        employee_id: employeeId,
-        schedules: days,
+        employee_id: Number(employeeId),
+        schedules: days.map((day) => ({
+          date: day.date,
+          day_of_week: day.day_of_week,
+          start_time: day.start_time,
+          end_time: day.end_time,
+          is_working: day.is_working ? 1 : 0,
+        })),
       });
 
       alert('Horario guardado correctamente');
-    } catch (error) {
-      console.error(error);
+    } catch (error: any) {
+      console.error(error.response?.data);
       alert('Error al guardar el horario');
     } finally {
       setLoading(false);

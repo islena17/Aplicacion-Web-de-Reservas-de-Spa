@@ -1,59 +1,6 @@
 import { useEffect, useState } from 'react';
 import api from '@/lib/axios';
-
-interface Spa {
-  name: string;
-  slug: string;
-}
-
-interface ServiceCategory {
-  id: number;
-  name: string;
-}
-
-interface Service {
-  id: number;
-  name: string;
-  price: number;
-  length_minutes?: number;
-  spa?: Spa;
-  category?: ServiceCategory;
-}
-
-interface Client {
-  id: number;
-  name: string;
-  surname: string;
-  telephone?: string;
-  user?: {
-    id: number;
-    email: string;
-  };
-}
-
-interface Employee {
-  id: number;
-  name: string;
-  surname: string;
-  user?: {
-    id: number;
-    email: string;
-  };
-}
-
-export interface Reservation {
-  id: number;
-  reservation_date: string;
-  start_time: string;
-  end_time: string;
-  final_price: string;
-  observations?: string | null;
-  status?: string;
-  client?: Client | null;
-  service?: Service | null;
-  employee?: Employee | null;
-  spa?: Spa |null;
-}
+import { Spa, Service, ServiceCategory, Client, Employee, Reservation } from '@/types';
 
 interface ApiReservationResponse {
   data: Reservation;

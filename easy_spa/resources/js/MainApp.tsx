@@ -70,7 +70,6 @@ import WebMasterEmployeeSchedule from './pages/WebMaster/Employees/employeeSched
 import WebmasterShowService from './pages/WebMaster/Services/showService';
 import WebmasterSpaSchedule from './pages/WebMaster/spa/spaSchedule';
 
-
 export default function MainApp() {
   return (
     <BrowserRouter>
@@ -136,7 +135,7 @@ export default function MainApp() {
           element={
             <ProtectedRoute role="Admin">
               <Routes>
-                <Route path="" element={<AdminHome />} />
+                <Route path="/" element={<AdminHome />} />
                 <Route path="spa" element={<AdminShowSpa />} />
                 <Route path="spa/edit" element={<AdminEditSpa />} />
                 <Route path="spa/spa-schedule" element={<SpaSchedule />} />
