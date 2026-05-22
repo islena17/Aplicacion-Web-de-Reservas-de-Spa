@@ -13,6 +13,7 @@ type ServiceFormData = {
   name: string;
   slug: string;
   description: string;
+  capacity: string,
   image: File | null;
   current_image?: string; // URL que viene de la base de datos
   length_minutes: string;
@@ -195,6 +196,22 @@ export default function ServiceForm({
               />
               {errors.length_minutes && (
                 <div className="invalid-feedback">{fieldError(errors.length_minutes)}</div>
+              )}
+            </div>
+
+               {/* CAPACIDAD */}
+            <div className="col-12 col-md-6">
+              <label className="form-label fw-semibold">Capacidad (maximo personas) *</label>
+              <input
+                type="number"
+                name="capacity"
+                className={`form-control ${errors.capacity ? 'is-invalid' : ''}`}
+                value={form.capacity}
+                onChange={onChange}
+                placeholder="Ej: 60"
+              />
+              {errors.capacity && (
+                <div className="invalid-feedback">{fieldError(errors.capacity)}</div>
               )}
             </div>
 

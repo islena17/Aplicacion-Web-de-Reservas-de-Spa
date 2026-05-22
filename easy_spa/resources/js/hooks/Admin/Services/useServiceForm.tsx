@@ -13,8 +13,9 @@ type ServiceForm = {
   name: string;
   slug: string;
   description: string;
-  image: File | null;      // Ahora acepta el archivo real
-  current_image: string;   // Para mostrar la imagen actual de la DB
+  image: File | null;
+  capacity: string;      
+  current_image: string;   
   length_minutes: string;
   price: string;
   requires_employee: boolean;
@@ -31,6 +32,7 @@ const initialForm: ServiceForm = {
   slug: '',
   description: '',
   image: null,
+  capacity: '',
   current_image: '',
   length_minutes: '',
   price: '',
@@ -68,6 +70,7 @@ export function useServiceForm(serviceSlug?: string) {
               name: s.name ?? '',
               slug: s.slug ?? '',
               description: s.description ?? '',
+              capacity: s.capacity ?? '',
               image: null, // El input file empieza vacío siempre
               current_image: s.image_url ?? s.image ?? '', // Usamos la URL que venga del storage
               length_minutes: String(s.length_minutes ?? ''),
@@ -128,6 +131,7 @@ export function useServiceForm(serviceSlug?: string) {
     formData.append('service_category_id', form.service_category_id);
     formData.append('name', form.name);
     formData.append('length_minutes', form.length_minutes);
+    formData.append('capacity', form.capacity);
     formData.append('price', form.price);
     formData.append('requires_employee', form.requires_employee ? '1' : '0');
     formData.append('is_active', form.is_active ? '1' : '0');

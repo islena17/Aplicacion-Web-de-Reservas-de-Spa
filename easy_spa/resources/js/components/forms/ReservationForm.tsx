@@ -1,16 +1,11 @@
 import { ChangeEvent, FormEvent } from 'react';
+import { Service } from '@/types';
 
 type Option = {
   id: number;
   name: string;
 };
 
-type Service = {
-  id: number;
-  name: string;
-  length_minutes: number;
-  price: string;
-};
 
 type ReservationFormData = {
   client_id: string;
@@ -21,6 +16,7 @@ type ReservationFormData = {
   end_time: string;
   status: string;
   final_price: string;
+  number_of_people: string;
   observations: string;
 };
 
@@ -353,10 +349,44 @@ export default function ReservationForm({
                 name="final_price"
                 className={`form-control ${errors.final_price ? 'is-invalid' : ''}`}
                 value={form.final_price}
-                onChange={onChange}
-                placeholder="Ej: 49.99"
+                readOnly
               />
             </div>
+
+            <div className="col-12 col-md-6">
+              <label className="form-label fw-semibold">
+                Número de personas
+              </label>
+
+              <input
+                type="number"
+                min="1"
+                name="number_of_people"
+                className={`form-control ${errors.number_of_people ? 'is-invalid' : ''}`}
+                value={form.number_of_people}
+                onChange={onChange}
+                placeholder="Ej: 3"
+              />
+
+              {form.service_id && (
+                <small className="text-muted">
+                  Capacidad máxima:{' '}
+                  {
+                    services.find(
+                      (service) => service.id === Number(form.service_id)
+                    )?.capacity
+                  }{' '}
+                  personas
+                </small>
+              )}
+
+              {errors.number_of_people && (
+                <div className="invalid-feedback d-block">
+                  {fieldError(errors.number_of_people)}
+                </div>
+              )}
+            </div>
+
 
             <div className="col-12">
               <label className="form-label fw-semibold">Observaciones</label>

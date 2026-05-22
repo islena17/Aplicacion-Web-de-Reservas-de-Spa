@@ -1,6 +1,7 @@
 import { FormEvent, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '@/lib/axios';
+import { Service } from '@/types';
 
 type Option = {
     id: number;
@@ -14,6 +15,7 @@ type ReservationForm = {
     service_id: string;
     employee_id: string;
     reservation_date: string;
+    number_of_people: string;
     start_time: string;
     end_time: string;
     status: string;
@@ -43,20 +45,13 @@ const initialForm: ReservationForm = {
     service_id: '',
     employee_id: '',
     reservation_date: '',
+    number_of_people: '1',
     start_time: '',
     end_time: '',
     status: 'pending',
     final_price: '',
     observations: '',
 };
-type Service = {
-    id: number;
-    name: string;
-    spa_id?: number;
-    length_minutes: number;
-    price: string;
-};
-
 const getList = (response: any) => {
     return response.data.data?.data ?? response.data.data ?? response.data ?? [];
 };
@@ -138,6 +133,7 @@ export function useReservationForm(spaSlug?: string, reservationId?: string) {
                             spa_id: s.spa_id,
                             length_minutes: Number(s.length_minutes),
                             price: String(s.price),
+                             capacity: Number(s.capacity),
                         }))
                 );
 
@@ -165,6 +161,7 @@ export function useReservationForm(spaSlug?: string, reservationId?: string) {
                             service_id: String(reservation.service_id ?? reservation.service?.id ?? ''),
                             employee_id: String(reservation.employee_id ?? reservation.employee?.id ?? ''),
                             reservation_date: reservation.reservation_date ?? '',
+                            number_of_people: reservation.number_of_people ?? '',
                             start_time: reservation.start_time ? reservation.start_time.slice(0, 5) : '',
                             end_time: reservation.end_time ? reservation.end_time.slice(0, 5) : '',
                             status: reservation.status ?? 'pending',
@@ -205,7 +202,11 @@ export function useReservationForm(spaSlug?: string, reservationId?: string) {
                 );
 
                 if (selectedService) {
-                    updatedForm.final_price = selectedService.price;
+                    const peopleCount = Number(updatedForm.number_of_people || 1);
+
+                    updatedForm.final_price = String(
+                        Number(selectedService.price) * peopleCount
+                    );
 
                     if (prev.start_time) {
                         updatedForm.end_time = calculateEndTime(
@@ -215,7 +216,6 @@ export function useReservationForm(spaSlug?: string, reservationId?: string) {
                     }
                 }
             }
-
             // Cuando cambia la hora de inicio
             if (name === 'start_time') {
                 const selectedService = services.find(
@@ -228,7 +228,21 @@ export function useReservationForm(spaSlug?: string, reservationId?: string) {
                         selectedService.length_minutes
                     );
 
-                    updatedForm.final_price = selectedService.price;
+                    updatedForm.final_price = String(
+                        Number(selectedService.price) * Number(updatedForm.number_of_people || 1)
+                    );
+                }
+            }
+
+            if (name === 'number_of_people') {
+                const selectedService = services.find(
+                    (service) => service.id === Number(prev.service_id)
+                );
+
+                if (selectedService) {
+                    updatedForm.final_price = String(
+                        Number(selectedService.price) * Number(value || 1)
+                    );
                 }
             }
 
@@ -327,6 +341,7 @@ export function useReservationForm(spaSlug?: string, reservationId?: string) {
                 service_id: form.service_id,
                 employee_id: form.employee_id || null,
                 reservation_date: form.reservation_date,
+                number_of_people: form.number_of_people,
                 start_time: form.start_time,
                 end_time: form.end_time,
                 status: form.status,
@@ -395,6 +410,7 @@ export function useReservationForm(spaSlug?: string, reservationId?: string) {
                 service_id: form.service_id,
                 employee_id: form.employee_id || null,
                 reservation_date: form.reservation_date,
+                number_of_people: form.number_of_people,
                 start_time: form.start_time,
                 end_time: form.end_time,
                 status: form.status,

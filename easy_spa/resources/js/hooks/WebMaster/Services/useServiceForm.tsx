@@ -14,6 +14,7 @@ type ServiceForm = {
   name: string;
   slug: string;
   description: string;
+  capacity: string;
   image: File | null;      // Archivo real para subir
   current_image: string;   // URL de la imagen actual para la vista
   length_minutes: string;
@@ -32,6 +33,7 @@ const initialForm: ServiceForm = {
   name: '',
   slug: '',
   description: '',
+  capacity: '',
   image: null,
   current_image: '',
   length_minutes: '',
@@ -88,6 +90,7 @@ export function useServiceForm(spaSlug?: string, serviceSlug?: string) {
             name: service.name ?? '',
             slug: service.slug ?? '',
             description: service.description ?? '',
+            capacity: service.capacity ?? '' ,
             image: null, 
             current_image: service.image_url ?? service.image ?? '', // Mostramos la ruta existente
             length_minutes: String(service.length_minutes ?? ''),
@@ -151,6 +154,7 @@ export function useServiceForm(spaSlug?: string, serviceSlug?: string) {
     formData.append('name', form.name);
     formData.append('length_minutes', form.length_minutes);
     formData.append('price', form.price);
+    formData.append('capacity', form.capacity);
     formData.append('requires_employee', form.requires_employee ? '1' : '0');
     formData.append('is_active', form.is_active ? '1' : '0');
     

@@ -17,9 +17,10 @@ class Reservation extends Model
         'status',
         'final_price',
         'observations',
-        'reminder_sent'
+        'reminder_sent',
+        'number_of_people'
     ];
-    
+
     public function client()
     {
         return $this->belongsTo(Client::class, 'client_id');
@@ -38,5 +39,15 @@ class Reservation extends Model
     public function employee()
     {
         return $this->belongsTo(Employee::class, 'employee_id');
+    }
+
+    public static function calculateTotalPrice(Service $service, int $peopleCount): float
+    {
+        return $service->price * $peopleCount;
+    }
+
+    public static function exceedsServiceCapacity(Service $service, int $peopleCount): bool
+    {
+        return $peopleCount > $service->capacity;
     }
 }

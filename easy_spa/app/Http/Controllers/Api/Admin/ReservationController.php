@@ -7,6 +7,7 @@ use App\Http\Requests\ReservationRequest;
 use App\Mail\ReservationMail;
 use App\Models\EmployeeBlock;
 use App\Models\Reservation;
+use App\Models\Service;
 use App\Models\Spa;
 use App\Services\AvailabilityService;
 use Illuminate\Support\Facades\Auth;
@@ -75,6 +76,30 @@ class ReservationController extends Controller
 
         unset($data['spa_id']);
 
+        $service = Service::where('spa_id', $spaId)
+            ->findOrFail($data['service_id']);
+
+        if (
+            Reservation::exceedsServiceCapacity(
+                $service,
+                $data['number_of_people']
+            )
+        ) {
+            return response()->json([
+                'message' => 'No se puede reservar para más personas de las que permite este servicio.',
+                'errors' => [
+                    'number_of_people' => [
+                        'La capacidad máxima de este servicio es de ' . $service->capacity . ' personas.',
+                    ],
+                ],
+            ], 422);
+        }
+
+        $finalPrice = Reservation::calculateTotalPrice(
+            $service,
+            $data['number_of_people']
+        );
+
         $employeeId = $data['employee_id'] ?? null;
 
         if ($employeeId) {
@@ -87,10 +112,18 @@ class ReservationController extends Controller
             );
         }
 
-        $reservation = DB::transaction(function () use ($data, $spaId, $employeeId) {
+        $reservation = DB::transaction(function () use (
+            $data,
+            $spaId,
+            $employeeId,
+            $finalPrice,
+            $service
+        ) {
             $reservation = Reservation::create([
                 ...$data,
                 'spa_id' => $spaId,
+                'service_price' => $service->price,
+                'final_price' => $finalPrice,
             ]);
 
             if ($employeeId) {

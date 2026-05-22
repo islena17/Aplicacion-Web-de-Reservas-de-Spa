@@ -7,6 +7,7 @@ type ReservationForm = {
   service_id: string;
   employee_id: string;
   reservation_date: string;
+  number_of_people: string;
   start_time: string;
   end_time: string;
   status: string;
@@ -36,6 +37,7 @@ const initialForm: ReservationForm = {
   service_id: '',
   employee_id: '',
   reservation_date: '',
+  number_of_people: '1',
   start_time: '',
   end_time: '',
   status: 'pending',
@@ -96,6 +98,7 @@ export function useReservationForm(reservationId?: string) {
             service_id: String(reservation.service?.id ?? reservation.service_id ?? ''),
             employee_id: String(reservation.employee?.id ?? reservation.employee_id ?? ''),
             reservation_date: reservation.reservation_date ?? '',
+            number_of_people: String(reservation.number_of_people ?? '1'),
             start_time: reservation.start_time?.slice(0, 5) ?? '',
             end_time: reservation.end_time?.slice(0, 5) ?? '',
             status: reservation.status ?? 'pending',
@@ -129,7 +132,7 @@ export function useReservationForm(reservationId?: string) {
             date: form.reservation_date,
             employee_id: form.employee_id || undefined,
             // Importante para que en edición no se bloquee su propio horario
-            exclude_reservation_id: reservationId 
+            exclude_reservation_id: reservationId
           },
         });
 
@@ -155,26 +158,52 @@ export function useReservationForm(reservationId?: string) {
       employee_id: slot.employee_id ? String(slot.employee_id) : prev.employee_id,
     }));
   };
-
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
+
     setForm((prev) => {
-      const updatedForm: ReservationForm = { ...prev, [name]: value };
+      const updatedForm: ReservationForm = {
+        ...prev,
+        [name]: value,
+      };
+
+      const selectedService = services.find(
+        (service) => String(service.id) === String(updatedForm.service_id)
+      );
 
       if (['service_id', 'reservation_date', 'employee_id'].includes(name)) {
         updatedForm.start_time = '';
         updatedForm.end_time = '';
-        if (name === 'service_id') {
-          const service = services.find((s) => String(s.id) === value);
-          if (service) updatedForm.final_price = String(service.price ?? '');
-        }
       }
+
+      if (name === 'service_id' && selectedService) {
+        updatedForm.final_price = String(
+          Number(selectedService.price) * Number(updatedForm.number_of_people || 1)
+        );
+      }
+
+      if (name === 'number_of_people' && selectedService) {
+        updatedForm.final_price = String(
+          Number(selectedService.price) * Number(value || 1)
+        );
+      }
+
+      if (name === 'start_time' && selectedService) {
+        updatedForm.end_time = calculateEndTime(
+          value,
+          Number(selectedService.length_minutes)
+        );
+
+        updatedForm.final_price = String(
+          Number(selectedService.price) * Number(updatedForm.number_of_people || 1)
+        );
+      }
+
       return updatedForm;
     });
   };
-
   const handleClientChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
 
@@ -190,6 +219,7 @@ export function useReservationForm(reservationId?: string) {
       service_id: form.service_id,
       employee_id: form.employee_id || null,
       reservation_date: form.reservation_date,
+      number_of_people: form.number_of_people,
       start_time: form.start_time,
       end_time: form.end_time,
       status: form.status,

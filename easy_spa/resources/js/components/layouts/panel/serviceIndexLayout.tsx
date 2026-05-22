@@ -107,6 +107,7 @@ export default function ServicesIndexLayout({
                                             <th className="px-4 py-3">Categoría</th>
                                             <th className="px-4 py-3">Duración</th>
                                             <th className="px-4 py-3">Precio</th>
+                                            <th className="px-4 py-3">Capacidad</th>
                                             <th className="px-4 py-3">Activo</th>
                                             <th className="text-end px-4">Acciones</th>
                                         </tr>
@@ -127,6 +128,7 @@ export default function ServicesIndexLayout({
                                                 </td>
 
                                                 <td className="px-4 py-3">{service.price} €</td>
+                                                <td className="px-4 py-3">{service.capacity}</td>
 
                                                 <td className="px-4 py-3">
                                                     <span

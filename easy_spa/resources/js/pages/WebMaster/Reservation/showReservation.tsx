@@ -92,6 +92,7 @@ export default function ShowReservation() {
                   <Info label="Fecha" value={reservation.reservation_date} />
                   <Info label="Hora inicio" value={reservation.start_time} />
                   <Info label="Hora fin" value={reservation.end_time} />
+                  <Info label="Numero de personas" value={`${reservation.number_of_people}`} />
                   <Info label="Precio final" value={`${reservation.final_price} €`} />
                   <Info label="Estado" value={reservation.status ?? '-'} />
 
@@ -168,6 +169,11 @@ export default function ShowReservation() {
                       <Info
                         label="Spa"
                         value={reservation.service.spa?.name ?? '-'}
+                      />
+
+                      <Info
+                        label="Numero de personas"
+                        value={reservation.service.capacity ?? '-'}
                       />
                       <Info
                         label="Precio"

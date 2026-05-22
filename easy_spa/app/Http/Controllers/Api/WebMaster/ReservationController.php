@@ -6,9 +6,11 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\ReservationRequest;
 use App\Models\Client;
 use App\Models\Reservation;
+use App\Models\Service;
 use App\Models\Spa;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\ValidationException;
 
 class ReservationController extends Controller
 {
@@ -45,6 +47,27 @@ class ReservationController extends Controller
     {
         $reservation = DB::transaction(function () use ($request) {
             $data = $request->validated();
+
+            $service = Service::findOrFail($data['service_id']);
+
+            if (
+                Reservation::exceedsServiceCapacity(
+                    $service,
+                    $data['number_of_people']
+                )
+            ) {
+                throw ValidationException::withMessages([
+                    'number_of_people' => [
+                        'La capacidad máxima de este servicio es de ' . $service->capacity . ' personas.',
+                    ],
+                ]);
+            }
+
+            $data['service_price'] = $service->price;
+            $data['final_price'] = Reservation::calculateTotalPrice(
+                $service,
+                $data['number_of_people']
+            );
 
             if (empty($data['client_id']) && isset($data['client'])) {
                 $client = Client::create([

@@ -19,6 +19,7 @@ export type Reservation = {
   reservation_date: string;
   start_time: string;
   end_time: string;
+  number_of_people: string;
   status: ReservationStatus | string;
   final_price?: string | number | null;
   observations?: string | null;

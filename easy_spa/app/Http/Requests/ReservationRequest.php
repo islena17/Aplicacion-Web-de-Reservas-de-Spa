@@ -15,14 +15,16 @@ class ReservationRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'client_id' => 'required|exists:clients,id',
-            'spa_id' => 'sometimes|exists:spas,id',
-            'service_id' => 'required|exists:services,id',
-            'employee_id' => 'nullable|exists:employees,id',
+            'client_id' => ['nullable', 'exists:clients,id'],
+            'spa_id' => ['sometimes', 'exists:spas,id'],
+            'service_id' => ['required', 'exists:services,id'],
+            'employee_id' => ['nullable', 'exists:employees,id'],
 
-            'reservation_date' => 'required|date',
-            'start_time' => 'required|date_format:H:i',
-            'end_time' => 'required|date_format:H:i|after:start_time',
+            'reservation_date' => ['required', 'date'],
+            'start_time' => ['required', 'date_format:H:i'],
+            'end_time' => ['required', 'date_format:H:i', 'after:start_time'],
+
+            'number_of_people' => ['required', 'integer', 'min:1'],
 
             'status' => [
                 'sometimes',
@@ -30,10 +32,7 @@ class ReservationRequest extends FormRequest
                 Rule::in(['pending', 'confirmed', 'cancelled', 'completed', 'no_show']),
             ],
 
-            'final_price' => 'required|numeric|min:0|max:999999.99',
-            'observations' => 'nullable|string',
-
-            'client_id' => ['nullable', 'exists:clients,id'],
+            'observations' => ['nullable', 'string'],
 
             'client' => ['nullable', 'array'],
             'client.name' => ['required_without:client_id', 'string', 'max:255'],
@@ -42,7 +41,6 @@ class ReservationRequest extends FormRequest
             'client.telephone' => ['nullable', 'string', 'max:255'],
         ];
     }
-
     public function messages(): array
     {
         return [
@@ -70,10 +68,9 @@ class ReservationRequest extends FormRequest
             'status.string' => 'El estado debe ser texto.',
             'status.in' => 'El estado debe ser pending, confirmed, cancelled o completed.',
 
-            'final_price.required' => 'El precio final es obligatorio.',
-            'final_price.numeric' => 'El precio final debe ser un número.',
-            'final_price.min' => 'El precio final no puede ser negativo.',
-            'final_price.max' => 'El precio final es demasiado alto.',
+            'number_of_people.required' => 'El número de personas es obligatorio.',
+            'number_of_people.integer' => 'El número de personas debe ser un número entero.',
+            'number_of_people.min' => 'Debe haber al menos una persona en la reserva.',
 
             'observations.string' => 'Las observaciones deben ser texto.',
         ];
