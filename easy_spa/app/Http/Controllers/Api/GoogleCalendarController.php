@@ -44,6 +44,6 @@ class GoogleCalendarController extends Controller
             'google_token' => json_encode($token),
         ]);
 
-        return redirect('http://localhost:5173/webmaster/calendar');
+        return redirect('https://easyspa.onrender.com/webmaster/calendar');
     }
 }
