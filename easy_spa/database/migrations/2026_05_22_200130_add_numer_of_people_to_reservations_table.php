@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('reservations', function (Blueprint $table) {
-            $table->integer('number_of_people');
+           $table->integer('number_of_people')->default(1);
         });
     }
 
@@ -22,7 +22,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('reservations', function (Blueprint $table) {
-            $table->integer('number_of_people');
+            $table->integer('number_of_people')->default(1);
         });
     }
 };
