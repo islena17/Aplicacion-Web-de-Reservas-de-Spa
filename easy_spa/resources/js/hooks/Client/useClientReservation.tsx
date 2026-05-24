@@ -1,11 +1,7 @@
 import { ChangeEvent, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '@/lib/axios';
-
-type Employee = {
-    id: number;
-    name: string;
-};
+import { Employee } from '@/types';
 
 type Slot = {
     employee_id: number | null;
@@ -27,6 +23,7 @@ export function useClientReservation(spaSlug?: string, serviceSlug?: string) {
         reservation_date: '',
         start_time: '',
         end_time: '',
+        number_of_people: '',
         observations: '',
     });
 
@@ -136,8 +133,9 @@ export function useClientReservation(spaSlug?: string, serviceSlug?: string) {
                 reservation_date: form.reservation_date,
                 start_time: form.start_time,
                 end_time: form.end_time,
+                number_of_people: form.number_of_people,
                 observations: form.observations || null,
-                final_price: service.price
+                final_price: Number(service.price) * Number(form.number_of_people || 1),
             });
 
             navigate(`/spas/${spaSlug}`);

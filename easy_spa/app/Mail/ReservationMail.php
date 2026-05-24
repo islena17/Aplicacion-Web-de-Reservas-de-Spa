@@ -16,36 +16,32 @@ class ReservationMail extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 
-    public Reservation $reservation;
+    public Reservation $reservation; 
 
     public function __construct(Reservation $reservation)
     {
-        $this->reservation = $reservation;
+        $this->reservation = $reservation; 
     }
-
     public function envelope(): Envelope
     {
-        return new Envelope(
-            subject: 'Confirmación de reserva',
-        );
+        return new Envelope(subject: 'Confirmación de reserva');
     }
 
     public function content(): Content
     {
-        return new Content(
-            view: 'emails.reservation',
-        );
+        return new Content(view: 'emails.reservation');
     }
 
     public function attachments(): array
     {
-        $pdf = Pdf::loadView('pdfs.confirmation', [
+        // Se genera justo al enviar, cuando el job se ejecuta
+        $pdfOutput = Pdf::loadView('pdfs.confirmation', [
             'reservation' => $this->reservation,
-        ]);
+        ])->output();
 
         return [
             Attachment::fromData(
-                fn () => $pdf->output(),
+                fn() => $pdfOutput,
                 'confirmacion-reserva-' . $this->reservation->id . '.pdf'
             )->withMime('application/pdf'),
         ];

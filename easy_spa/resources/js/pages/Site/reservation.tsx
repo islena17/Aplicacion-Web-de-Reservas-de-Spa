@@ -72,9 +72,16 @@ export default function ClientReservation() {
                                     {service?.length_minutes} min
                                 </div>
 
-                                <div className="fw-bold mb-4" style={{ color: '#5ebd94', fontSize: '1.5rem' }}>
-                                    {Number(service?.price).toFixed(2)} €
+                                <div className="fw-bold mb-2" style={{ color: '#5ebd94', fontSize: '1.5rem' }}>
+                                    {(
+                                        Number(service?.price || 0) *
+                                        Number(form.number_of_people || 1)
+                                    ).toFixed(2)} €
                                 </div>
+
+                                <small className="text-muted">
+                                    {service?.price} € x {form.number_of_people || 1} persona(s)
+                                </small>
 
                                 <hr />
 
@@ -173,6 +180,33 @@ export default function ClientReservation() {
                                             )}
                                         </div>
 
+                                        <div className="col-12 col-md-6">
+                                            <label className="form-label fw-semibold">
+                                                Número de personas
+                                            </label>
+
+                                            <input
+                                                type="number"
+                                                min="1"
+                                                max={service?.capacity}
+                                                name="number_of_people"
+                                                value={form.number_of_people}
+                                                onChange={handleChange}
+                                                className="form-control"
+                                                placeholder="Ej: 2"
+                                            />
+
+                                            <small className="text-muted">
+                                                Capacidad máxima: {service?.capacity} personas
+                                            </small>
+
+                                            {errors.number_of_people && (
+                                                <div className="text-danger small mt-1">
+                                                    {errors.number_of_people[0]}
+                                                </div>
+                                            )}
+                                        </div>
+
                                         <div className="col-12">
                                             <label className="form-label fw-semibold">Observaciones</label>
                                             <textarea
@@ -194,7 +228,7 @@ export default function ClientReservation() {
                                                 !form.reservation_date ||
                                                 !form.start_time ||
                                                 !form.end_time
-                                                
+
                                             }
                                             className="btn"
                                             style={{

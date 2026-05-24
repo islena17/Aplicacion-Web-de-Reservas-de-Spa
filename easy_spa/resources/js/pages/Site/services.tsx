@@ -168,7 +168,7 @@ const {
 
                                                         <span>
                                                             <i className="bi bi-people me-1"></i>
-                                                            Capacidad {service.capacity}
+                                                            Maximo de personas: {service.capacity}
                                                         </span>
                                                          <span>
                                                             <i className="bi bi-geo-alt"></i>

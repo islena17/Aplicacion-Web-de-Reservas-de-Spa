@@ -16,6 +16,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Validation\ValidationException;
 
 class ReservationController extends Controller
 {
@@ -51,6 +52,24 @@ class ReservationController extends Controller
         $service = Service::where('is_active', true)
             ->findOrFail($data['service_id']);
 
+        if (
+            Reservation::exceedsServiceCapacity(
+                $service,
+                $data['number_of_people']
+            )
+        ) {
+            throw ValidationException::withMessages([
+                'number_of_people' => [
+                    'La capacidad máxima de este servicio es de ' . $service->capacity . ' personas.',
+                ],
+            ]);
+        }
+
+        $data['final_price'] = Reservation::calculateTotalPrice(
+            $service,
+            $data['number_of_people']
+        );
+
         $employeeId = $data['employee_id'] ?? null;
 
         if ($employeeId) {
@@ -72,7 +91,6 @@ class ReservationController extends Controller
                 'client_id' => $client->id,
                 'spa_id' => $service->spa_id,
                 'status' => 'pending',
-                'final_price' => $service->price,
             ]);
 
             if ($employeeId) {
@@ -88,6 +106,7 @@ class ReservationController extends Controller
 
             return $reservation;
         });
+
         $reservation->load([
             'client',
             'spa',
@@ -95,8 +114,15 @@ class ReservationController extends Controller
             'employee',
         ]);
 
-        Mail::to($reservation->client->email)
-            ->send(new ReservationMail($reservation));
+        try {
+            Mail::to($reservation->client->email)
+                ->send(new ReservationMail($reservation));
+        } catch (\Throwable $e) {
+            logger()->error('Error enviando email reserva', [
+                'message' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(), 
+            ]);
+        }
 
         return response()->json([
             'message' => 'Reserva creada correctamente',

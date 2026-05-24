@@ -251,7 +251,7 @@ export default function SpaShow() {
 
                                     <span>
                                       <i className="bi bi-people me-1"></i>
-                                      Capacidad {service.capacity}
+                                      Máximo de personas: {service.capacity}
                                     </span>
                                   </div>
                                 </div>
