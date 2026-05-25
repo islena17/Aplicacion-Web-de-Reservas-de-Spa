@@ -78,12 +78,66 @@
 .navbar-toggler:focus {
   box-shadow: none;
 }
-
 @media (max-width: 991px) {
+  .hero-section{
+    margin-top: 80px;
+  }
+  .custom-navbar .container-fluid {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .navbar-brand {
+    flex: 1;
+  }
+
+  .navbar-toggler {
+    display: block;
+    margin-left: auto;
+  }
+
+  .navbar-content {
+    display: none;
+    flex-basis: 100%;
+    width: 100%;
+    flex-direction: column;
+    align-items: stretch;
+    padding-top: 1rem;
+  }
+
+  .navbar-content.open {
+    display: flex;
+  }
+
+  .navbar-nav-custom {
+    width: 100%;
+    flex-direction: column;
+    align-items: stretch;
+    text-align: center;
+    gap: 0.5rem;
+  }
+
+  .navbar-buttons {
+    width: 100%;
+    flex-direction: column;
+    align-items: stretch;
+    margin-top: 1rem;
+  }
+
+  .navbar-buttons .btn {
+    width: 100%;
+  }
+}
+/* =========================
+   MOBILE (<768px)
+========================= */
+@media (max-width: 767px) {
+
   .custom-navbar .container-fluid {
     flex-wrap: wrap;
-    padding-left: 1.5rem !important;
-    padding-right: 1.5rem !important;
+    padding-left: 1.2rem !important;
+    padding-right: 1.2rem !important;
   }
 
   .navbar-content {
@@ -245,6 +299,7 @@
 @media (max-width: 768px) {
   .hero-section {
     padding: 4rem 0;
+    margin-top: 80px;
   }
 
   .hero-img {
@@ -291,8 +346,159 @@
 .custom-service-card:hover .service-img {
   transform: scale(1.1);
 }
+/*botones*/
 
-.btn-reserve:hover {
-  filter: brightness(90%);
-  box-shadow: 0 4px 12px rgba(148, 190, 172, 0.3);
+/*VER SPA*/
+.spa-view-btn {
+  background-color: #E0C38D;
+  color: white;
+
+  border: none;
+  border-radius: 14px;
+
+  padding: 11px 20px;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
+  font-size: 0.95rem;
+  font-weight: 700;
+
+  transition: all 0.2s ease;
+}
+
+.spa-view-btn i {
+  font-size: 1rem;
+}
+
+.spa-view-btn:hover {
+  opacity: 0.92;
+  transform: translateY(-2px);
+}
+
+/*RESERVAR*/
+.reserve-btn {
+  background-color: #E0C38D;
+  color: white;
+
+  border: none;
+  border-radius: 14px;
+
+  padding: 10px 18px;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
+  font-size: 0.92rem;
+  font-weight: 700;
+
+  transition: all 0.2s ease;
+}
+
+.reserve-btn i {
+  font-size: 1rem;
+}
+
+.reserve-btn:hover {
+  opacity: 0.92;
+  transform: translateY(-2px);
+}
+
+/*CONFIRMAR RESERVA*/
+
+.confirm-reservation-btn {
+  background-color: #7a9e9f;
+  color: white;
+
+  border: none;
+  border-radius: 14px;
+
+  padding: 12px 22px;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
+  font-size: 0.95rem;
+  font-weight: 700;
+
+  transition: all 0.2s ease;
+}
+
+.confirm-reservation-btn i {
+  font-size: 1rem;
+}
+
+.confirm-reservation-btn:hover:not(:disabled) {
+  opacity: 0.92;
+  transform: translateY(-2px);
+}
+
+.confirm-reservation-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/*PAGINA PRINCIPAL*/
+
+/*TOP SERVICES*/
+.reserve-now-btn {
+  background-color: var(--color-secondary);
+  color: white;
+
+  border: none;
+  border-radius: 14px;
+
+  padding: 12px 18px;
+
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+
+  font-size: 0.95rem;
+  font-weight: 700;
+
+  transition: all 0.2s ease;
+}
+
+.reserve-now-btn i {
+  font-size: 1rem;
+}
+
+.reserve-now-btn:hover {
+  opacity: 0.92;
+  transform: translateY(-2px);
+}
+
+/*LATEST SERVICEs*/
+
+.reserve-pill-btn {
+  background-color: var(--color-secondary);
+  color: white;
+
+  border: none;
+  border-radius: 999px;
+
+  padding: 9px 16px;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+
+  font-size: 0.85rem;
+  font-weight: 700;
+
+  transition: all 0.2s ease;
+}
+
+.reserve-pill-btn i {
+  font-size: 0.95rem;
+}
+
+.reserve-pill-btn:hover {
+  opacity: 0.92;
+  transform: translateY(-1px);
 }

@@ -42,7 +42,7 @@ public function index()
             'color' => $reservation->employee->timetable_colour ?? '#3788d8',
             'extendedProps' => [
                 'cliente' => $reservation->client->name,
-                'empleado' => $reservation->employee->name,
+                'empleado' => $reservation->employee?->name,
                 'servicio' => $reservation->service->name,
                 'estado' => $reservation->status,
                 'precio' => $reservation->final_price,

@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\Log;
 
 class ReservationController extends Controller
 {
@@ -117,10 +118,12 @@ class ReservationController extends Controller
         try {
             Mail::to($reservation->client->email)
                 ->send(new ReservationMail($reservation));
+
+            Log::info('Email enviado correctamente');
         } catch (\Throwable $e) {
-            logger()->error('Error enviando email reserva', [
+            Log::error('Error enviando email reserva', [
                 'message' => $e->getMessage(),
-                'trace' => $e->getTraceAsString(), 
+                'trace' => $e->getTraceAsString(),
             ]);
         }
 

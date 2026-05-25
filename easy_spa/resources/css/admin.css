@@ -407,3 +407,250 @@ body {
     padding: 1rem;
   }
 }
+
+/*BOTONES*/
+
+
+.custom-action-wrapper {
+  background: transparent;
+  border: none;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  padding: 0;
+}
+
+.action-icon {
+  font-size: 1.1rem;
+  margin-bottom: 4px;
+}
+
+.action-label {
+  padding: 3px 10px;
+  border-radius: 8px;
+
+  font-size: 0.7rem;
+  font-weight: 600;
+
+  color: white;
+
+  transition: all 0.2s ease;
+}
+
+/* VER */
+.view-label {
+  background-color: var(--color-button2);
+}
+
+/* EDITAR */
+.edit-label {
+  background-color: var(--color-button);
+}
+
+/* ELIMINAR */
+.delete-label {
+  background-color: #dc3545;
+}
+
+.custom-action-wrapper:hover .action-label {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+.custom-main-btn {
+  border: none;
+  border-radius: 14px;
+
+  padding: 10px 18px;
+
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  font-size: 0.9rem;
+  font-weight: 700;
+
+  transition: all 0.2s ease;
+}
+
+.custom-main-btn i {
+  font-size: 1rem;
+}
+
+/* CREAR */
+.create-btn {
+  background-color: #E0C38D;
+  color: white;
+}
+
+.create-btn:hover {
+  opacity: 0.92;
+  transform: translateY(-1px);
+}
+
+/* VOLVER */
+.back-btn {
+  background-color: #F2E6D0;
+  color: #7a6440;
+}
+
+.back-btn:hover {
+  opacity: 0.92;
+  transform: translateY(-1px);
+}
+
+/*botones de navegacion show spa wm*/
+
+.spa-navigation-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.spa-nav-btn {
+  border: none;
+  border-radius: 14px;
+
+  padding: 10px 18px;
+
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  font-size: 0.9rem;
+  font-weight: 700;
+
+  transition: all 0.2s ease;
+}
+
+.spa-nav-btn i {
+  font-size: 1rem;
+}
+
+/* BOTÓN PRINCIPAL */
+.spa-nav-primary {
+  background-color: #E0C38D;
+  color: white;
+}
+
+/* BOTONES SECUNDARIOS */
+.spa-nav-secondary {
+  background-color: #F2E6D0;
+  color: #7a6440;
+}
+
+/* CALENDARIO Y HORARIO */
+.spa-nav-calendar {
+  background-color: #7a9e9f;
+  color: white;
+}
+
+/* HOVER GENERAL */
+.spa-nav-btn:hover {
+  transform: translateY(-2px);
+  opacity: 0.92;
+}
+
+.form-action-btn {
+  border: none;
+  border-radius: 14px;
+
+  padding: 10px 14px;
+
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+
+  min-width: 140px;
+
+  font-size: 0.88rem;
+  font-weight: 700;
+
+  transition: all 0.2s ease;
+}
+
+.form-action-btn i {
+  font-size: 0.95rem;
+}
+
+/* CANCELAR */
+.cancel-btn {
+  background-color: var(--color-button);
+  color: #7a6440;
+  border: 1px solid #ececec;
+}
+
+.cancel-btn:hover {
+  background-color: var(--color-secondary);
+  transform: translateY(-1px);
+}
+
+/* GUARDAR */
+.save-btn {
+  background-color: var(--color-button2);
+  color: white;
+}
+
+.save-btn:hover {
+  opacity: 0.92;
+  transform: translateY(-1px);
+}
+
+.save-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/*botones dentro del show*/
+
+.employee-actions {
+  margin-top: 8px;
+}
+
+.custom-main-btn {
+  border: none;
+  border-radius: 14px;
+
+  padding: 10px 16px;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
+  font-size: 0.9rem;
+  font-weight: 700;
+
+  transition: all 0.2s ease;
+}
+
+.custom-main-btn i {
+  font-size: 1rem;
+}
+
+
+/* EDITAR */
+.edit-2-btn {
+  background-color: #E0C38D;
+  color: white;
+}
+
+.edit-2-btn:hover, .schedule-btn:hover, .delete-btn:hover {
+  opacity: 0.92;
+  transform: translateY(-1px);
+}
+
+/* HORARIO */
+.schedule-btn {
+  background-color: #7a9e9f;
+  color: white;
+}
+
+
+.delete-btn{
+  background-color: #dc3545;
+  color: #fff
+}
+

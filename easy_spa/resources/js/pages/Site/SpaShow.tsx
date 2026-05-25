@@ -269,7 +269,8 @@ export default function SpaShow() {
                                   </div>
 
                                   <button
-                                    className="btn"
+                                    type="button"
+                                    className="reserve-btn"
                                     onClick={() => {
                                       const reservationUrl = `/client/reservation-data/${spa.slug}/${service.slug}`;
 
@@ -282,16 +283,9 @@ export default function SpaShow() {
 
                                       navigate(reservationUrl);
                                     }}
-                                    style={{
-                                      backgroundColor: '#E0C38D',
-                                      color: '#fff',
-                                      borderRadius: '12px',
-                                      padding: '10px 18px',
-                                      fontWeight: 700,
-                                      border: 'none',
-                                    }}
                                   >
-                                    Reservar
+                                    <i className="bi bi-calendar-check"></i>
+                                    <span>Reservar</span>
                                   </button>
                                 </div>
 

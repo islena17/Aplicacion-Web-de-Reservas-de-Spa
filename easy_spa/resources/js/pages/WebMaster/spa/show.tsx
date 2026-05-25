@@ -61,21 +61,17 @@ export default function ShowSpa() {
             <div className="d-flex gap-2">
               <button
                 type="button"
-                className="btn"
+                className="custom-main-btn edit-2-btn"
                 onClick={() => navigate(`/dashboard/spas/${spa.slug}/edit`)}
-                style={{
-                  backgroundColor: '#F2E6D0',
-                  color: '#7a6440',
-                  borderRadius: '12px',
-                  padding: '10px 18px',
-                  fontWeight: 600,
-                }}
               >
-                Editar spa
+                <i className="bi bi-pencil-square action-icon"></i>
+                <span>
+                  Editar
+                </span>
               </button>
               <button
                 type="button"
-                className="btn btn-danger"
+                className="custom-main-btn delete-btn"
                 onClick={async () => {
                   const deleted = await deleteSpa();
 
@@ -83,26 +79,16 @@ export default function ShowSpa() {
                     navigate('/dashboard/spas');
                   }
                 }}
-                style={{
-                  borderRadius: '12px',
-                  fontWeight: 700,
-                }}
               >
-                Eliminar Spa
+                <i className="bi bi-trash"></i>
+                  Eliminar
               </button>
 
               <button
                 type="button"
-                className="btn"
+                className="custom-main-btn back-btn"
                 onClick={() => navigate('/dashboard/spas')}
-                style={{
-                  backgroundColor: '#E0C38D',
-                  color: '#fff',
-                  borderRadius: '12px',
-                  padding: '10px 18px',
-                  fontWeight: 700,
-                  border: 'none',
-                }}
+
               >
                 <i className="bi bi-arrow-left"></i> Volver
               </button>
@@ -120,119 +106,80 @@ export default function ShowSpa() {
             style={{ borderRadius: '20px' }}
           >
             <div className="card-body p-3">
-              <div className="d-flex gap-2 flex-wrap">
+              <div className="spa-navigation-buttons">
+
                 <button
                   type="button"
-                  className="btn"
+                  className="spa-nav-btn spa-nav-primary"
                   onClick={() => navigate(`/dashboard/spas/${spa.slug}`)}
-                  style={{
-                    backgroundColor: '#E0C38D',
-                    color: '#fff',
-                    borderRadius: '12px',
-                    fontWeight: 700,
-                  }}
                 >
-                  Datos
+                  <i className="bi bi-building"></i>
+                  <span>Datos</span>
                 </button>
 
                 <button
                   type="button"
-                  className="btn"
+                  className="spa-nav-btn spa-nav-secondary"
                   onClick={() => navigate(`/dashboard/spas/${spa.slug}/reservations`)}
-                  style={{
-                    backgroundColor: '#F2E6D0',
-                    color: '#7a6440',
-                    borderRadius: '12px',
-                    fontWeight: 700,
-                  }}
                 >
-                  Reservas
+                  <i className="bi bi-calendar-check"></i>
+                  <span>Reservas</span>
                 </button>
 
                 <button
                   type="button"
-                  className="btn"
+                  className="spa-nav-btn spa-nav-secondary"
                   onClick={() => navigate(`/dashboard/spas/${spa.slug}/categories`)}
-                  style={{
-                    backgroundColor: '#F2E6D0',
-                    color: '#7a6440',
-                    borderRadius: '12px',
-                    fontWeight: 700,
-                  }}
                 >
-                  Categorías
+                  <i className="bi bi-tags"></i>
+                  <span>Categorías</span>
                 </button>
 
                 <button
                   type="button"
-                  className="btn"
+                  className="spa-nav-btn spa-nav-secondary"
                   onClick={() => navigate(`/dashboard/spas/${spa.slug}/services`)}
-                  style={{
-                    backgroundColor: '#F2E6D0',
-                    color: '#7a6440',
-                    borderRadius: '12px',
-                    fontWeight: 700,
-                  }}
                 >
-                  Servicios
+                  <i className="bi bi-stars"></i>
+                  <span>Servicios</span>
                 </button>
 
                 <button
                   type="button"
-                  className="btn"
+                  className="spa-nav-btn spa-nav-secondary"
                   onClick={() => navigate(`/dashboard/spas/${spa.slug}/employees`)}
-                  style={{
-                    backgroundColor: '#F2E6D0',
-                    color: '#7a6440',
-                    borderRadius: '12px',
-                    fontWeight: 700,
-                  }}
                 >
-                  Empleados
+                  <i className="bi bi-people"></i>
+                  <span>Empleados</span>
                 </button>
 
                 <button
                   type="button"
-                  className="btn"
+                  className="spa-nav-btn spa-nav-secondary"
                   onClick={() => navigate(`/dashboard/spas/${spa.slug}/clients`)}
-                  style={{
-                    backgroundColor: '#F2E6D0',
-                    color: '#7a6440',
-                    borderRadius: '12px',
-                    fontWeight: 700,
-                  }}
                 >
-                  Clientes
-                </button>
-                <button
-                  type="button"
-                  className="btn"
-                  onClick={() => navigate(`/dashboard/spas/${spa.slug}/calendar`)}
-                  style={{
-                    backgroundColor: '#7a9e9f',
-                    color: '#fff',
-                    borderRadius: '12px',
-                    padding: '10px 18px',
-                    fontWeight: 600,
-                  }}
-                >
-                  <i className="bi bi-calendar-week"></i> Calendario
+                  <i className="bi bi-person-heart"></i>
+                  <span>Clientes</span>
                 </button>
 
                 <button
                   type="button"
-                  className="btn"
-                  onClick={() => navigate(`/dashboard/spas/${spa.slug}/schedule`)}
-                  style={{
-                    backgroundColor: '#7a9e9f',
-                    color: '#fff',
-                    borderRadius: '12px',
-                    padding: '10px 18px',
-                    fontWeight: 600,
-                  }}
+                  className="spa-nav-btn spa-nav-calendar"
+                  onClick={() => navigate(`/dashboard/spas/${spa.slug}/calendar`)}
                 >
-                  <i className="bi bi-calendar-week"></i> Horario
+                  <i className="bi bi-calendar-week"></i>
+                  <span>Calendario</span>
                 </button>
+
+                <button
+                  type="button"
+                  className="spa-nav-btn spa-nav-calendar"
+                  onClick={() => navigate(`/dashboard/spas/${spa.slug}/schedule`)}
+                >
+                  <i className="bi bi-clock-history"></i>
+                  <span>Horario</span>
+                </button>
+
               </div>
             </div>
           </div>

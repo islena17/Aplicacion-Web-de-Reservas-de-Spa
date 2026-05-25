@@ -34,34 +34,20 @@ export default function ServiceShowLayout({
           <div className="d-flex gap-2">
             <button
               type="button"
-              className="btn"
+              className="custom-main-btn back-btn"
               onClick={() => navigate(backPath)}
-              style={{
-                backgroundColor: '#F2E6D0',
-                color: '#7a6440',
-                borderRadius: '12px',
-                padding: '10px 18px',
-                fontWeight: 600,
-              }}
-            >
+            ><i className="bi bi-arrow-left"></i>
               Volver
             </button>
 
             {editPath && (
               <button
                 type="button"
-                className="btn"
+                className="custom-main-btn edit-2-btn"
                 onClick={() => navigate(editPath)}
-                style={{
-                  backgroundColor: '#E0C38D',
-                  color: '#fff',
-                  borderRadius: '12px',
-                  padding: '10px 18px',
-                  fontWeight: 700,
-                  border: 'none',
-                }}
               >
-                Editar
+                <i className="bi bi-pencil-square"></i>
+                <span>Editar</span>
               </button>
             )}
           </div>

@@ -57,22 +57,19 @@ export default function AdminClientShow() {
 
                     <div className="d-flex gap-2">
                         <button
-                            className="btn btn-light border"
+                            className="custom-main-btn back-btn"
                             style={{ borderRadius: "12px" }}
                             onClick={() => navigate("/admin/clients")}
-                        >
+                        ><i className="bi bi-arrow-left"></i>
                             Volver
                         </button>
 
                         <button
-                            className="btn fw-semibold"
-                            style={{
-                                backgroundColor: "#E0C38D",
-                                color: "#fff",
-                                borderRadius: "12px",
-                            }}
+                            className="custom-main-btn edit-2-btn"
+                           
                             onClick={() => navigate(`/admin/clients/${clientId}/edit`)}
                         >
+                            <i className="bi bi-pencil-square"></i>
                             Editar cliente
                         </button>
                     </div>

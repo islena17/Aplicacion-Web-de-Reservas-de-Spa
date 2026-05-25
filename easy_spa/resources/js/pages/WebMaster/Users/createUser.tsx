@@ -275,29 +275,23 @@ export default function CreateUser() {
                                 <div className="d-flex gap-2 mt-4">
                                     <button
                                         type="submit"
-                                        className="btn"
+                                        className="form-action-btn save-btn"
                                         disabled={loading}
-                                        style={{
-                                            backgroundColor: '#E0C38D',
-                                            color: '#fff',
-                                            borderRadius: '12px',
-                                            fontWeight: 700,
-                                            padding: '8px 18px',
-                                        }}
-                                    >
-                                        {loading ? 'Creando...' : 'Crear usuario'}
+
+                                    ><i className="bi bi-check-circle"></i>
+
+                                        <span>
+                                            {loading ? 'Creando...' : 'Crear usuario'}
+                                        </span>
                                     </button>
 
                                     <button
                                         type="button"
-                                        className="btn btn-outline-secondary"
+                                        className="form-action-btn cancel-btn"
                                         onClick={() => navigate('/dashboard/users')}
-                                        style={{
-                                            borderRadius: '12px',
-                                            fontWeight: 600,
-                                        }}
-                                    >
-                                        Cancelar
+
+                                    ><i className="bi bi-x-circle"></i>
+                                        <span>Cancelar</span>
                                     </button>
                                 </div>
                             </form>

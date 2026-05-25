@@ -123,40 +123,29 @@ export default function EditAdminProfile() {
 
 
                         </div>
-                        <div className="d-flex col-lg-12 gap-2">
+                        <div className="d-flex col-lg-12 gap-3">
+
                             <button
                                 type="button"
-                                className="btn btn-sm w-50"
-                                onClick={() =>
-                                    navigate('/admin/spa')
-                                }
-                                style={{
-                                    backgroundColor: '#F7F7F7',
-                                    borderRadius: '12px',
-                                    fontWeight: 700,
-                                    padding: '10px 16px',
-                                    border: '1px solid #eee'
-                                }}
+                                className="form-action-btn cancel-btn w-50"
+                                onClick={() => navigate('/admin/spa')}
                             >
-                                Cancelar
+                                <i className="bi bi-x-circle"></i>
+                                <span>Cancelar</span>
                             </button>
 
                             <button
                                 type="submit"
-                                className="btn w-50"
+                                className="form-action-btn save-btn w-50"
                                 disabled={loading}
-                                style={{
-                                    backgroundColor: 'var(--color-main)',
-                                    color: '#fff',
-                                    borderRadius: '12px',
-                                    fontWeight: 700,
-                                    padding: '10px 16px',
-                                }}
                             >
-                                {loading
-                                    ? 'Guardando...'
-                                    : 'Guardar'}
+                                <i className="bi bi-check-circle"></i>
+
+                                <span>
+                                    {loading ? 'Guardando...' : 'Guardar'}
+                                </span>
                             </button>
+
                         </div>
                     </form>
                 </div>

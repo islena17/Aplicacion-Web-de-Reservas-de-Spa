@@ -50,23 +50,17 @@ export default function ShowClient() {
 
           <div className="d-flex gap-2">
             <button
-              className="btn btn-light border"
-              style={{ borderRadius: "12px" }}
+              className="custom-main-btn schedule-btn"
               onClick={() => navigate(-1)}
-            >
+            ><i className="bi bi-arrow-left"></i>
               Volver
             </button>
 
             <button
-              className="btn fw-semibold"
-              style={{
-                backgroundColor: "#E0C38D",
-                color: "#fff",
-                borderRadius: "12px",
-              }}
+              className="custom-main-btn edit-2-btn"
               onClick={() => navigate(`/dashboard/spas/${slug}/clients/${clientId}/edit`)}
-            >
-              Editar cliente
+            ><i className="bi bi-pencil-square"></i>
+              Editar
             </button>
           </div>
         </div>
@@ -81,7 +75,7 @@ export default function ShowClient() {
                 <Info label="Nombre" value={`${client.name} ${client.surname}`} />
                 <Info label="Email cliente" value={client.email} />
                 <Info label="Teléfono" value={client.telephone || "-"} />
-                <Info label="Estado" value={client.is_active === false ? "Inactivo" : "Activo"} />
+                
               </div>
             </div>
 
@@ -93,10 +87,7 @@ export default function ShowClient() {
                   <>
                     <Info label="ID usuario" value={client.user.id} />
                     <Info label="Email login" value={client.user.email} />
-                    <Info
-                      label="Estado usuario"
-                      value={client.user.is_active === false ? "Inactivo" : "Activo"}
-                    />
+                    
                   </>
                 ) : (
                   <p className="text-muted mb-0">Este cliente no tiene usuario asociado.</p>

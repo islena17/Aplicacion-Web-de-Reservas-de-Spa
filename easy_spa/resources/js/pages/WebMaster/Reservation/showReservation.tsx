@@ -39,16 +39,9 @@ export default function ShowReservation() {
             </div>
 
             <button
-              className="btn"
+              className="custom-main-btn back-btn"
               // CORRECCIÓN: Volver a la lista de reservas del dashboard
               onClick={() => navigate(`/dashboard/spas/${slug}/`)}
-              style={{
-                backgroundColor: '#F2E6D0',
-                color: '#7a6440',
-                borderRadius: '12px',
-                fontWeight: 700,
-                padding: '6px 14px',
-              }}
             >
               <i className="bi bi-arrow-left"></i> Volver
             </button>
@@ -221,29 +214,17 @@ export default function ShowReservation() {
                   <h5 className="fw-bold mb-4">Acciones</h5>
                   <div className="d-flex gap-2 flex-wrap">
                     <button
-                      className="btn"
+                      className="custom-main-btn edit-2-btn"
                       // Navegar a la edición usando el slug y el ID
                       onClick={() => navigate(`/dashboard/spas/${slug}/reservations/${reservation.id}/edit`)}
-                      style={{
-                        backgroundColor: '#E0C38D',
-                        color: '#fff',
-                        borderRadius: '12px',
-                        fontWeight: 700,
-                      }}
-                    >
+                    ><i className="bi bi-pencil-square"></i>
                       Editar reserva
                     </button>
 
                     <button
-                      className="btn"
+                      className="custom-main-btn back-btn"
                       onClick={() => navigate(`/dashboard/reservations`)}
-                      style={{
-                        backgroundColor: '#F2E6D0',
-                        color: '#7a6440',
-                        borderRadius: '12px',
-                        fontWeight: 700,
-                      }}
-                    >
+                    ><i className="bi bi-arrow-left"></i>
                       Listado global
                     </button>
                   </div>

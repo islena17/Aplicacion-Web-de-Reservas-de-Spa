@@ -107,25 +107,27 @@ export default function ClientReservation() {
 
                                 <form onSubmit={submitReservation}>
                                     <div className="row g-4">
-                                        <div className="col-12 col-md-6">
-                                            <label className="form-label fw-semibold">Empleado</label>
-                                            <select
-                                                name="employee_id"
-                                                value={form.employee_id}
-                                                onChange={handleChange}
-                                                className="form-select"
-                                            >
-                                                <option value="">Cualquier empleado disponible</option>
+                                        {!!service?.requires_employee && (
+                                            <div className="col-12 col-md-6">
+                                                <label className="form-label fw-semibold">Empleado</label>
+                                                <select
+                                                    name="employee_id"
+                                                    value={form.employee_id}
+                                                    onChange={handleChange}
+                                                    className="form-select"
+                                                >
+                                                    <option value="">Cualquier empleado disponible</option>
 
-                                                {(employees ?? []).map((employee) => (
-                                                    <option key={employee.id} value={employee.id}>
-                                                        {employee.name}
-                                                    </option>
-                                                ))}
-                                            </select>
-                                        </div>
+                                                    {(employees ?? []).map((employee) => (
+                                                        <option key={employee.id} value={employee.id}>
+                                                            {employee.name}
+                                                        </option>
+                                                    ))}
+                                                </select>
+                                            </div>
+                                        )}
 
-                                        <div className="col-12 col-md-6">
+                                        < div className={`col-12 ${service?.requires_employee ? 'col-md-6' : ''}`}>
                                             <label className="form-label fw-semibold">Fecha</label>
                                             <input
                                                 type="date"
@@ -228,28 +230,25 @@ export default function ClientReservation() {
                                                 !form.reservation_date ||
                                                 !form.start_time ||
                                                 !form.end_time
-
                                             }
-                                            className="btn"
-                                            style={{
-                                                backgroundColor: '#E0C38D',
-                                                color: '#fff',
-                                                borderRadius: '14px',
-                                                padding: '12px 26px',
-                                                fontWeight: 700,
-                                                border: 'none',
-                                            }}
+                                            className="confirm-reservation-btn"
                                         >
-                                            {loadingSubmit ? 'Reservando...' : 'Confirmar reserva'}
+                                            <i className="bi bi-calendar-check"></i>
+
+                                            <span>
+                                                {loadingSubmit
+                                                    ? 'Reservando...'
+                                                    : 'Confirmar reserva'}
+                                            </span>
                                         </button>
                                     </div>
                                 </form>
                             </div>
                         </div>
                     </div>
-                </div>
+                </div >
                 <Footer />
-            </div>
+            </div >
 
         </>
     );

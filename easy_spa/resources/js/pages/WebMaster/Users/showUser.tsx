@@ -41,15 +41,9 @@ export default function ShowUser() {
                         </div>
 
                         <button
-                            className="btn"
+                            className="custom-main-btn back-btn"
                             onClick={() => navigate('/dashboard/users')}
-                            style={{
-                                backgroundColor: '#F2E6D0',
-                                color: '#7a6440',
-                                borderRadius: '12px',
-                                fontWeight: 700,
-                                padding: '6px 14px',
-                            }}
+
                         >
                             <i className="bi bi-arrow-left"></i>  Volver
                         </button>

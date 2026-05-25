@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import api from "@/lib/axios";
-import { Reservation, Client } from "@/types";
+import { Client } from "@/types";
 
 
 export function useClient(clientId?: string) {

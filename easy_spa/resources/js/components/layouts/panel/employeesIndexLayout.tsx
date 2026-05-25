@@ -53,31 +53,16 @@ export default function EmployeesIndexLayout({
 
           <div className="d-flex align-items-center gap-2">
             <button
-              className="btn"
+              className="custom-main-btn create-btn"
               onClick={() => navigate(createPath)}
-              style={{
-                backgroundColor: '#E0C38D',
-                color: '#fff',
-                borderRadius: '12px',
-                padding: '10px 18px',
-                fontWeight: 700,
-              }}
             >
-              <i className="bi bi-plus-lg"></i> Nuevo empleado
+              <i className="bi bi-plus-circle"></i> Nuevo empleado
             </button>
 
             {showBackButton && (
               <button
-                className="btn d-flex align-items-center gap-2"
+                className="custom-main-btn back-btn"
                 onClick={() => navigate(-1)}
-                style={{
-                  backgroundColor: "#F2E6D0",
-                  color: "#7a6440",
-                  borderRadius: "12px",
-                  padding: "10px 16px",
-                  fontWeight: 600,
-                  border: "none",
-                }}
               >
                 <i className="bi bi-arrow-left"></i>
                 Volver
@@ -132,42 +117,43 @@ export default function EmployeesIndexLayout({
                         </td>
 
                         <td className="text-end px-4">
-                          <div className="d-flex justify-content-end gap-2">
+                          <div className="d-flex justify-content-end gap-3">
+
                             <button
-                              className="btn btn-sm"
+                              type="button"
+                              className="custom-action-wrapper"
                               onClick={() => navigate(getShowPath(emp))}
-                              style={{
-                                backgroundColor: '#F2E6D0',
-                                color: '#7a6440',
-                                borderRadius: '10px',
-                              }}
                             >
-                              Ver
+                              <i className="bi bi-eye action-icon"></i>
+                              <span className="action-label view-label">
+                                Ver
+                              </span>
                             </button>
 
                             <button
-                              className="btn btn-sm"
+                              type="button"
+                              className="custom-action-wrapper"
                               onClick={() => navigate(getEditPath(emp))}
-                              style={{
-                                backgroundColor: '#E0C38D',
-                                color: '#fff',
-                                borderRadius: '10px',
-                              }}
                             >
-                              Editar
+                              <i className="bi bi-pencil-square action-icon"></i>
+                              <span className="action-label edit-label">
+                                Editar
+                              </span>
                             </button>
 
                             {onDelete && (
                               <button
-                                className="btn btn-sm btn-danger"
+                                type="button"
+                                className="custom-action-wrapper"
                                 onClick={() => onDelete(emp.id)}
-                                style={{
-                                  borderRadius: '10px',
-                                }}
                               >
-                                Eliminar
+                                <i className="bi bi-trash action-icon text-danger"></i>
+                                <span className="action-label delete-label">
+                                  Eliminar
+                                </span>
                               </button>
                             )}
+
                           </div>
                         </td>
                       </tr>

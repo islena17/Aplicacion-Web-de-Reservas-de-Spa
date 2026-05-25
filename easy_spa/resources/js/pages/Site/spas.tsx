@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import { useSpas } from '@/hooks/Public/Spa/useSpas';
 import Navbar from '@/components/layouts/Navbar';
 import SecondaryHero from '@/components/layouts/SecondaryHero';
-import spasHero from '@images/spasHero.jpg';
+import nuestros_spas from '@images/nuestros_spas.jpg';
 import Pagination from '@/components/layouts/Pagination';
 import { useState } from 'react';
 import Footer from '@/components/layouts/Footer';
@@ -61,7 +61,7 @@ export default function Spas() {
             <SecondaryHero
                 title="Nuestros spas"
                 subtitle="Descubre experiencias únicas de bienestar."
-                image={spasHero}
+                image={nuestros_spas}
             />
             <div
                 style={{
@@ -134,20 +134,12 @@ export default function Spas() {
 
                                                     <div className="mt-auto">
                                                         <button
-                                                            className="btn"
-                                                            onClick={() =>
-                                                                navigate(`/spas/${spa.slug}`)
-                                                            }
-                                                            style={{
-                                                                backgroundColor: '#E0C38D',
-                                                                color: '#fff',
-                                                                borderRadius: '14px',
-                                                                padding: '12px 24px',
-                                                                fontWeight: 700,
-                                                                border: 'none',
-                                                            }}
+                                                            type="button"
+                                                            className="spa-view-btn"
+                                                            onClick={() => navigate(`/spas/${spa.slug}`)}
                                                         >
-                                                            Ver spa
+                                                            <i className="bi bi-stars"></i>
+                                                            <span>Ver spa</span>
                                                         </button>
                                                     </div>
                                                 </div>

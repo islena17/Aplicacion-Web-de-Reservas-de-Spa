@@ -21,19 +21,19 @@ export default function LatestServices() {
       <div className="row g-3 justify-content-center">
         {latestServices.map((service) => (
           <div key={service.id} className="col-12 col-md-6 col-lg-3 d-flex justify-content-center">
-            <div className="card h-100 border-0 shadow-sm position-relative overflow-hidden" 
-                 style={{ borderRadius: '15px', maxWidth: '350px', width: '100%' }}>
-              
+            <div className="card h-100 border-0 shadow-sm position-relative overflow-hidden"
+              style={{ borderRadius: '15px', maxWidth: '350px', width: '100%' }}>
+
               {/* Cinta de "Nuevo" en la esquina */}
               <div className="new-ribbon">NUEVO</div>
 
-              <img 
-                src={service.image_url || 'https://via.placeholder.com/400x250'} 
-                className="card-img-top" 
+              <img
+                src={service.image_url || 'https://via.placeholder.com/400x250'}
+                className="card-img-top"
                 alt={service.name}
                 style={{ height: '180px', objectFit: 'cover' }}
               />
-              
+
               <div className="card-body p-4">
                 <div className="mb-2">
                   <small className="text-uppercase fw-bold text-muted" style={{ fontSize: '0.7rem', letterSpacing: '1px' }}>
@@ -45,23 +45,25 @@ export default function LatestServices() {
                   <span className="h5 mb-0" style={{ color: '#94beac', fontWeight: 'bold' }}>
                     {service.price}€
                   </span>
-                   <button
-                  className="btn btn-outline-dark btn-sm rounded-pill px-3"
-                  onClick={() => {
-                    const reservationUrl = `/client/reservation-data/${service.spa?.slug}/${service.slug}`;
+                  <button
+                    type="button"
+                    className="reserve-pill-btn"
+                    onClick={() => {
+                      const reservationUrl = `/client/reservation-data/${service.spa?.slug}/${service.slug}`;
 
-                    if (!user) {
-                      navigate("/login", {
-                        state: { from: reservationUrl },
-                      });
-                      return;
-                    }
+                      if (!user) {
+                        navigate("/login", {
+                          state: { from: reservationUrl },
+                        });
+                        return;
+                      }
 
-                    navigate(reservationUrl);
-                  }}
-                >
-                  Reservar Ahora
-                </button>
+                      navigate(reservationUrl);
+                    }}
+                  >
+                    <i className="bi bi-calendar-check"></i>
+                    <span>Reservar ahora</span>
+                  </button>
                 </div>
               </div>
             </div>

@@ -89,18 +89,13 @@ export default function SpaScheduleForm({
 
       <div className="text-end mt-4">
         <button
-          className="btn"
+          className="form-action-btn save-btn"
           onClick={saveSchedule}
-          disabled={loading}
-          style={{
-            backgroundColor: '#E0C38D',
-            color: '#fff',
-            borderRadius: '12px',
-            padding: '10px 24px',
-            fontWeight: 700,
-          }}
-        >
-          {loading ? 'Guardando...' : 'Guardar horario'}
+          disabled={loading}>
+          <i className="bi bi-check-circle"></i>
+          <span>
+            {loading ? 'Guardando...' : 'Guardar horario'}
+          </span>
         </button>
       </div>
     </div>

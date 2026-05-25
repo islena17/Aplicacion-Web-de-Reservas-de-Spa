@@ -6,12 +6,12 @@ import { useSpaShow } from '@/hooks/WebMaster/Spa/useSpaShow';
 
 
 export default function ReservationsIndex() {
-    const { slug } = useParams<{ slug: string }>();
+  const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
   const {
-  spa,
-  loading: spaLoading,
-} = useSpaShow(slug);
+    spa,
+    loading: spaLoading,
+  } = useSpaShow(slug);
   const {
     reservations,
     loading,
@@ -31,9 +31,9 @@ export default function ReservationsIndex() {
   }
 
   return (
-   
+
     <DashboardLayout>
-        
+
       <div style={{ backgroundColor: '#F7F7F7', minHeight: '100vh' }}>
         <div className="container py-4 py-lg-5">
           <div className="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
@@ -46,32 +46,30 @@ export default function ReservationsIndex() {
               </p>
             </div>
 
-            <div className="d-flex gap-2">
+            <div className="d-flex gap-3">
+
               <button
-                className="btn"
-                onClick={() => navigate(`/dashboard/spas/${slug}/reservations/create`)}
-                style={{
-                  backgroundColor: '#E0C38D',
-                  color: '#fff',
-                  borderRadius: '12px',
-                  fontWeight: 700,
-                }}
+                type="button"
+                className="custom-main-btn create-btn"
+                onClick={() =>
+                  navigate(`/dashboard/spas/${slug}/reservations/create`)
+                }
               >
-                Crear reserva
+                <i className="bi bi-plus-circle"></i>
+                <span>Crear reserva</span>
               </button>
 
               <button
-                className="btn"
-                onClick={() => navigate(`/dashboard/spas/${slug}`)}
-                style={{
-                  backgroundColor: '#F2E6D0',
-                  color: '#7a6440',
-                  borderRadius: '12px',
-                  fontWeight: 700,
-                }}
+                type="button"
+                className="custom-main-btn back-btn"
+                onClick={() =>
+                  navigate(`/dashboard/spas/${slug}`)
+                }
               >
-                Volver al spa
+                <i className="bi bi-arrow-left"></i>
+                <span>Volver al spa</span>
               </button>
+
             </div>
           </div>
 
@@ -108,38 +106,46 @@ export default function ReservationsIndex() {
                             <span className="badge bg-secondary">{reservation.status}</span>
                           </td>
                           <td className="px-4 py-3 text-end">
-                            <button
-                              className="btn btn-sm me-2"
-                              onClick={() => navigate(`/dashboard/spas/${slug}/reservations/${reservation.id}/edit`)}
-                              style={{
-                                backgroundColor: '#F2E6D0',
-                                color: '#7a6440',
-                                borderRadius: '10px',
-                                fontWeight: 600,
-                              }}
-                            >
-                              <i className="bi bi-pencil-square"></i>
-                            </button>
+                            <div className="d-flex justify-content-end gap-3">
 
-                            <button
-                              className="btn btn-sm me-2"
-                              onClick={() => navigate(`/dashboard/spas/${slug}/reservations/${reservation.id}`)}
-                              style={{
-                                backgroundColor: '#F2E6D0',
-                                color: '#7a6440',
-                                borderRadius: '10px',
-                                fontWeight: 600,
-                              }}
-                            >
-                              <i className="bi bi-eye"></i>
-                            </button>
+                              <button
+                                type="button"
+                                className="custom-action-wrapper"
+                                onClick={() =>
+                                  navigate(`/dashboard/spas/${slug}/reservations/${reservation.id}/edit`)
+                                }
+                              >
+                                <i className="bi bi-pencil-square action-icon"></i>
+                                <span className="action-label edit-label">
+                                  Editar
+                                </span>
+                              </button>
 
-                            <button
-                              className="btn btn-sm btn-outline-danger"
-                              onClick={() => deleteReservation(reservation.id)}
-                            >
-                              <i className="bi bi-x-square"></i>
-                            </button>
+                              <button
+                                type="button"
+                                className="custom-action-wrapper"
+                                onClick={() =>
+                                  navigate(`/dashboard/spas/${slug}/reservations/${reservation.id}`)
+                                }
+                              >
+                                <i className="bi bi-eye action-icon"></i>
+                                <span className="action-label view-label">
+                                  Ver
+                                </span>
+                              </button>
+
+                              <button
+                                type="button"
+                                className="custom-action-wrapper"
+                                onClick={() => deleteReservation(reservation.id)}
+                              >
+                                <i className="bi bi-trash action-icon text-danger"></i>
+                                <span className="action-label delete-label">
+                                  Eliminar
+                                </span>
+                              </button>
+
+                            </div>
                           </td>
                         </tr>
                       ))}

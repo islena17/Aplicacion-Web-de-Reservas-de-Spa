@@ -40,48 +40,37 @@ export default function AdminShowEmployee() {
               </p>
             </div>
 
-            <div className="d-flex gap-2">
+            <div className="d-flex gap-3 flex-wrap employee-actions">
+
               <button
-                className="btn"
+                type="button"
+                className="custom-main-btn back-btn"
                 onClick={() => navigate('/admin/employees')}
-                style={{
-                  backgroundColor: '#F2E6D0',
-                  color: '#7a6440',
-                  borderRadius: '12px',
-                  padding: '10px 18px',
-                  fontWeight: 600,
-                }}
               >
-                Volver
+                <i className="bi bi-arrow-left"></i>
+                <span>Volver</span>
               </button>
 
               <button
-                className="btn"
+                type="button"
+                className="custom-main-btn edit-2-btn"
                 onClick={() => navigate(`/admin/employees/${employee.id}/edit`)}
-                style={{
-                  backgroundColor: '#E0C38D',
-                  color: '#fff',
-                  borderRadius: '12px',
-                  padding: '10px 18px',
-                  fontWeight: 700,
-                }}
               >
-                Editar
+                <i className="bi bi-pencil-square"></i>
+                <span>Editar</span>
               </button>
 
               <button
-                className="btn"
-                onClick={() => navigate(`/admin/employees/${employee.id}/schedule`)}
-                style={{
-                  backgroundColor: '#7a9e9f',
-                  color: '#fff',
-                  borderRadius: '12px',
-                  padding: '10px 18px',
-                  fontWeight: 700,
-                }}
+                type="button"
+                className="custom-main-btn schedule-btn"
+                onClick={() =>
+                  navigate(`/admin/employees/${employee.id}/schedule`)
+                }
               >
-                <i className="bi bi-calendar-week"></i> Horario
+                <i className="bi bi-calendar-week"></i>
+                <span>Horario</span>
               </button>
+
             </div>
           </div>
 

@@ -55,15 +55,8 @@ export default function GlobalReservations() {
 
             <button
               type="button"
-              className="btn"
+              className="custom-main-btn back-btn"
               onClick={() => navigate(-1)}
-              style={{
-                backgroundColor: '#F2E6D0',
-                color: '#7a6440',
-                borderRadius: '12px',
-                padding: '10px 18px',
-                fontWeight: 600,
-              }}
             >
               <i className="bi bi-arrow-left"></i>  Volver
             </button>
@@ -139,15 +132,8 @@ export default function GlobalReservations() {
                 <div className="col-12 d-flex justify-content-end">
                   <button
                     type="button"
-                    className="btn"
+                    className="custom-main-btn back-btn"
                     onClick={clearFilters}
-                    style={{
-                      backgroundColor: '#F2E6D0',
-                      color: '#7a6440',
-                      borderRadius: '12px',
-                      padding: '9px 18px',
-                      fontWeight: 600,
-                    }}
                   >
                     Limpiar filtros
                   </button>
@@ -244,35 +230,33 @@ export default function GlobalReservations() {
                               {reservation.spa?.slug && (
                                 <button
                                   type="button"
-                                  className="btn btn-sm"
+                                  className="custom-action-wrapper"
                                   onClick={() =>
                                     navigate(
                                       `/dashboard/spas/${reservation.spa?.slug}/reservations/${reservation.id}`
                                     )
                                   }
-                                  style={{
-                                    backgroundColor: '#F2E6D0',
-                                    color: '#7a6440',
-                                    borderRadius: '10px',
-                                    fontWeight: 600,
-                                  }}
+
                                 >
-                                  Ver
+                                  <i className="bi bi-eye action-icon"></i>
+                              <span className="action-label view-label">
+                                Ver
+                              </span>
                                 </button>
                               )}
 
                               <button
                                 type="button"
-                                className="btn btn-sm btn-danger"
+                                className="custom-action-wrapper"
                                 onClick={() =>
                                   deleteReservation(reservation.id)
                                 }
-                                style={{
-                                  borderRadius: '10px',
-                                  fontWeight: 600,
-                                }}
+
                               >
-                                Eliminar
+                               <i className="bi bi-trash action-icon text-danger"></i>
+                                <span className="action-label delete-label">
+                                  Eliminar
+                                  </span>
                               </button>
                             </div>
                           </td>

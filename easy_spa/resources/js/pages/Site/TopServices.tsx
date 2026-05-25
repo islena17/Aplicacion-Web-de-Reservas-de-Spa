@@ -42,11 +42,8 @@ export default function TopServices() {
                 </p>
 
                 <button
-                  className="btn w-100 mt-2"
-                  style={{
-                    backgroundColor: "var(--color-secondary)",
-                    color: "white",
-                  }}
+                  type="button"
+                  className="reserve-now-btn w-100 mt-2"
                   onClick={() => {
                     const reservationUrl = `/client/reservation-data/${service.spa?.slug}/${service.slug}`;
 
@@ -60,7 +57,8 @@ export default function TopServices() {
                     navigate(reservationUrl);
                   }}
                 >
-                  Reservar Ahora
+                  <i className="bi bi-calendar-check"></i>
+                  <span>Reservar ahora</span>
                 </button>
               </div>
             </div>
