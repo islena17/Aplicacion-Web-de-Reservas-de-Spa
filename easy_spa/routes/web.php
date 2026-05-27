@@ -6,10 +6,11 @@ use Illuminate\Support\Facades\Artisan;
 
 Route::get('/migrar-base-de-datos-easyspa', function () {
     try {
-        // Ejecutamos el fresh y el seed juntos en un solo comando
+        // Forzamos el fresh de manera estricta
         Artisan::call('migrate:fresh', [
             '--force' => true,
-            '--seed' => true // <-- Esto ejecuta los seeders de forma segura en el mismo flujo
+            '--seed' => true,
+            '--drop-views' => true // Añadido para asegurar la limpieza en Postgres
         ]);
         
         $output = Artisan::output();
