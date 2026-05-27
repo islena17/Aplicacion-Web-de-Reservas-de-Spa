@@ -43,15 +43,9 @@ export default function UsersIndex() {
                         </div>
 
                         <button
-                            className="btn"
+                            className="custom-main-btn create-btn"
                             onClick={() => navigate('/dashboard/users/create')}
-                            style={{
-                                backgroundColor: '#E0C38D',
-                                color: '#fff',
-                                borderRadius: '12px',
-                                fontWeight: 700,
-                            }}
-                        >
+                        > <i className="bi bi-plus-circle"></i>
                             Crear usuario
                         </button>
                     </div>
@@ -101,17 +95,12 @@ export default function UsersIndex() {
                                 <div className="col-12 col-md-4">
                                     <button
                                         type="button"
-                                        className="btn w-100"
+                                        className="custom-main-btn back-btn"
                                         onClick={() => {
                                             setSelectedRole('');
                                             setSelectedSpa('');
                                         }}
-                                        style={{
-                                            backgroundColor: '#F2E6D0',
-                                            color: '#7a6440',
-                                            borderRadius: '12px',
-                                            fontWeight: 700,
-                                        }}
+
                                     >
                                         Limpiar filtros
                                     </button>
@@ -152,39 +141,42 @@ export default function UsersIndex() {
                                                 </td>
 
                                                 <td className="px-4 py-3 text-end">
-                                                    <button
-                                                        className="btn btn-sm me-2"
-                                                        onClick={() => navigate(`/dashboard/users/${user.id}`)}
-                                                        style={{
-                                                            backgroundColor: '#fcfbfb',
-                                                            color: '#7a6440',
-                                                            border: '1px solid #F2E6D0',
-                                                            borderRadius: '10px',
+                                                    <div className="d-flex justify-content-end gap-3">
 
-                                                            fontWeight: 600,
-                                                        }}
-                                                    >
-                                                        Ver
-                                                    </button>
-                                                    <button
-                                                        className="btn btn-sm me-2"
-                                                        onClick={() => navigate(`/dashboard/users/${user.id}/edit`)}
-                                                        style={{
-                                                            backgroundColor: '#F2E6D0',
-                                                            color: '#7a6440',
-                                                            borderRadius: '10px',
-                                                            fontWeight: 600,
-                                                        }}
-                                                    >
-                                                        Editar
-                                                    </button>
+                                                        <button
+                                                            type="button"
+                                                            className="custom-action-wrapper"
+                                                            onClick={() => navigate(`/dashboard/users/${user.id}`)}
+                                                        >
+                                                            <i className="bi bi-eye action-icon"></i>
+                                                            <span className="action-label view-label">
+                                                                Ver
+                                                            </span>
+                                                        </button>
 
-                                                    <button
-                                                        className="btn btn-sm btn-outline-danger"
-                                                        onClick={() => deleteUser(user.id)}
-                                                    >
-                                                        Eliminar
-                                                    </button>
+                                                        <button
+                                                            type="button"
+                                                            className="custom-action-wrapper"
+                                                            onClick={() => navigate(`/dashboard/users/${user.id}/edit`)}
+                                                        >
+                                                            <i className="bi bi-pencil-square action-icon"></i>
+                                                            <span className="action-label edit-label">
+                                                                Editar
+                                                            </span>
+                                                        </button>
+
+                                                        <button
+                                                            type="button"
+                                                            className="custom-action-wrapper"
+                                                            onClick={() => deleteUser(user.id)}
+                                                        >
+                                                            <i className="bi bi-trash action-icon text-danger"></i>
+                                                            <span className="action-label delete-label">
+                                                                Eliminar
+                                                            </span>
+                                                        </button>
+
+                                                    </div>
                                                 </td>
                                             </tr>
                                         ))}

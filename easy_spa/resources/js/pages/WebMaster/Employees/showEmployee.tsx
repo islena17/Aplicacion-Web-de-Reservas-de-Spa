@@ -42,43 +42,24 @@ const { employee, loading, error } = useEmployee(employeeId);
 
                         <div className="d-flex gap-2">
                             <button
-                                className="btn"
+                                className="custom-main-btn back-btn"
                                 onClick={() => navigate(`/dashboard/spas/${spaSlug}/employees`)}
-                                style={{
-                                    backgroundColor: '#F2E6D0',
-                                    color: '#7a6440',
-                                    borderRadius: '12px',
-                                    padding: '10px 18px',
-                                    fontWeight: 600,
-                                }}
-                            >
+                            ><i className="bi bi-arrow-left"></i>
                                 Volver
                             </button>
 
                             <button
-                                className="btn"
+                                className="custom-main-btn edit-2-btn"
                                 onClick={() => navigate(`/dashboard/spas/${spaSlug}/employees/${employee.id}/edit`)}
-                                style={{
-                                    backgroundColor: '#E0C38D',
-                                    color: '#fff',
-                                    borderRadius: '12px',
-                                    padding: '10px 18px',
-                                    fontWeight: 700,
-                                }}
-                            >
+                    
+                            ><i className="bi bi-pencil-square"></i>
                                 Editar
                             </button>
 
                             <button
-                                className="btn"
+                                className="custom-main-btn schedule-btn"
                                 onClick={() => navigate(`/dashboard/spas/${spaSlug}/employees/${employee.id}/schedule`)}
-                                style={{
-                                    backgroundColor: '#7a9e9f',
-                                    color: '#fff',
-                                    borderRadius: '12px',
-                                    padding: '10px 18px',
-                                    fontWeight: 700,
-                                }}
+            
                             >
                                 <i className="bi bi-calendar-week"></i> Horario
                             </button>

@@ -86,7 +86,7 @@ export default function ServiceForm({
 
         <form onSubmit={onSubmit}>
           <div className="row g-4">
-            
+
             {/* CATEGORÍA */}
             <div className="col-12 col-md-6">
               <label className="form-label fw-semibold">Categoría *</label>
@@ -199,7 +199,7 @@ export default function ServiceForm({
               )}
             </div>
 
-               {/* CAPACIDAD */}
+            {/* CAPACIDAD */}
             <div className="col-12 col-md-6">
               <label className="form-label fw-semibold">Capacidad (maximo personas) *</label>
               <input
@@ -283,12 +283,26 @@ export default function ServiceForm({
           </div>
 
           {/* BOTONES */}
-          <div className="d-flex justify-content-end gap-3 mt-5">
-            <button type="button" className="btn" onClick={onCancel} style={cancelButtonStyle}>
-              Cancelar
+          <div className="d-flex justify-content-end gap-3 flex-wrap">
+            <button
+              type="button"
+              className="form-action-btn cancel-btn"
+              onClick={onCancel}
+            >
+              <i className="bi bi-x-circle"></i>
+              <span>Cancelar</span>
             </button>
-            <button type="submit" className="btn" disabled={loading} style={submitButtonStyle}>
-              {loading ? loadingText : submitText}
+
+            <button
+              type="submit"
+              className="form-action-btn save-btn"
+              disabled={loading}
+            >
+              <i className="bi bi-check-circle"></i>
+
+              <span>
+                {loading ? loadingText : submitText}
+              </span>
             </button>
           </div>
         </form>
@@ -315,20 +329,4 @@ const checkboxStyle: React.CSSProperties = {
   alignItems: 'center'
 };
 
-const cancelButtonStyle: React.CSSProperties = {
-  backgroundColor: '#F2E6D0',
-  color: '#7a6440',
-  borderRadius: '12px',
-  padding: '10px 20px',
-  fontWeight: 600,
-  border: 'none'
-};
 
-const submitButtonStyle: React.CSSProperties = {
-  backgroundColor: '#E0C38D',
-  color: '#fff',
-  borderRadius: '12px',
-  padding: '10px 24px',
-  fontWeight: 700,
-  border: 'none'
-};

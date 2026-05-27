@@ -48,17 +48,10 @@ export default function AdminReservationsIndex() {
             </div>
 
             <button
-              className="btn"
+              className="custom-main-btn create-btn"
               onClick={() => navigate('/admin/reservations/create')}
-              style={{
-                backgroundColor: '#E0C38D',
-                color: '#fff',
-                borderRadius: '12px',
-                padding: '10px 18px',
-                fontWeight: 700,
-              }}
             >
-              <i className="bi bi-plus-lg"></i> Nueva reserva
+              <i className="bi bi-plus-circle"></i> Nueva reserva
             </button>
           </div>
 
@@ -137,44 +130,43 @@ export default function AdminReservationsIndex() {
                           </td>
 
                           <td className="text-end px-4">
-                            <div className="d-flex justify-content-end gap-2">
+                            <div className="d-flex justify-content-end gap-3">
 
                               <button
-                                className="btn btn-sm"
+                                type="button"
+                                className="custom-action-wrapper"
                                 onClick={() =>
                                   navigate(`/admin/reservations/${r.id}/edit`)
                                 }
-                                style={{
-                                  backgroundColor: '#E0C38D',
-                                  color: '#fff',
-                                  borderRadius: '10px',
-                                }}
                               >
-                                Editar
+                                <i className="bi bi-pencil-square action-icon"></i>
+                                <span className="action-label edit-label">
+                                  Editar
+                                </span>
                               </button>
+
                               <button
-                                className="btn btn-sm"
+                                type="button"
+                                className="custom-action-wrapper"
                                 onClick={() =>
                                   navigate(`/admin/reservations/${r.id}`)
                                 }
-                                style={{
-                                  backgroundColor: '#F2E6D0',
-                                  color: '#7a6440',
-                                  borderRadius: '10px',
-                                }}
                               >
-                                Ver
+                                <i className="bi bi-eye action-icon"></i>
+                                <span className="action-label view-label">
+                                  Ver
+                                </span>
                               </button>
+
                               <button
                                 type="button"
-                                className="btn btn-sm btn-danger"
+                                className="custom-action-wrapper"
                                 onClick={() => handleDelete(r.id)}
-                                style={{
-                                  borderRadius: '10px',
-                                  fontWeight: 600,
-                                }}
                               >
-                                <i className="bi bi-x-square"></i>
+                                <i className="bi bi-trash action-icon text-danger"></i>
+                                <span className="action-label delete-label">
+                                  Eliminar
+                                </span>
                               </button>
 
                             </div>

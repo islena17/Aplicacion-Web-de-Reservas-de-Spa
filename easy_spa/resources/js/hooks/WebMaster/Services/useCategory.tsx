@@ -24,8 +24,6 @@ export function useCategory(spaSlug?: string, categorySlug?: string) {
         `/api/webmaster/spas/${spaSlug}/categories/${categorySlug}`
       );
 
-      console.log('CATEGORY SHOW:', res.data);
-
       setCategory(res.data.data);
       setError(null);
     } catch (error) {

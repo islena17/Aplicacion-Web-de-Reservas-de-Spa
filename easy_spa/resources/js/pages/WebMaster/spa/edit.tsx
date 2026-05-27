@@ -53,15 +53,8 @@ export default function EditSpa() {
 
             <button
               type="button"
-              className="btn"
+              className="custom-main-btn back-btn"
               onClick={() => navigate(-1)}
-              style={{
-                backgroundColor: '#F2E6D0',
-                color: '#7a6440',
-                borderRadius: '12px',
-                padding: '10px 18px',
-                fontWeight: 600,
-              }}
             >
               <i className="bi bi-arrow-left"></i>  Volver
             </button>
@@ -293,33 +286,22 @@ export default function EditSpa() {
                 <div className="d-flex justify-content-end gap-3 mt-5">
                   <button
                     type="button"
-                    className="btn"
+                    className="form-action-btn cancel-btn"
                     onClick={() => navigate(-1)}
-                    style={{
-                      backgroundColor: '#F2E6D0',
-                      color: '#7a6440',
-                      borderRadius: '12px',
-                      padding: '10px 20px',
-                      fontWeight: 600,
-                    }}
                   >
+                    <i className="bi bi-x-circle"></i>
                     Cancelar
                   </button>
 
                   <button
                     type="submit"
-                    className="btn"
+                    className="form-action-btn save-btn"
                     disabled={loading}
-                    style={{
-                      backgroundColor: '#E0C38D',
-                      color: '#fff',
-                      borderRadius: '12px',
-                      padding: '10px 24px',
-                      fontWeight: 700,
-                      border: 'none',
-                    }}
-                  >
+          
+                  ><i className="bi bi-check-circle"></i>
+                  <span>
                     {loading ? 'Guardando...' : 'Guardar cambios'}
+                    </span>
                   </button>
                 </div>
               </form>

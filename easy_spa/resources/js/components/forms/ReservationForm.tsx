@@ -82,6 +82,9 @@ export default function ReservationForm({
   loadingSlots,
   selectSlot,
 }: ReservationFormProps) {
+
+  const service = services.find((s) => String(s.id) === String(form.service_id));
+
   return (
     <div
       className="card border-0 shadow-sm"
@@ -221,29 +224,30 @@ export default function ReservationForm({
                 </div>
               )}
             </div>
+            {!!service?.requires_employee && (
+              <div className="col-12 col-md-6">
+                <label className="form-label fw-semibold">Empleado</label>
+                <select
+                  name="employee_id"
+                  className={`form-select ${errors.employee_id ? 'is-invalid' : ''}`}
+                  value={form.employee_id}
+                  onChange={onChange}
+                >
+                  <option value="">Sin empleado asignado</option>
+                  {employees.map((employee) => (
+                    <option key={employee.id} value={employee.id}>
+                      {employee.name}
+                    </option>
+                  ))}
+                </select>
+                {errors.employee_id && (
+                  <div className="invalid-feedback">
+                    {fieldError(errors.employee_id)}
+                  </div>
+                )}
+              </div>
 
-            <div className="col-12 col-md-6">
-              <label className="form-label fw-semibold">Empleado</label>
-              <select
-                name="employee_id"
-                className={`form-select ${errors.employee_id ? 'is-invalid' : ''}`}
-                value={form.employee_id}
-                onChange={onChange}
-              >
-                <option value="">Sin empleado asignado</option>
-                {employees.map((employee) => (
-                  <option key={employee.id} value={employee.id}>
-                    {employee.name}
-                  </option>
-                ))}
-              </select>
-              {errors.employee_id && (
-                <div className="invalid-feedback">
-                  {fieldError(errors.employee_id)}
-                </div>
-              )}
-            </div>
-
+            )}
             <div className="col-12 col-md-6">
               <label className="form-label fw-semibold">Estado</label>
               <select
@@ -400,36 +404,26 @@ export default function ReservationForm({
             </div>
           </div>
 
-          <div className="d-flex justify-content-end gap-3 mt-5">
+          <div className="d-flex justify-content-end gap-3 flex-wrap">
             <button
               type="button"
-              className="btn"
+              className="form-action-btn cancel-btn"
               onClick={onCancel}
-              style={{
-                backgroundColor: '#F2E6D0',
-                color: '#7a6440',
-                borderRadius: '12px',
-                padding: '10px 20px',
-                fontWeight: 600,
-              }}
             >
-              Cancelar
+              <i className="bi bi-x-circle"></i>
+              <span>Cancelar</span>
             </button>
 
             <button
               type="submit"
-              className="btn"
+              className="form-action-btn save-btn"
               disabled={loading}
-              style={{
-                backgroundColor: '#E0C38D',
-                color: '#fff',
-                borderRadius: '12px',
-                padding: '10px 24px',
-                fontWeight: 700,
-                border: 'none',
-              }}
             >
-              {loading ? loadingText : submitText}
+              <i className="bi bi-check-circle"></i>
+
+              <span>
+                {loading ? 'Guardando...' : 'Guardar'}
+              </span>
             </button>
           </div>
         </form>

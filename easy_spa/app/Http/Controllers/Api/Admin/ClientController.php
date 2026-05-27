@@ -63,7 +63,6 @@ class ClientController extends Controller
             'data' => $client->load('user'),
         ], 201);
     }
-
     public function show(Client $client)
     {
         if (!$this->clientBelongsToAdminSpa($client)) {
@@ -71,10 +70,13 @@ class ClientController extends Controller
         }
 
         return response()->json([
-            'data' => $client->load('user'),
+            'data' => $client->load([
+                'user',
+                'reservations.service',
+                'reservations.employee',
+            ]),
         ]);
     }
-
     public function update(ClientRequest $request, Client $client)
     {
         if (!$this->clientBelongsToAdminSpa($client)) {
@@ -90,5 +92,4 @@ class ClientController extends Controller
             'data' => $client->load('user'),
         ]);
     }
-
 }

@@ -1,2 +1,7 @@
 *
 !.gitignore
+
+!/services/
+!/services/*
+!/spas/
+!/spas/*

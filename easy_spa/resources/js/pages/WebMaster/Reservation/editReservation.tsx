@@ -62,15 +62,9 @@ export default function CreateReservation() {
 
             <button
               type="button"
-              className="btn"
+              className="custom-main-btn back-btn"
               onClick={() => navigate(-1)}
-              style={{
-                backgroundColor: '#F2E6D0',
-                color: '#7a6440',
-                borderRadius: '12px',
-                padding: '10px 18px',
-                fontWeight: 600,
-              }}
+
             >
               <i className="bi bi-arrow-left"></i> Volver
             </button>

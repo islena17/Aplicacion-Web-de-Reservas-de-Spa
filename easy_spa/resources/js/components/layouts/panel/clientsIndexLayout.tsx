@@ -49,16 +49,8 @@ export default function ClientsIndexLayout({
 
           {showBackButton && (
             <button
-              className="btn d-flex align-items-center gap-2"
+              className="custom-main-btn back-btn"
               onClick={() => navigate(-1)}
-              style={{
-                backgroundColor: "#F2E6D0",
-                color: "#7a6440",
-                borderRadius: "12px",
-                padding: "10px 16px",
-                fontWeight: 600,
-                border: "none",
-              }}
             >
               <i className="bi bi-arrow-left"></i>
               Volver
@@ -102,42 +94,45 @@ export default function ClientsIndexLayout({
                         </td>
 
                         <td className="text-end px-4">
-                          <div className="d-flex justify-content-end gap-2">
+                          <div className="d-flex justify-content-end gap-3">
+
                             <button
-                              className="btn btn-sm"
+                              type="button"
+                              className="custom-action-wrapper"
                               onClick={() => navigate(getShowPath(client))}
-                              style={{
-                                backgroundColor: "#F2E6D0",
-                                color: "#7a6440",
-                                borderRadius: "10px",
-                              }}
                             >
-                              Ver
+                              <i className="bi bi-eye action-icon"></i>
+                              <span className="action-label view-label">
+                                Ver
+                              </span>
                             </button>
 
                             {getEditPath && (
                               <button
-                                className="btn btn-sm"
+                                type="button"
+                                className="custom-action-wrapper"
                                 onClick={() => navigate(getEditPath(client))}
-                                style={{
-                                  backgroundColor: "#E0C38D",
-                                  color: "#fff",
-                                  borderRadius: "10px",
-                                }}
                               >
-                                Editar
+                                <i className="bi bi-pencil-square action-icon"></i>
+                                <span className="action-label edit-label">
+                                  Editar
+                                </span>
                               </button>
                             )}
 
                             {onDelete && (
                               <button
-                                className="btn btn-sm btn-danger"
+                                type="button"
+                                className="custom-action-wrapper"
                                 onClick={() => onDelete(client.id)}
-                                style={{ borderRadius: '10px' }}
                               >
-                                Eliminar
+                                <i className="bi bi-trash action-icon text-danger"></i>
+                                <span className="action-label delete-label">
+                                  Eliminar
+                                </span>
                               </button>
                             )}
+
                           </div>
                         </td>
                       </tr>

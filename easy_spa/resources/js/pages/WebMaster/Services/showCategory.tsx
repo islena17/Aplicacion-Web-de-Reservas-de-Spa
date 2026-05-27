@@ -45,16 +45,10 @@ export default function ShowCategory() {
             </div>
 
             <button
-              className="btn"
+              className="custom-main-btn back-btn"
               onClick={() => navigate(`/dashboard/spas/${slug}`)}
-              style={{
-                backgroundColor: '#F2E6D0',
-                color: '#7a6440',
-                borderRadius: '12px',
-                fontWeight: 700,
-                padding: '6px 14px',
-              }}
             >
+               <i className="bi bi-arrow-left"></i> 
               Volver
             </button>
           </div>
@@ -84,20 +78,14 @@ export default function ShowCategory() {
 
                   <div className="d-flex gap-2 flex-wrap mt-4">
                     <button
-                      className="btn"
+                      className="custom-main-btn edit-2-btn"
                       onClick={() =>
                         navigate(
                           `/dashboard/spas/${slug}/categories/${category.slug}/edit`
                         )
                       }
-                      style={{
-                        backgroundColor: '#E0C38D',
-                        color: '#fff',
-                        borderRadius: '12px',
-                        fontWeight: 700,
-                      }}
-                    >
-                      Editar
+                    > <i className="bi bi-pencil-square"></i>
+                <span>Editar</span>
                     </button>
                   </div>
                 </div>

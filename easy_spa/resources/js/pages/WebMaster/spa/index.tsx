@@ -5,7 +5,7 @@ import { useSpas } from '@/hooks/WebMaster/Spa/useSpas';
 export default function Index() {
   const navigate = useNavigate();
 
-  const { spas, loading, error } = useSpas();
+  const { spas, loading, error, deleteSpa} = useSpas();
 
   return (
     <DashboardLayout>
@@ -23,18 +23,10 @@ export default function Index() {
 
             <button
               type="button"
-              className="btn"
+              className="custom-main-btn create-btn"
               onClick={() => navigate('/dashboard/spas/create')}
-              style={{
-                backgroundColor: '#E0C38D',
-                color: '#fff',
-                borderRadius: '12px',
-                padding: '10px 22px',
-                fontWeight: 700,
-                border: 'none',
-              }}
             >
-              Crear spa
+              <i className="bi bi-plus-circle"></i>  Crear spa
             </button>
           </div>
 
@@ -95,47 +87,50 @@ export default function Index() {
 
                           <td className="px-4 py-3">
                             <span
-                              className={`badge ${
-                                spa.is_active ? 'bg-success' : 'bg-secondary'
-                              }`}
+                              className={`badge ${spa.is_active ? 'bg-success' : 'bg-secondary'
+                                }`}
                             >
                               {spa.is_active ? 'Activo' : 'Inactivo'}
                             </span>
                           </td>
 
                           <td className="px-4 py-3 text-end">
-                            <button
-                              type="button"
-                              className="btn btn-sm"
-                              onClick={() =>
-                                navigate(`/dashboard/spas/${spa.slug}/edit`)
-                              }
-                              style={{
-                                backgroundColor: '#F2E6D0',
-                                color: '#7a6440',
-                                borderRadius: '10px',
-                                padding: '8px 14px',
-                                fontWeight: 600,
-                              }}
-                            >
-                              Editar
-                            </button>
-                           <button
-                              type="button"
-                              className="btn btn-sm ms-2"
-                              onClick={() =>
-                                navigate(`/dashboard/spas/${spa.slug}`)
-                              }
-                              style={{
-                                backgroundColor: '#F2E6D0',
-                                color: '#7a6440',
-                                borderRadius: '10px',
-                                padding: '8px 14px',
-                                fontWeight: 600,
-                              }}
-                            >
-                              Ver
-                            </button>
+                            <div className="d-flex justify-content-end gap-3">
+                              <button
+                                type="button"
+                                className="custom-action-wrapper"
+                                onClick={() =>
+                                  navigate(`/dashboard/spas/${spa.slug}/edit`)
+                                }
+                              >
+                                <i className="bi bi-pencil-square action-icon"></i>
+                                <span className="action-label edit-label">
+                                  Editar
+                                </span>
+                              </button>
+                              <button
+                                type="button"
+                                className="custom-action-wrapper"
+                                onClick={() =>
+                                  navigate(`/dashboard/spas/${spa.slug}`)
+                                }
+                              ><i className="bi bi-eye action-icon"></i>
+                                <span className="action-label view-label">
+                                  Ver
+                                </span>
+                              </button>
+
+                              <button
+                                type="button"
+                                className="custom-action-wrapper"
+                                onClick={() => deleteSpa(spa.slug)}
+                              >
+                                <i className="bi bi-trash action-icon text-danger"></i>
+                                <span className="action-label delete-label">
+                                  Eliminar
+                                </span>
+                              </button>
+                            </div>
                           </td>
                         </tr>
                       ))}

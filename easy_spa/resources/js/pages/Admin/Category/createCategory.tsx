@@ -27,16 +27,10 @@ export default function AdminCreateCategory() {
             </div>
 
             <button
-              className="btn"
-              onClick={() => navigate('/admin/categories')}
-              style={{
-                backgroundColor: '#F2E6D0',
-                color: '#7a6440',
-                borderRadius: '12px',
-                padding: '10px 18px',
-              }}
-            >
-              Volver
+              className="custom-main-btn back-btn"
+              onClick={() => navigate('/admin/categories')}>
+                <i className="bi bi-arrow-left"></i>
+                Volver
             </button>
           </div>
 

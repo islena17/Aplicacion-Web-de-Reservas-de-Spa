@@ -39,15 +39,9 @@ export default function AdminShowReservation() {
             </div>
 
             <button
-              className="btn"
+              className="custom-main-btn back-btn"
               onClick={() => navigate('/Admin/reservations')}
-              style={{
-                backgroundColor: '#F2E6D0',
-                color: '#7a6440',
-                borderRadius: '12px',
-                fontWeight: 700,
-                padding: '6px 14px',
-              }}
+              
             >
               <i className="bi bi-arrow-left"></i>  Volver
             </button>
@@ -91,7 +85,7 @@ export default function AdminShowReservation() {
                   <Info label="Fecha" value={reservation.reservation_date} />
                   <Info label="Hora inicio" value={reservation.start_time} />
                   <Info label="Hora fin" value={reservation.end_time} />
-                   <Info label="Numero de personas" value={reservation. number_of_people} />
+                  <Info label="Numero de personas" value={reservation.number_of_people} />
                   <Info label="Precio final" value={`${reservation.final_price} €`} />
                   <Info label="Estado" value={reservation.status ?? '-'} />
 
@@ -128,18 +122,15 @@ export default function AdminShowReservation() {
                       />
 
                       <button
-                        className="btn btn-sm mt-2"
+                        className="custom-action-wrapper"
                         onClick={() =>
                           navigate(`/Admin/clients/${reservation.client?.id}`)
                         }
-                        style={{
-                          backgroundColor: '#F2E6D0',
-                          color: '#7a6440',
-                          borderRadius: '10px',
-                          fontWeight: 700,
-                        }}
                       >
-                        Ver cliente
+                        <i className="bi bi-eye action-icon"></i>
+                        <span className="action-label view-label">
+                          Ver cliente
+                        </span>
                       </button>
                     </>
                   ) : (
@@ -217,34 +208,30 @@ export default function AdminShowReservation() {
                 <div className="card-body p-4">
                   <h5 className="fw-bold mb-4">Acciones</h5>
 
-                  <div className="d-flex gap-2 flex-wrap">
+                  <div className="d-flex gap-3 flex-wrap">
+
                     <button
-                      className="btn"
+                      type="button"
+                      className="custom-main-btn edit-2-btn"
                       onClick={() =>
                         navigate(`/admin/reservations/${reservation.id}/edit`)
                       }
-                      style={{
-                        backgroundColor: '#E0C38D',
-                        color: '#fff',
-                        borderRadius: '12px',
-                        fontWeight: 700,
-                      }}
                     >
-                      Editar reserva
+                      <i className="bi bi-pencil-square action-icon"></i>
+
+                      Editar
+
                     </button>
 
                     <button
-                      className="btn"
+                      type="button"
+                      className="custom-main-btn back-btn"
                       onClick={() => navigate('/admin/reservations')}
-                      style={{
-                        backgroundColor: '#F2E6D0',
-                        color: '#7a6440',
-                        borderRadius: '12px',
-                        fontWeight: 700,
-                      }}
                     >
-                      Ir al listado
+                      <i className="bi bi-list-ul"></i>
+                      <span>Ir al listado</span>
                     </button>
+
                   </div>
                 </div>
               </div>
