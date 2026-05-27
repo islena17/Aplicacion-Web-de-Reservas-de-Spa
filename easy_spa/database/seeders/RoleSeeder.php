@@ -21,11 +21,6 @@ class RoleSeeder extends Seeder
 
         Role::updateOrCreate(
             ['id' => 3],
-            ['name' => 'Employee']
-        );
-
-        Role::updateOrCreate(
-            ['id' => 4],
             ['name' => 'Client']
         );
     }

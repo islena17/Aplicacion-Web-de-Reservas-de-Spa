@@ -24,6 +24,25 @@ export function useSpas() {
     fetchSpas();
   }, []);
 
+
+  const deleteSpa = async (spaSlug: string) => {
+    const confirmDelete = window.confirm(
+      '¿Seguro que quieres eliminar este spa?'
+    );
+
+    if (!confirmDelete) return;
+
+    try {
+      await api.delete(`/api/webmaster/spas/${spaSlug}`);
+
+      setSpas((prev) =>
+        prev.filter((spa) => spa.slug !== spaSlug)
+      );
+    } catch {
+      setError('No se ha podido eliminar el spa');
+    }
+  };
+
   //para contar los spas en el dashboard
   const totalSpas = spas.length;
   const activeSpasCount = spas.filter(spa => spa.is_active).length;
@@ -34,5 +53,5 @@ export function useSpas() {
     const countB = (b as any).reservations?.length ?? 0;
     return countB - countA; 
   })[0];
-  return { spas, loading, error, totalSpas, spaTop, activeSpasCount };
+  return { spas, loading, error, totalSpas, spaTop, activeSpasCount, deleteSpa };
 }

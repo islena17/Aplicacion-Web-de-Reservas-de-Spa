@@ -17,7 +17,15 @@ class ServiceCategorySeeder extends Seeder
         ServiceCategory::create([
             'spa_id' => 1,
             'name' => 'Masajes',
-            'slug' => Str::slug('Masajes'),
+            'slug' => Str::slug('masajes'),
+            'description' => 'Servicios de masajes relajantes y terapéuticos',
+            'is_active' => true,
+            'order' => 1,
+        ]);
+        ServiceCategory::create([
+            'spa_id' => 1, 
+            'name' => 'Zona Termal',
+            'slug' => Str::slug('zona-termal'),
             'description' => 'Servicios de masajes relajantes y terapéuticos',
             'is_active' => true,
             'order' => 1,
@@ -25,7 +33,15 @@ class ServiceCategorySeeder extends Seeder
         ServiceCategory::create([
             'spa_id' => 2, 
             'name' => 'Masajes',
-            'slug' => Str::slug('Masajes'),
+            'slug' => Str::slug('masajes'),
+            'description' => 'Servicios de masajes relajantes y terapéuticos',
+            'is_active' => true,
+            'order' => 1,
+        ]);
+     ServiceCategory::create([
+            'spa_id' => 2, 
+            'name' => 'Aguas',
+            'slug' => Str::slug('aguas'),
             'description' => 'Servicios de masajes relajantes y terapéuticos',
             'is_active' => true,
             'order' => 1,
@@ -33,7 +49,7 @@ class ServiceCategorySeeder extends Seeder
         ServiceCategory::create([
             'spa_id' => 3, 
             'name' => 'Masajes',
-            'slug' => Str::slug('Masajes'),
+            'slug' => Str::slug('masajes'),
             'description' => 'Servicios de masajes relajantes y terapéuticos',
             'is_active' => true,
             'order' => 1,

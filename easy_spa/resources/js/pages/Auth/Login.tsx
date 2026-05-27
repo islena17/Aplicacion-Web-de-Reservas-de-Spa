@@ -85,10 +85,6 @@ export default function Login() {
                   Recordarme
                 </label>
               </div>
-
-              <a href="#" className="login-link">
-                ¿Olvidaste tu contraseña?
-              </a>
             </div>
 
             <button

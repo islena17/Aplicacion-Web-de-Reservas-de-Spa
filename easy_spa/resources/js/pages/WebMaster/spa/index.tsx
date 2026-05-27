@@ -5,7 +5,7 @@ import { useSpas } from '@/hooks/WebMaster/Spa/useSpas';
 export default function Index() {
   const navigate = useNavigate();
 
-  const { spas, loading, error } = useSpas();
+  const { spas, loading, error, deleteSpa} = useSpas();
 
   return (
     <DashboardLayout>
@@ -117,6 +117,17 @@ export default function Index() {
                               ><i className="bi bi-eye action-icon"></i>
                                 <span className="action-label view-label">
                                   Ver
+                                </span>
+                              </button>
+
+                              <button
+                                type="button"
+                                className="custom-action-wrapper"
+                                onClick={() => deleteSpa(spa.slug)}
+                              >
+                                <i className="bi bi-trash action-icon text-danger"></i>
+                                <span className="action-label delete-label">
+                                  Eliminar
                                 </span>
                               </button>
                             </div>
