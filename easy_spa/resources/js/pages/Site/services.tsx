@@ -118,8 +118,7 @@ export default function ShowServices() {
                                                     >
                                                         <img
                                                             src={
-                                                                service.image_url ||
-                                                                'https://images.unsplash.com/photo-1544161515-4ab6ce6db874?q=80&w=1200&auto=format&fit=crop'
+                                                                service.image_url ?? undefined
                                                             }
                                                             alt={service.name}
                                                             className="w-100 h-100"
