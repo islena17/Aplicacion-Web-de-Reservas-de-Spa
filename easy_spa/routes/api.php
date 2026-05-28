@@ -23,8 +23,6 @@ use App\Http\Controllers\Api\Employee\EmployeeBlockController as EmployeeEmploye
 use App\Http\Controllers\Api\Employee\ReservationController as EmployeeReservationController;
 use App\Http\Controllers\Api\Employee\AvailabilityController as EmployeeAvailabilityController;
 
-use App\Http\Controllers\Api\Public\AvailabilityController as PublicAvailabilityController;
-
 use App\Http\Controllers\Api\WebMaster\AvailabilityController;
 use App\Http\Controllers\Api\WebMaster\ClientController;
 use App\Http\Controllers\Api\WebMaster\EmployeeBlockController;
@@ -133,10 +131,6 @@ Route::middleware(['auth:sanctum', 'role:Client'])
     ->group(function () {
         Route::get('profile', [ProfileController::class, 'show']);
         Route::put('profile', [ProfileController::class, 'update']);
-
-        Route::get('spas', [ClientSpaController::class, 'index']);
-        Route::get('spas/{spa}', [ClientSpaController::class, 'show']);
-
         Route::get('services', [ServiceController::class, 'index']);
         Route::get('services/{service}', [ServiceController::class, 'show']);
 
@@ -151,7 +145,6 @@ Route::middleware(['auth:sanctum', 'role:Client'])
 
 /*aqui pongo las publicas*/
 Route::prefix('public')->group(function () {
-    Route::get('availability', [PublicAvailabilityController::class, 'index']);
     Route::get('spas', [PublicSpaController::class, 'index']);
     Route::get('spas/{spa}', [PublicSpaController::class, 'show']);
     Route::get('services/latest', [PublicServiceController::class, 'latest']);
