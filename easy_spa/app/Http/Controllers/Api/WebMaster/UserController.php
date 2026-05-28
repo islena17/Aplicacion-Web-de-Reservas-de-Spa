@@ -16,6 +16,7 @@ class UserController extends Controller
 {
     public function index()
     {
+        // Lista los usuarios con sus relaciones principales.
         $users = User::with([
             'role',
             'client',
@@ -30,6 +31,7 @@ class UserController extends Controller
 
     public function store(Request $request)
     {
+        // Valida los datos comunes y los posibles datos según el tipo de usuario.
         $data = $request->validate([
             'role_id' => ['required', 'exists:roles,id'],
             'email' => ['required', 'email', 'max:255', 'unique:users,email'],
@@ -47,15 +49,18 @@ class UserController extends Controller
             'employee.spa_id' => ['nullable', 'exists:spas,id'],
         ]);
 
+        // Obtiene el rol para aplicar validaciones específicas.
         $role = Role::findOrFail($data['role_id']);
         $roleName = strtolower($role->name);
 
+        // Si el usuario es admin, debe tener un spa asignado.
         if ($roleName === 'admin') {
             $request->validate([
                 'admin.spa_id' => ['required', 'exists:spas,id'],
             ]);
         }
 
+        // Si el usuario es cliente, sus datos personales son obligatorios.
         if ($roleName === 'client') {
             $request->validate([
                 'client.name' => ['required', 'string', 'max:255'],
@@ -63,22 +68,14 @@ class UserController extends Controller
                 'client.telephone' => ['required', 'string', 'max:20'],
             ]);
         }
-
-        if ($roleName === 'employee') {
-            $request->validate([
-                'employee.name' => ['required', 'string', 'max:255'],
-                'employee.surname' => ['required', 'string', 'max:255'],
-                'employee.telephone' => ['required', 'string', 'max:20'],
-                'employee.spa_id' => ['required', 'exists:spas,id'],
-            ]);
-        }
-
+        // Crea el usuario con la contraseña cifrada.
         $user = User::create([
             'role_id' => $data['role_id'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
         ]);
 
+        // Asigna el spa seleccionado al nuevo administrador.
         if ($roleName === 'admin') {
             Spa::where('id', $request->input('admin.spa_id'))
                 ->update([
@@ -86,23 +83,14 @@ class UserController extends Controller
                 ]);
         }
 
+        // Crea el perfil de cliente asociado al usuario.
         if ($roleName === 'client') {
             Client::create([
                 'user_id' => $user->id,
                 'name' => $request->input('client.name'),
                 'surname' => $request->input('client.surname'),
                 'telephone' => $request->input('client.telephone'),
-                'email' =>$user->email
-            ]);
-        }
-
-        if ($roleName === 'employee') {
-            Employee::create([
-                'user_id' => $user->id,
-                'spa_id' => $request->input('employee.spa_id'),
-                'name' => $request->input('employee.name'),
-                'surname' => $request->input('employee.surname'),
-                'telephone' => $request->input('employee.telephone'),
+                'email' => $user->email,
             ]);
         }
 
@@ -114,6 +102,7 @@ class UserController extends Controller
 
     public function show(User $user)
     {
+        // Devuelve el usuario con sus datos relacionados.
         $user->load([
             'role',
             'client.reservations.service.spa',
@@ -138,6 +127,12 @@ class UserController extends Controller
                 Rule::unique('users', 'email')->ignore($user->id),
             ],
             'password' => ['nullable', 'string', 'min:8'],
+
+            'client.name' => ['nullable', 'string', 'max:255'],
+            'client.surname' => ['nullable', 'string', 'max:255'],
+            'client.telephone' => ['nullable', 'string', 'max:20'],
+
+            'owned_spa_id' => ['nullable', 'exists:spas,id'],
         ]);
 
         if (!empty($data['password'])) {
@@ -146,16 +141,46 @@ class UserController extends Controller
             unset($data['password']);
         }
 
-        $user->update($data);
+        $user->update([
+            'role_id' => $data['role_id'],
+            'email' => $data['email'],
+            ...isset($data['password']) ? ['password' => $data['password']] : [],
+        ]);
+
+        $role = Role::findOrFail($data['role_id']);
+        $roleName = strtolower($role->name);
+
+        if ($roleName === 'client' && $request->has('client')) {
+            $user->client()->updateOrCreate(
+                ['user_id' => $user->id],
+                [
+                    'name' => $request->input('client.name'),
+                    'surname' => $request->input('client.surname'),
+                    'telephone' => $request->input('client.telephone'),
+                    'email' => $user->email,
+                ]
+            );
+        }
+
+        if ($roleName === 'admin' && $request->filled('owned_spa_id')) {
+            Spa::where('user_id', $user->id)->update([
+                'user_id' => null,
+            ]);
+
+            Spa::where('id', $request->owned_spa_id)->update([
+                'user_id' => $user->id,
+            ]);
+        }
 
         return response()->json([
             'message' => 'Usuario actualizado correctamente',
-            'data' => $user->load('role'),
+            'data' => $user->load(['role', 'client', 'employee', 'ownedSpa']),
         ]);
     }
 
     public function destroy(User $user)
     {
+        // Elimina el usuario seleccionado.
         $user->delete();
 
         return response()->json([

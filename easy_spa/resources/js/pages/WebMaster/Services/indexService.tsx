@@ -34,6 +34,7 @@ export default function WebmasterServicesIndex() {
         getEditPath={(service) =>
           `/dashboard/spas/${slug}/services/${service.slug}/edit`
         }
+        backPath={`/dashboard/spas/${slug}`}
         onDelete={deleteService}
       />
     </WMLayout>

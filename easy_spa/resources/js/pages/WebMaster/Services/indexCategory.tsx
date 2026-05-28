@@ -33,6 +33,7 @@ export default function WebmasterCategoriesIndex() {
                 getEditPath={(category) =>
                     `/dashboard/spas/${slug}/categories/${category.slug}/edit`
                 }
+                backPath={`/dashboard/spas/${slug}`}
                 onDelete={deleteCategory}
             />
         </WMLayout>

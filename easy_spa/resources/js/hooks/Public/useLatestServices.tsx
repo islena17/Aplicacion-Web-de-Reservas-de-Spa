@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import api from '@/lib/axios';
-import { Service } from './useTopServices'; 
+import { Service } from '@/types'; 
 
 export function useLatestServices() {
   const [latestServices, setLatestServices] = useState<Service[]>([]);

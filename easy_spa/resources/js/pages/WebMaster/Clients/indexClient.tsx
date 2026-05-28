@@ -30,6 +30,7 @@ export default function WebmasterClientsIndex() {
         getShowPath={(client) => `/dashboard/spas/${slug}/clients/${client.id}`}
         getEditPath={(client) => `/dashboard/spas/${slug}/clients/${client.id}/edit`}
         onDelete={deleteClient}
+        backPath={`/dashboard/spas/${slug}`}
       />
     </WMLayout>
   );

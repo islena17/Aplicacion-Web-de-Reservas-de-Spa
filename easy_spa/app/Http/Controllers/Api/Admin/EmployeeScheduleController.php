@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 
 class EmployeeScheduleController extends Controller
 {
+    // Obtiene el spa asociado al administrador autenticado.
     private function getAdminSpaId(): int
     {
         $spa = Spa::where('user_id', Auth::id())->first();
@@ -27,11 +28,13 @@ class EmployeeScheduleController extends Controller
     {
         $spaId = $this->getAdminSpaId();
 
+        // Lista solo los horarios de empleados pertenecientes al spa del admin.
         $query = EmployeeSchedule::with('employee')
             ->whereHas('employee', function ($query) use ($spaId) {
                 $query->where('spa_id', $spaId);
             });
 
+        // Permite filtrar los horarios por empleado.
         if ($request->filled('employee_id')) {
             $query->where('employee_id', $request->employee_id);
         }
@@ -51,10 +54,11 @@ class EmployeeScheduleController extends Controller
 
         $data = $request->validated();
 
-        // comprobar que el empleado pertenece al spa del admin
+        // Comprueba que el empleado pertenece al spa del admin.
         $employee = Employee::where('spa_id', $spaId)
             ->findOrFail($data['employee_id']);
 
+        // Crea un nuevo horario para el empleado indicado.
         $schedule = EmployeeSchedule::create([
             'employee_id' => $employee->id,
             'date' => $data['date'],
@@ -73,6 +77,7 @@ class EmployeeScheduleController extends Controller
     {
         $spaId = $this->getAdminSpaId();
 
+        // Evita que un admin consulte horarios de empleados de otro spa.
         if ($employeeSchedule->employee->spa_id !== $spaId) {
             abort(404);
         }
@@ -86,15 +91,17 @@ class EmployeeScheduleController extends Controller
     {
         $spaId = $this->getAdminSpaId();
 
+        // Valida el empleado y el listado de horarios recibido.
         $data = $request->validate([
             'employee_id' => 'required|exists:employees,id',
             'schedules' => 'required|array',
         ]);
 
-        // comprobar que el empleado pertenece al spa
+        // Comprueba que el empleado pertenece al spa del admin.
         $employee = Employee::where('spa_id', $spaId)
             ->findOrFail($data['employee_id']);
 
+        // Crea o actualiza el horario de cada día.
         foreach ($data['schedules'] as $schedule) {
             EmployeeSchedule::updateOrCreate(
                 [
@@ -114,16 +121,19 @@ class EmployeeScheduleController extends Controller
             'message' => 'Horario guardado correctamente',
         ]);
     }
+
     public function update(EmployeeScheduleRequest $request, EmployeeSchedule $employeeSchedule)
     {
         $spaId = $this->getAdminSpaId();
 
+        // Verifica que el horario pertenece a un empleado del spa del admin.
         if ($employeeSchedule->employee->spa_id !== $spaId) {
             abort(404);
         }
 
         $data = $request->validated();
 
+        // Si se cambia el empleado, se comprueba que también pertenece al mismo spa.
         if (isset($data['employee_id'])) {
             $employee = Employee::where('spa_id', $spaId)
                 ->findOrFail($data['employee_id']);
@@ -139,12 +149,11 @@ class EmployeeScheduleController extends Controller
         ]);
     }
 
-
-
     public function destroy(EmployeeSchedule $employeeSchedule)
     {
         $spaId = $this->getAdminSpaId();
 
+        // Evita eliminar horarios de empleados que no pertenezcan al spa del admin.
         if ($employeeSchedule->employee->spa_id !== $spaId) {
             abort(404);
         }

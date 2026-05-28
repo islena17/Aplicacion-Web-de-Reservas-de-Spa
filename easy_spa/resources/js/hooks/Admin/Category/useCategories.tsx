@@ -17,7 +17,7 @@ export default function useCategories() {
       setError('');
 
       const res = await api.get('/api/admin/categories');
-
+      // Guarda la categoria devuelta por la API.
       setCategories(res.data.data ?? res.data);
       setLastPage(res.data.last_page ?? 1);
     } catch (error) {

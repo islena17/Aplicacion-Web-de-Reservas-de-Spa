@@ -18,6 +18,7 @@ interface Props {
     getEditPath: (service: Service) => string;
     onDelete?: (serviceSlug: string) => void;
     showBackButton?: boolean;
+    backPath?: string;
 }
 
 export default function ServicesIndexLayout({
@@ -34,6 +35,7 @@ export default function ServicesIndexLayout({
     getEditPath,
     onDelete,
     showBackButton = true,
+    backPath
 }: Props) {
     const navigate = useNavigate();
 
@@ -59,10 +61,10 @@ export default function ServicesIndexLayout({
                             <i className="bi bi-plus-circle"></i> Nuevo servicio
                         </button>
 
-                        {showBackButton && (
+                        {showBackButton && backPath && (
                             <button
                                 className="custom-main-btn back-btn"
-                                onClick={() => navigate(-1)}
+                                onClick={() => navigate(backPath)}
                             >
                                 <i className="bi bi-arrow-left"></i>
                                 Volver

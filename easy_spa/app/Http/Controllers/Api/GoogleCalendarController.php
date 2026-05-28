@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 
 class GoogleCalendarController extends Controller
 {
+    // Configura el cliente de Google con las credenciales de la aplicación.
     private function getClient()
     {
         $client = new Client();
@@ -27,6 +28,7 @@ class GoogleCalendarController extends Controller
     {
         $client = $this->getClient();
 
+        // Genera la URL de autorización de Google Calendar.
         return response()->json([
             'url' => $client->createAuthUrl()
         ]);
@@ -36,14 +38,17 @@ class GoogleCalendarController extends Controller
     {
         $client = $this->getClient();
 
+        // Intercambia el código recibido por el token de acceso.
         $token = $client->fetchAccessTokenWithAuthCode($request->code);
 
         $user = $request->user();
 
+        // Guarda el token de Google asociado al usuario autenticado.
         $user->update([
             'google_token' => json_encode($token),
         ]);
 
+        // Redirige al calendario del panel webmaster.
         return redirect('https://easyspa.onrender.com/webmaster/calendar');
     }
 }

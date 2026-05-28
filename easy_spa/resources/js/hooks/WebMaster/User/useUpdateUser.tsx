@@ -18,12 +18,6 @@ type UserForm = {
         telephone: string;
     };
 
-    employee: {
-        name: string;
-        surname: string;
-        telephone: string;
-        spa_id: string;
-    };
 
     ownedSpa: {
         id: string;
@@ -34,10 +28,6 @@ type UserErrors = Partial<Record<keyof UserForm, string[]>> & {
     'client.name'?: string[];
     'client.surname'?: string[];
     'client.telephone'?: string[];
-    'employee.name'?: string[];
-    'employee.surname'?: string[];
-    'employee.telephone'?: string[];
-    'employee.spa_id'?: string[];
     'ownedSpa.id'?: string[];
     general?: string;
 };
@@ -51,13 +41,6 @@ const initialForm: UserForm = {
         name: '',
         surname: '',
         telephone: '',
-    },
-
-    employee: {
-        name: '',
-        surname: '',
-        telephone: '',
-        spa_id: '',
     },
 
     ownedSpa: {
@@ -79,7 +62,6 @@ export function useUpdateUser(id?: string) {
 
     const isClient = selectedRole?.name === 'Client';
     const isAdmin = selectedRole?.name === 'Admin';
-    const isEmployee = selectedRole?.name === 'Employee';
 
     useEffect(() => {
         const fetchData = async () => {
@@ -131,16 +113,6 @@ export function useUpdateUser(id?: string) {
                         surname: user.client?.surname ?? '',
                         telephone: user.client?.telephone ?? '',
                     },
-
-                    employee: {
-                        name: user.employee?.name ?? '',
-                        surname: user.employee?.surname ?? '',
-                        telephone: user.employee?.telephone ?? '',
-                        spa_id: user.employee?.spa_id
-                            ? String(user.employee.spa_id)
-                            : String(user.employee?.spa?.id ?? ''),
-                    },
-
                     ownedSpa: {
                         id: user.owned_spa?.[0]?.id
                             ? String(user.owned_spa[0].id)
@@ -173,7 +145,7 @@ export function useUpdateUser(id?: string) {
             setForm((prev) => ({
                 ...prev,
                 [group]: {
-                    ...prev[group as 'client' | 'employee' | 'ownedSpa'],
+                    ...prev[group as 'client' | 'ownedSpa'],
                     [field]: value,
                 },
             }));
@@ -219,15 +191,6 @@ export function useUpdateUser(id?: string) {
             };
         }
 
-        if (isEmployee) {
-            payload.employee = {
-                name: form.employee.name,
-                surname: form.employee.surname,
-                telephone: form.employee.telephone,
-                spa_id: Number(form.employee.spa_id),
-            };
-        }
-
         if (isAdmin) {
             payload.owned_spa_id = Number(form.ownedSpa.id);
         }
@@ -266,7 +229,6 @@ export function useUpdateUser(id?: string) {
         loading,
         loadingOptions,
         isClient,
-        isEmployee,
         isAdmin,
         handleChange,
         updateUser,

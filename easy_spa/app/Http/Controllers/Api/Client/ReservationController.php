@@ -21,6 +21,7 @@ use Illuminate\Support\Facades\Log;
 
 class ReservationController extends Controller
 {
+    // Obtiene el cliente asociado al usuario autenticado.
     private function getAuthenticatedClient(): Client
     {
         return Client::where('user_id', Auth::id())->firstOrFail();
@@ -30,6 +31,7 @@ class ReservationController extends Controller
     {
         $client = $this->getAuthenticatedClient();
 
+        // Lista únicamente las reservas del cliente autenticado.
         $reservations = Reservation::with([
             'client',
             'spa',
@@ -50,9 +52,11 @@ class ReservationController extends Controller
         $client = $this->getAuthenticatedClient();
         $data = $request->validated();
 
+        // Comprueba que el servicio existe y está activo.
         $service = Service::where('is_active', true)
             ->findOrFail($data['service_id']);
 
+        // Valida que no se supere la capacidad máxima del servicio.
         if (
             Reservation::exceedsServiceCapacity(
                 $service,
@@ -66,6 +70,7 @@ class ReservationController extends Controller
             ]);
         }
 
+        // Calcula el precio final según el servicio y el número de personas.
         $data['final_price'] = Reservation::calculateTotalPrice(
             $service,
             $data['number_of_people']
@@ -73,6 +78,7 @@ class ReservationController extends Controller
 
         $employeeId = $data['employee_id'] ?? null;
 
+        // Si se selecciona empleado, se valida que pertenezca al spa y esté disponible.
         if ($employeeId) {
             Employee::where('spa_id', $service->spa_id)
                 ->findOrFail($employeeId);
@@ -86,6 +92,7 @@ class ReservationController extends Controller
             );
         }
 
+        // Crea la reserva y bloquea la franja del empleado en una transacción.
         $reservation = DB::transaction(function () use ($data, $client, $service, $employeeId) {
             $reservation = Reservation::create([
                 ...$data,
@@ -94,6 +101,7 @@ class ReservationController extends Controller
                 'status' => 'pending',
             ]);
 
+            // Registra el bloqueo horario del empleado asignado.
             if ($employeeId) {
                 EmployeeBlock::create([
                     'employee_id' => $employeeId,
@@ -115,6 +123,7 @@ class ReservationController extends Controller
             'employee',
         ]);
 
+        // Intenta enviar el correo de confirmación sin interrumpir la reserva si falla.
         try {
             Mail::to($reservation->client->email)
                 ->send(new ReservationMail($reservation));
@@ -137,6 +146,7 @@ class ReservationController extends Controller
     {
         $client = $this->getAuthenticatedClient();
 
+        // Evita que un cliente consulte reservas de otro usuario.
         if ($reservation->client_id !== $client->id) {
             abort(404);
         }
@@ -155,25 +165,30 @@ class ReservationController extends Controller
     {
         $client = $this->getAuthenticatedClient();
 
+        // Comprueba que la reserva pertenece al cliente autenticado.
         if ($reservation->client_id !== $client->id) {
             abort(404);
         }
 
         $data = $request->validated();
 
+        // Evita modificar manualmente el cliente o spa desde la petición.
         unset($data['client_id'], $data['spa_id']);
 
+        // Si cambia el servicio, se actualiza el spa correspondiente.
         if (isset($data['service_id'])) {
             $service = Service::where('is_active', true)
                 ->findOrFail($data['service_id']);
 
             $data['spa_id'] = $service->spa_id;
 
+            // Comprueba que el empleado pertenece al spa del nuevo servicio.
             if (!empty($data['employee_id'])) {
                 Employee::where('spa_id', $service->spa_id)
                     ->findOrFail($data['employee_id']);
             }
         } elseif (!empty($data['employee_id'])) {
+            // Comprueba el empleado usando el spa actual de la reserva.
             Employee::where('spa_id', $reservation->spa_id)
                 ->findOrFail($data['employee_id']);
         }
@@ -195,6 +210,7 @@ class ReservationController extends Controller
     {
         $client = $this->getAuthenticatedClient();
 
+        // Evita eliminar reservas de otros clientes.
         if ($reservation->client_id !== $client->id) {
             abort(404);
         }
@@ -210,6 +226,7 @@ class ReservationController extends Controller
     {
         $client = Client::where('user_id', Auth::id())->firstOrFail();
 
+        // Obtiene los empleados activos disponibles para el spa seleccionado.
         $employees = Employee::where('spa_id', $spa->id)
             ->where('is_active', true)
             ->get(['id', 'name']);

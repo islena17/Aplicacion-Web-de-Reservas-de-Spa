@@ -12,6 +12,8 @@ export function useReservations(slug?: string) {
     const [lastPage, setLastPage] = useState(1);
 
     const fetchReservations = async () => {
+
+        // Evita hacer la petición si no se ha recibido un identificador.
         if (!slug) return;
 
         try {
@@ -40,8 +42,10 @@ export function useReservations(slug?: string) {
         if (!confirmDelete) return;
 
         try {
+            // Elimina la reserva seleccionada.
             await api.delete(`/api/webmaster/reservations/${reservationId}`);
 
+            // Actualiza la lista local sin volver a pedir todos los datos.
             setReservations((prev) =>
                 prev.filter((reservation) => reservation.id !== reservationId)
             );

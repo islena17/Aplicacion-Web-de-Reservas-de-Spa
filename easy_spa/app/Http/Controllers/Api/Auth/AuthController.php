@@ -21,7 +21,7 @@ class AuthController extends Controller
             $user = User::create([
                 'email' => $request->email,
                 'password' => $request->password,
-                'role_id' => 4 //para que siempre sean clientes los que se registren
+                'role_id' => 3 //para que siempre sean clientes los que se registren
             ]);
 
             $client = Client::create([

@@ -14,6 +14,7 @@ interface Props {
   lastPage: number;
   setPage: (page: number) => void;
   createPath: string;
+  backPath?: string;
   getShowPath: (employee: Employee) => string;
   getEditPath: (employee: Employee) => string;
   onDelete?: (employeeId: number) => void;
@@ -35,6 +36,7 @@ export default function EmployeesIndexLayout({
   getEditPath,
   onDelete,
   showBackButton = true,
+  backPath
 }: Props) {
   const navigate = useNavigate();
 
@@ -59,10 +61,10 @@ export default function EmployeesIndexLayout({
               <i className="bi bi-plus-circle"></i> Nuevo empleado
             </button>
 
-            {showBackButton && (
+            {showBackButton && backPath && (
               <button
                 className="custom-main-btn back-btn"
-                onClick={() => navigate(-1)}
+                onClick={() => navigate(backPath)}
               >
                 <i className="bi bi-arrow-left"></i>
                 Volver

@@ -16,9 +16,7 @@ use Illuminate\Support\Facades\Mail;
 
 class ReservationController extends Controller
 {
-    /**
-     * Obtener el id del spa del admin autenticado.
-     */
+    // Obtiene el spa asociado al administrador autenticado.
     private function getAdminSpaId(): int
     {
         $spa = Spa::where('user_id', Auth::id())->first();
@@ -29,13 +27,12 @@ class ReservationController extends Controller
 
         return $spa->id;
     }
-    /**
-     * Display a listing of the resource.
-     */
+
     public function index()
     {
         $spaId = $this->getAdminSpaId();
 
+        // Lista las reservas pertenecientes al spa del admin.
         $query = Reservation::with([
             'client',
             'spa',
@@ -43,6 +40,7 @@ class ReservationController extends Controller
             'employee',
         ])->where('spa_id', $spaId);
 
+        // Filtros opcionales para buscar reservas concretas.
         if (request('employee_id')) {
             $query->where('employee_id', request('employee_id'));
         }
@@ -64,9 +62,6 @@ class ReservationController extends Controller
         return response()->json($reservations);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(
         ReservationRequest $request,
         AvailabilityService $availabilityService
@@ -74,11 +69,14 @@ class ReservationController extends Controller
         $spaId = $this->getAdminSpaId();
         $data = $request->validated();
 
+        // Evita que el admin pueda asignar la reserva a otro spa.
         unset($data['spa_id']);
 
+        // Comprueba que el servicio pertenece al spa del admin.
         $service = Service::where('spa_id', $spaId)
             ->findOrFail($data['service_id']);
 
+        // Valida que no se supere la capacidad máxima del servicio.
         if (
             Reservation::exceedsServiceCapacity(
                 $service,
@@ -95,6 +93,7 @@ class ReservationController extends Controller
             ], 422);
         }
 
+        // Calcula el precio final según el servicio y número de personas.
         $finalPrice = Reservation::calculateTotalPrice(
             $service,
             $data['number_of_people']
@@ -102,6 +101,7 @@ class ReservationController extends Controller
 
         $employeeId = $data['employee_id'] ?? null;
 
+        // Si se asigna empleado, se comprueba su disponibilidad.
         if ($employeeId) {
             $availabilityService->validateEmployeeAvailability(
                 $spaId,
@@ -112,6 +112,7 @@ class ReservationController extends Controller
             );
         }
 
+        // Crea la reserva y bloquea el horario del empleado en una transacción.
         $reservation = DB::transaction(function () use (
             $data,
             $spaId,
@@ -126,6 +127,7 @@ class ReservationController extends Controller
                 'final_price' => $finalPrice,
             ]);
 
+            // Bloquea la franja horaria del empleado asignado.
             if ($employeeId) {
                 EmployeeBlock::create([
                     'employee_id' => $employeeId,
@@ -147,6 +149,7 @@ class ReservationController extends Controller
             'employee',
         ]);
 
+        // Envía el correo de confirmación al cliente.
         Mail::to($reservation->client->email)
             ->send(new ReservationMail($reservation));
 
@@ -155,13 +158,12 @@ class ReservationController extends Controller
             'data' => $reservation,
         ], 201);
     }
-    /**
-     * Display the specified resource.
-     */
+
     public function show(Reservation $reservation)
     {
         $spaId = $this->getAdminSpaId();
 
+        // Evita consultar reservas de otros spas.
         if ($reservation->spa_id !== $spaId) {
             abort(404);
         }
@@ -176,20 +178,18 @@ class ReservationController extends Controller
         ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(ReservationRequest $request, Reservation $reservation)
     {
         $spaId = $this->getAdminSpaId();
 
+        // Comprueba que la reserva pertenece al spa del admin.
         if ($reservation->spa_id !== $spaId) {
             abort(404);
         }
 
         $data = $request->validated();
 
-        // Evitar que el admin cambie la reserva a otro spa
+        // Evita que el admin cambie la reserva a otro spa.
         unset($data['spa_id']);
 
         $reservation->update($data);
@@ -205,18 +205,16 @@ class ReservationController extends Controller
         ]);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Reservation $reservation)
     {
         $spaId = $this->getAdminSpaId();
 
+        // Evita eliminar reservas de otros spas.
         if ($reservation->spa_id !== $spaId) {
             abort(404);
         }
 
-        //  borrar bloqueo asociado
+        // Elimina el bloqueo asociado al empleado.
         EmployeeBlock::where('employee_id', $reservation->employee_id)
             ->where('date', $reservation->reservation_date)
             ->where('start_time', $reservation->start_time)
@@ -224,7 +222,7 @@ class ReservationController extends Controller
             ->where('reason', 'Reserva #' . $reservation->id)
             ->delete();
 
-        // eliminar reserva
+        // Elimina la reserva.
         $reservation->delete();
 
         return response()->json([

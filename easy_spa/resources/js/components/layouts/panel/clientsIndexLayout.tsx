@@ -17,6 +17,7 @@ interface Props {
   getEditPath?: (client: Client) => string;
   onDelete?: (clientId: number) => void;
   showBackButton?: boolean;
+  backPath?: string;
 }
 
 export default function ClientsIndexLayout({
@@ -31,6 +32,7 @@ export default function ClientsIndexLayout({
   getShowPath,
   getEditPath,
   onDelete,
+  backPath,
   showBackButton = true,
 }: Props) {
   const navigate = useNavigate();
@@ -47,15 +49,15 @@ export default function ClientsIndexLayout({
             <p className="text-muted mb-0">{description}</p>
           </div>
 
-          {showBackButton && (
-            <button
-              className="custom-main-btn back-btn"
-              onClick={() => navigate(-1)}
-            >
-              <i className="bi bi-arrow-left"></i>
-              Volver
-            </button>
-          )}
+          {showBackButton && backPath && (
+              <button
+                className="custom-main-btn back-btn"
+                onClick={() => navigate(backPath)}
+              >
+                <i className="bi bi-arrow-left"></i>
+                Volver
+              </button>
+            )}
         </div>
 
         {error && <div className="alert alert-danger">{error}</div>}

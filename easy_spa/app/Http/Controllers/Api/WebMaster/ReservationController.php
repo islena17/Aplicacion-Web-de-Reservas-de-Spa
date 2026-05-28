@@ -14,11 +14,9 @@ use Illuminate\Validation\ValidationException;
 
 class ReservationController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index(Request $request)
     {
+        // Consulta las reservas con sus relaciones principales.
         $query = Reservation::with([
             'client',
             'spa',
@@ -26,7 +24,7 @@ class ReservationController extends Controller
             'employee'
         ]);
 
-        // filtrar por spa
+        // Permite filtrar las reservas por spa.
         if ($request->filled('spa')) {
             $query->whereHas('spa', function ($q) use ($request) {
                 $q->where('slug', $request->spa);
@@ -40,16 +38,16 @@ class ReservationController extends Controller
         return response()->json($reservations);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(ReservationRequest $request)
     {
+        // Crea la reserva dentro de una transacción.
         $reservation = DB::transaction(function () use ($request) {
             $data = $request->validated();
 
+            // Obtiene el servicio seleccionado.
             $service = Service::findOrFail($data['service_id']);
 
+            // Valida que no se supere la capacidad máxima del servicio.
             if (
                 Reservation::exceedsServiceCapacity(
                     $service,
@@ -63,12 +61,14 @@ class ReservationController extends Controller
                 ]);
             }
 
+            // Guarda el precio base y calcula el precio final.
             $data['service_price'] = $service->price;
             $data['final_price'] = Reservation::calculateTotalPrice(
                 $service,
                 $data['number_of_people']
             );
 
+            // Si no existe cliente, crea uno nuevo con los datos recibidos.
             if (empty($data['client_id']) && isset($data['client'])) {
                 $client = Client::create([
                     'name' => $data['client']['name'],
@@ -80,6 +80,7 @@ class ReservationController extends Controller
                 $data['client_id'] = $client->id;
             }
 
+            // Elimina los datos anidados del cliente antes de crear la reserva.
             unset($data['client']);
 
             return Reservation::create($data);
@@ -95,11 +96,10 @@ class ReservationController extends Controller
             ]),
         ], 201);
     }
-    /**
-     * Display the specified resource.
-     */
+
     public function show(Reservation $reservation)
     {
+        // Devuelve la reserva con información ampliada de sus relaciones.
         return response()->json([
             'data' => $reservation->load([
                 'client.user',
@@ -110,11 +110,9 @@ class ReservationController extends Controller
         ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(ReservationRequest $request, Reservation $reservation)
     {
+        // Actualiza la reserva con los datos validados.
         $reservation->update($request->validated());
 
         return response()->json([
@@ -128,11 +126,9 @@ class ReservationController extends Controller
         ]);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Reservation $reservation)
     {
+        // Elimina la reserva seleccionada.
         $reservation->delete();
 
         return response()->json([
@@ -142,6 +138,7 @@ class ReservationController extends Controller
 
     public function filter(Request $request)
     {
+        // Consulta las reservas junto con sus relaciones.
         $query = Reservation::with([
             'client',
             'spa',
@@ -149,6 +146,7 @@ class ReservationController extends Controller
             'employee'
         ]);
 
+        // Busca coincidencias en cliente, servicio o spa.
         if ($request->filled('search')) {
             $search = $request->search;
 
@@ -168,16 +166,19 @@ class ReservationController extends Controller
             });
         }
 
+        // Filtra por estado de la reserva.
         if ($request->filled('status')) {
             $query->where('status', $request->status);
         }
 
+        // Filtra por spa.
         if ($request->filled('spa')) {
             $query->whereHas('spa', function ($q) use ($request) {
                 $q->where('slug', $request->spa);
             });
         }
 
+        // Filtra por fecha de reserva.
         if ($request->filled('date')) {
             $query->whereDate('reservation_date', $request->date);
         }
@@ -189,9 +190,9 @@ class ReservationController extends Controller
         return response()->json($reservations);
     }
 
-    //metodo para sacar todos los spas para el filtro de reservas globales de wm
     public function spas()
     {
+        // Devuelve los spas necesarios para el filtro global de reservas.
         return response()->json(
             Spa::select('id', 'name', 'slug')
                 ->orderBy('name')

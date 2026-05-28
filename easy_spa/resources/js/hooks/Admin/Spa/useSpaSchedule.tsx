@@ -10,6 +10,7 @@ export function useSpaSchedule() {
       try {
         setLoading(true);
 
+        // Genera una semana por defecto para mostrar todos los días.
         const generated = [
           { day_of_week: 0, start_time: '09:00', end_time: '17:00', is_working: false },
           { day_of_week: 1, start_time: '09:00', end_time: '17:00', is_working: true },
@@ -24,6 +25,7 @@ export function useSpaSchedule() {
 
         const saved = res.data.data ?? res.data;
 
+        // Sustituye los valores por defecto por los horarios guardados.
         const merged = generated.map((day) => {
           const savedDay = saved.find(
             (item: any) => item.day_of_week === day.day_of_week
@@ -51,6 +53,7 @@ export function useSpaSchedule() {
   }, []);
 
   const handleChange = (index: number, field: string, value: any) => {
+    // Actualiza el campo modificado de un día concreto.
     const updated = [...days];
     updated[index][field] = value;
     setDays(updated);
@@ -60,6 +63,7 @@ export function useSpaSchedule() {
     setLoading(true);
 
     try {
+      // Guarda todos los horarios de la semana en una sola petición.
       await api.post('/api/admin/spa-schedules/bulk', {
         schedules: days,
       });

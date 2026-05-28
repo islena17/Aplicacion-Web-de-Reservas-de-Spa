@@ -103,7 +103,16 @@ export default function ReservationsIndex() {
                           <td className="px-4 py-3">{reservation.reservation_date}</td>
                           <td className="px-4 py-3">{reservation.start_time} - {reservation.end_time}</td>
                           <td className="px-4 py-3">
-                            <span className="badge bg-secondary">{reservation.status}</span>
+                            <span
+                              className={`badge ${reservation.status === 'confirmed'
+                                ? 'bg-success'
+                                : reservation.status === 'pending'
+                                  ? 'bg-warning text-dark'
+                                  : reservation.status === 'cancelled'
+                                    ? 'bg-danger'
+                                    : 'bg-secondary'
+                                }`}
+                            >{reservation.status}</span>
                           </td>
                           <td className="px-4 py-3 text-end">
                             <div className="d-flex justify-content-end gap-3">

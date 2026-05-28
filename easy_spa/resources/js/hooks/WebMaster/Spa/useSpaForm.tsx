@@ -1,4 +1,3 @@
-// src/hooks/useSpaForm.ts
 import { FormEvent, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '@/lib/axios';
@@ -61,6 +60,7 @@ export function useSpaForm(spa?: Spa | null) {
   useEffect(() => {
     if (!spa) return;
 
+    // Carga los datos actuales del spa en el formulario.
     setForm({
       name: spa.name ?? '',
       slug: spa.slug ?? '',
@@ -71,11 +71,12 @@ export function useSpaForm(spa?: Spa | null) {
       phone: spa.phone ?? '',
       email: spa.email ?? '',
       opening_time: spa.opening_time?.slice(0, 5) ?? '',
-closing_time: spa.closing_time?.slice(0, 5) ?? '',
+      closing_time: spa.closing_time?.slice(0, 5) ?? '',
       logo: null,
       is_active: Boolean(spa.is_active),
     });
 
+    // Guarda el logo actual para mostrarlo en la vista.
     setCurrentLogo(spa.logo ?? null);
   }, [spa]);
 
@@ -86,6 +87,7 @@ closing_time: spa.closing_time?.slice(0, 5) ?? '',
     const { name, value } = target;
 
     if (target instanceof HTMLInputElement) {
+      // Gestiona los campos booleanos del formulario.
       if (target.type === 'checkbox') {
         setForm((prev) => ({
           ...prev,
@@ -94,6 +96,7 @@ closing_time: spa.closing_time?.slice(0, 5) ?? '',
         return;
       }
 
+      // Gestiona la subida del logo.
       if (target.type === 'file') {
         setForm((prev) => ({
           ...prev,
@@ -103,6 +106,7 @@ closing_time: spa.closing_time?.slice(0, 5) ?? '',
       }
     }
 
+    // Actualiza el valor del campo modificado.
     setForm((prev) => ({
       ...prev,
       [name]: value,
@@ -112,6 +116,7 @@ closing_time: spa.closing_time?.slice(0, 5) ?? '',
   const buildFormData = () => {
     const formData = new FormData();
 
+    // Prepara los datos para enviar texto e imagen en la misma petición.
     formData.append('name', form.name);
     formData.append('slug', form.slug);
     formData.append('description', form.description);
@@ -124,6 +129,7 @@ closing_time: spa.closing_time?.slice(0, 5) ?? '',
     formData.append('closing_time', form.closing_time);
     formData.append('is_active', form.is_active ? '1' : '0');
 
+    // Añade el logo solo si se ha seleccionado uno nuevo.
     if (form.logo) {
       formData.append('logo', form.logo);
     }
@@ -137,6 +143,7 @@ closing_time: spa.closing_time?.slice(0, 5) ?? '',
     setErrors({});
 
     try {
+      // Crea un nuevo spa con los datos del formulario.
       await api.post('/api/webmaster/spas', buildFormData(), {
         headers: {
           'Content-Type': 'multipart/form-data',
@@ -145,6 +152,7 @@ closing_time: spa.closing_time?.slice(0, 5) ?? '',
 
       navigate('/dashboard/spas');
     } catch (error: any) {
+      // Guarda los errores de validación devueltos por Laravel.
       if (error.response?.status === 422) {
         setErrors(error.response.data.errors || {});
       } else {
@@ -157,6 +165,8 @@ closing_time: spa.closing_time?.slice(0, 5) ?? '',
 
   const updateSpa = async (e: FormEvent, slug?: string) => {
     e.preventDefault();
+
+    // Evita actualizar si no se ha recibido el slug del spa.
     if (!slug) return;
 
     setLoading(true);
@@ -164,6 +174,8 @@ closing_time: spa.closing_time?.slice(0, 5) ?? '',
 
     try {
       const formData = buildFormData();
+
+      // Permite actualizar usando POST con método PUT simulado.
       formData.append('_method', 'PUT');
 
       await api.post(`/api/webmaster/spas/${slug}`, formData, {
@@ -174,6 +186,7 @@ closing_time: spa.closing_time?.slice(0, 5) ?? '',
 
       navigate('/dashboard/spas');
     } catch (error: any) {
+      // Guarda los errores de validación devueltos por Laravel.
       if (error.response?.status === 422) {
         setErrors(error.response.data.errors || {});
       } else {
@@ -184,7 +197,10 @@ closing_time: spa.closing_time?.slice(0, 5) ?? '',
     }
   };
 
-  const fieldError = (field?: string[]) => field?.[0];
+  const fieldError = (field?: string[]) => {
+    // Devuelve el primer mensaje de error de un campo.
+    return field?.[0];
+  };
 
   return {
     form,

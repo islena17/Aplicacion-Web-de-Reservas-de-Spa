@@ -16,6 +16,7 @@ interface Props {
     getShowPath: (category: ServiceCategory) => string;
     getEditPath: (category: ServiceCategory) => string;
     onDelete?: (categorySlug: string) => void;
+    backPath?: string;
 }
 
 export default function CategoriesIndexLayout({
@@ -31,6 +32,7 @@ export default function CategoriesIndexLayout({
     getShowPath,
     getEditPath,
     onDelete,
+    backPath,
     showBackButton = true,
 }: Props) {
     const navigate = useNavigate();
@@ -56,10 +58,10 @@ export default function CategoriesIndexLayout({
                         </button>
 
 
-                        {showBackButton && (
+                        {showBackButton && backPath && (
                             <button
                                 className="custom-main-btn back-btn"
-                                onClick={() => navigate(-1)}
+                                onClick={() => navigate(backPath)}
                             >
                                 <i className="bi bi-arrow-left"></i>
                                 Volver

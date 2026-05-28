@@ -12,6 +12,7 @@ class SpaScheduleController extends Controller
 {
     public function index(Spa $spa)
     {
+        // Lista los horarios del spa seleccionado.
         $schedules = SpaSchedule::with('spa')
             ->where('spa_id', $spa->id)
             ->orderBy('day_of_week')
@@ -23,6 +24,8 @@ class SpaScheduleController extends Controller
     public function store(SpaScheduleRequest $request, Spa $spa)
     {
         $data = $request->validated();
+
+        // Asocia automáticamente el horario al spa recibido por la ruta.
         $data['spa_id'] = $spa->id;
 
         $schedule = SpaSchedule::create($data);
@@ -35,6 +38,7 @@ class SpaScheduleController extends Controller
 
     public function bulk(Request $request, Spa $spa)
     {
+        // Valida el listado de horarios semanales recibido.
         $data = $request->validate([
             'schedules' => 'required|array',
             'schedules.*.day_of_week' => 'required|integer|min:0|max:6',
@@ -43,6 +47,7 @@ class SpaScheduleController extends Controller
             'schedules.*.is_working' => 'required|boolean',
         ]);
 
+        // Crea o actualiza el horario de cada día del spa.
         foreach ($data['schedules'] as $schedule) {
             SpaSchedule::updateOrCreate(
                 [
@@ -64,6 +69,7 @@ class SpaScheduleController extends Controller
 
     public function show(Spa $spa, SpaSchedule $spaSchedule)
     {
+        // Evita consultar horarios que no pertenezcan al spa indicado.
         if ($spaSchedule->spa_id !== $spa->id) {
             abort(404);
         }
@@ -78,11 +84,14 @@ class SpaScheduleController extends Controller
         Spa $spa,
         SpaSchedule $spaSchedule
     ) {
+        // Comprueba que el horario pertenece al spa indicado.
         if ($spaSchedule->spa_id !== $spa->id) {
             abort(404);
         }
 
         $data = $request->validated();
+
+        // Evita modificar el spa asociado desde la petición.
         unset($data['spa_id']);
 
         $spaSchedule->update($data);
@@ -95,6 +104,7 @@ class SpaScheduleController extends Controller
 
     public function destroy(Spa $spa, SpaSchedule $spaSchedule)
     {
+        // Evita eliminar horarios que no pertenezcan al spa indicado.
         if ($spaSchedule->spa_id !== $spa->id) {
             abort(404);
         }

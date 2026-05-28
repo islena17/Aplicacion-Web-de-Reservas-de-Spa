@@ -7,13 +7,13 @@ interface ApiReservationResponse {
   data: Reservation;
 }
 
-// --- HOOK ADAPTADO PARA ADMIN ---
 export function useReservation(id?: string) {
   const [reservation, setReservation] = useState<Reservation | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
   const getReservation = async () => {
+    // Evita hacer la petición si no se ha recibido un identificador.
     if (!id) {
       setLoading(false);
       return;
@@ -26,10 +26,7 @@ export function useReservation(id?: string) {
       const res = await api.get<ApiReservationResponse>(
         `/api/admin/reservations/${id}`
       );
-
-      console.log('ADMIN RESERVATION DETAIL:', res.data);
-
-
+      // Guarda la reserva devuelta por la API.
       setReservation(res.data.data ?? res.data);
       
     } catch (err: any) {

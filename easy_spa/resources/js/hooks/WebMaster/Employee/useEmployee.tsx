@@ -8,6 +8,7 @@ export default function useEmployee(employeeId?: string) {
   const [error, setError] = useState('');
 
   useEffect(() => {
+    // Evita hacer la petición si no se ha recibido un identificador.
     if (!employeeId) {
       setLoading(false);
       return;

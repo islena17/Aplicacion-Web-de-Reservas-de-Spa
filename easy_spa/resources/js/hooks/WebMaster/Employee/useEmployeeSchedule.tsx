@@ -6,6 +6,7 @@ export function useEmployeeSchedule(employeeId?: string) {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    // Evita cargar horarios si no se ha seleccionado un empleado.
     if (!employeeId) return;
 
     const fetchSchedules = async () => {
@@ -16,10 +17,12 @@ export function useEmployeeSchedule(employeeId?: string) {
         const year = today.getFullYear();
         const month = today.getMonth();
 
+        // Obtiene el número total de días del mes actual.
         const totalDays = new Date(year, month + 1, 0).getDate();
 
         const generated = [];
 
+        // Genera un horario base para cada día del mes actual.
         for (let i = 1; i <= totalDays; i++) {
           const date = new Date(year, month, i);
 
@@ -43,16 +46,17 @@ export function useEmployeeSchedule(employeeId?: string) {
 
         const saved = res.data.data ?? res.data;
 
+        // Sustituye los valores por defecto por los horarios guardados.
         const merged = generated.map((day) => {
           const savedDay = saved.find((item: any) => item.date === day.date);
 
           return savedDay
             ? {
-              ...day,
-              start_time: savedDay.start_time?.slice(0, 5),
-              end_time: savedDay.end_time?.slice(0, 5),
-              is_working: Boolean(savedDay.is_working),
-            }
+                ...day,
+                start_time: savedDay.start_time?.slice(0, 5),
+                end_time: savedDay.end_time?.slice(0, 5),
+                is_working: Boolean(savedDay.is_working),
+              }
             : day;
         });
 
@@ -68,6 +72,7 @@ export function useEmployeeSchedule(employeeId?: string) {
   }, [employeeId]);
 
   const handleChange = (index: number, field: string, value: any) => {
+    // Actualiza el campo modificado de un día concreto.
     setDays((prevDays) => {
       const newDays = [...prevDays];
       newDays[index] = { ...newDays[index], [field]: value };
@@ -76,11 +81,13 @@ export function useEmployeeSchedule(employeeId?: string) {
   };
 
   const saveSchedule = async () => {
+    // Evita guardar si no hay empleado seleccionado.
     if (!employeeId) return;
 
     setLoading(true);
 
     try {
+      // Guarda todos los horarios del mes en una sola petición.
       await api.post('/api/webmaster/employee-schedules/bulk', {
         employee_id: Number(employeeId),
         schedules: days.map((day) => ({

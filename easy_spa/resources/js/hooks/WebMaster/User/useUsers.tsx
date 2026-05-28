@@ -2,53 +2,7 @@ import { useEffect, useState } from 'react';
 import api from '@/lib/axios';
 import { AxiosError } from 'axios';
 
-interface Role {
-  id: number;
-  name: string;
-}
-
-interface Spa {
-  id: number;
-  name: string;
-}
-
-interface Service {
-  name: string;
-  price: number;
-  spa?: Spa;
-}
-
-interface Reservation {
-  id: number;
-  reservation_date: string;
-  service?: Service;
-}
-
-interface Client {
-  id: number;
-  name: string;
-  surname: string;
-  telephone: string;
-  reservations?: Reservation[];
-}
-
-interface Employee {
-  id: number;
-  name: string;
-  surname: string;
-  telephone: string;
-  reservations?: Reservation[];
-  spa?: Spa | null;
-}
-
-export interface User {
-  id: number;
-  email: string;
-  role?: Role | null;
-  client?: Client | null;
-  employee?: Employee | null;
-  owned_spa?: Spa[];
-}
+import type { User, Spa } from '@/types';
 
 export function useUsers() {
   const [users, setUsers] = useState<User[]>([]);
@@ -62,10 +16,12 @@ export function useUsers() {
     try {
       setLoading(true);
 
+      // Obtiene todos los usuarios registrados.
       const res = await api.get<{ data?: User[] } | User[]>(
         '/api/webmaster/users'
       );
 
+      // Adapta la respuesta por si viene paginada o como array directo.
       const data = Array.isArray(res.data)
         ? res.data
         : res.data.data ?? [];
@@ -89,7 +45,10 @@ export function useUsers() {
     if (!window.confirm('¿Eliminar usuario?')) return;
 
     try {
+      // Elimina el usuario seleccionado.
       await api.delete(`/api/webmaster/users/${id}`);
+
+      // Actualiza la lista local sin volver a cargar todos los usuarios.
       setUsers((prev) => prev.filter((u) => u.id !== id));
     } catch (err: unknown) {
       console.error(err);
@@ -108,6 +67,7 @@ export function useUsers() {
   const spas = Array.from(
     new Map(
       users
+        // Extrae los spas asociados a empleados y administradores.
         .flatMap((user) => [
           user.employee?.spa,
           ...(user.owned_spa ?? []),
@@ -118,6 +78,7 @@ export function useUsers() {
   );
 
   const filteredUsers = users.filter((user) => {
+    // Filtra por rol si se ha seleccionado uno.
     const matchesRole = selectedRole
       ? user.role?.id === Number(selectedRole)
       : true;
@@ -127,6 +88,7 @@ export function useUsers() {
       ...(user.owned_spa?.map((spa) => spa.id) ?? []),
     ].filter(Boolean);
 
+    // Filtra por spa si se ha seleccionado uno.
     const matchesSpa = selectedSpa
       ? userSpaIds.includes(Number(selectedSpa))
       : true;

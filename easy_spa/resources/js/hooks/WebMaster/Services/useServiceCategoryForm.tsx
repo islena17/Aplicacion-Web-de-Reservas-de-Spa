@@ -22,6 +22,7 @@ export function useServiceCategoryForm(slug?: string, categorySlug?: string) {
   ) => {
     const { name, value, type } = e.target;
 
+    // Actualiza el campo del formulario, teniendo en cuenta los checkbox.
     setForm((prev) => ({
       ...prev,
       [name]:
@@ -31,8 +32,6 @@ export function useServiceCategoryForm(slug?: string, categorySlug?: string) {
     }));
   };
 
-  //constantes del formulario:
-  // crear categoria:
   const createCategory = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -40,10 +39,12 @@ export function useServiceCategoryForm(slug?: string, categorySlug?: string) {
       setLoading(true);
       setErrors({});
 
+      // Crea una nueva categoría dentro del spa seleccionado.
       await axios.post(`/api/webmaster/spas/${slug}/categories`, form);
 
-      navigate(`/dashboard/spas/${slug}?tab=categorias`);;
+      navigate(`/dashboard/spas/${slug}?tab=categorias`);
     } catch (error: any) {
+      // Guarda los errores de validación devueltos por Laravel.
       if (error.response?.status === 422) {
         setErrors(error.response.data.errors);
       } else {
@@ -56,9 +57,8 @@ export function useServiceCategoryForm(slug?: string, categorySlug?: string) {
     }
   };
 
-  //actualizar categoria:
-
   useEffect(() => {
+    // Solo carga datos si se está editando una categoría existente.
     if (!slug || !categorySlug) return;
 
     const getCategory = async () => {
@@ -72,6 +72,7 @@ export function useServiceCategoryForm(slug?: string, categorySlug?: string) {
 
         const category = response.data.data ?? response.data;
 
+        // Rellena el formulario con los datos actuales de la categoría.
         setForm({
           name: category.name ?? '',
           slug: category.slug ?? '',
@@ -94,12 +95,14 @@ export function useServiceCategoryForm(slug?: string, categorySlug?: string) {
   const updateCategory = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    // Evita actualizar si faltan los identificadores necesarios.
     if (!slug || !categorySlug) return;
 
     try {
       setLoading(true);
       setErrors({});
 
+      // Actualiza la categoría seleccionada.
       await axios.put(
         `/api/webmaster/spas/${slug}/categories/${categorySlug}`,
         form
@@ -107,6 +110,7 @@ export function useServiceCategoryForm(slug?: string, categorySlug?: string) {
 
       navigate(`/dashboard/spas/${slug}?tab=categorias`);
     } catch (error: any) {
+      // Guarda los errores de validación devueltos por Laravel.
       if (error.response?.status === 422) {
         setErrors(error.response.data.errors);
       } else {
@@ -120,11 +124,10 @@ export function useServiceCategoryForm(slug?: string, categorySlug?: string) {
   };
 
   const fieldError = (error: any) => {
+    // Devuelve el primer mensaje cuando el error viene como array.
     if (Array.isArray(error)) return error[0];
     return error;
   };
-
-
 
   return {
     form,

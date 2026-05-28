@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 
 class SpaScheduleController extends Controller
 {
+    // Obtiene el spa asociado al administrador autenticado.
     private function getAdminSpaId(): int
     {
         $spa = Spa::where('user_id', Auth::id())->first();
@@ -21,10 +22,12 @@ class SpaScheduleController extends Controller
 
         return $spa->id;
     }
+
     public function index()
     {
         $spaId = $this->getAdminSpaId();
 
+        // Lista los horarios del spa del admin.
         $schedules = SpaSchedule::with('spa')
             ->where('spa_id', $spaId)
             ->orderBy('day_of_week')
@@ -38,6 +41,8 @@ class SpaScheduleController extends Controller
         $spaId = $this->getAdminSpaId();
 
         $data = $request->validated();
+
+        // Asigna automáticamente el horario al spa del admin.
         $data['spa_id'] = $spaId;
 
         $schedule = SpaSchedule::create($data);
@@ -47,10 +52,12 @@ class SpaScheduleController extends Controller
             'data' => $schedule->load('spa'),
         ], 201);
     }
+
     public function bulk(Request $request)
     {
         $spaId = $this->getAdminSpaId();
 
+        // Valida el listado de horarios semanales recibido.
         $data = $request->validate([
             'schedules' => 'required|array',
             'schedules.*.day_of_week' => 'required|integer|min:0|max:6',
@@ -59,6 +66,7 @@ class SpaScheduleController extends Controller
             'schedules.*.is_working' => 'required|boolean',
         ]);
 
+        // Crea o actualiza el horario de cada día de la semana.
         foreach ($data['schedules'] as $schedule) {
             SpaSchedule::updateOrCreate(
                 [
@@ -77,10 +85,12 @@ class SpaScheduleController extends Controller
             'message' => 'Horario del spa guardado correctamente',
         ]);
     }
+
     public function show(SpaSchedule $spaSchedule)
     {
         $spaId = $this->getAdminSpaId();
 
+        // Evita consultar horarios de otros spas.
         if ($spaSchedule->spa_id !== $spaId) {
             abort(404);
         }
@@ -94,11 +104,14 @@ class SpaScheduleController extends Controller
     {
         $spaId = $this->getAdminSpaId();
 
+        // Comprueba que el horario pertenece al spa del admin.
         if ($spaSchedule->spa_id !== $spaId) {
             abort(404);
         }
 
         $data = $request->validated();
+
+        // Evita modificar el spa asociado desde la petición.
         unset($data['spa_id']);
 
         $spaSchedule->update($data);
@@ -113,6 +126,7 @@ class SpaScheduleController extends Controller
     {
         $spaId = $this->getAdminSpaId();
 
+        // Evita eliminar horarios de otros spas.
         if ($spaSchedule->spa_id !== $spaId) {
             abort(404);
         }
